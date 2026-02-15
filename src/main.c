@@ -6,8 +6,14 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/01/27 21:51:30 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/02/15 20:24:24 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	main(int ac, char **av, char **env)
+{
+	init();
+	return (0);
+}

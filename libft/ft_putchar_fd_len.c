@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putchar_fd_len.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/02/15 20:37:28 by ncruz-ne         ###   ########.fr       */
+/*   Created: 2025/05/20 18:53:16 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2025/05/26 16:30:54 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "../libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-
-#endif
+int	ft_putchar_fd_len(char c, int fd)
+{
+	if (fd < 0)
+		return (-1);
+	write(fd, &c, 1);
+	return (1);
+}

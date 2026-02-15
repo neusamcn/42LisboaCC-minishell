@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_nlen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/02/15 20:37:28 by ncruz-ne         ###   ########.fr       */
+/*   Created: 2025/05/18 19:03:10 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2025/05/26 16:31:06 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "../libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+int	ft_nlen(long long n)
+{
+	int	len;
 
-#endif
+	len = 0;
+	if (n < 0)
+	{
+		len++;
+		n *= -1;
+	}
+	if (n >= 0)
+		len++;
+	while (n > 9)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}

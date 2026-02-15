@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/02/15 20:37:28 by ncruz-ne         ###   ########.fr       */
+/*   Created: 2025/05/09 22:15:51 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2025/05/10 22:48:28 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "../libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+void	ft_lstiter(t_list *lst, void (*f)(void *))
+{
+	t_list	*currentnode;
 
-#endif
+	currentnode = lst;
+	if (!lst || !f)
+		return ;
+	while (currentnode != NULL)
+	{
+		f(currentnode->content);
+		currentnode = currentnode->next;
+	}
+}

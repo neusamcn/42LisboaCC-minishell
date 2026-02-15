@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/02/15 20:37:28 by ncruz-ne         ###   ########.fr       */
+/*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2026/02/15 20:40:14 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../include/minishell.h"
 
-# include "../libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+void	init(void)
+{
+	char	*str;
 
-#endif
+	while (1)
+	{
+		str = readline("meg&neu minishell > ");
+		if (!str)
+			break ;
+		if (*str)
+			add_history(str);
+		// TODO: tokenize + parse + execute here
+		free(str);
+	}
+}

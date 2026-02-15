@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd_len.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/02/15 20:37:28 by ncruz-ne         ###   ########.fr       */
+/*   Created: 2025/05/22 13:15:25 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2025/05/26 16:30:57 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "../libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+int	ft_putstr_fd_len(const char *s, int fd)
+{
+	int	i;
 
-#endif
+	i = 0;
+	if (!s)
+		return (ft_putstr_fd_len("(null)", 1));
+	while (s[i] && s[i] != '%')
+	{
+		ft_putchar_fd_len(s[i], 1);
+		i++;
+	}
+	return (i);
+}
