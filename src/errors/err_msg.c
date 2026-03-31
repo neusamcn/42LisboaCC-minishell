@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   err_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/01 00:24:18 by ncruz-ne         ###   ########.fr       */
+/*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2026/03/15 19:20:01 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-void	exit_cleanup(void)
+void	print_err_msg(char *my_msg)
 {
-	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
-	clear_history();
-	exit(EXIT_SUCCESS);
-}
-
-int	main(int ac, char **av, char **env)
-{
-	ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
-	init(ac, av, env);
-	exit_cleanup();
-	return (EXIT_SUCCESS);
+	ft_putstr_fd(PALE_VIOLET_RED, 2);
+	ft_putstr_fd(my_msg, 2);
+	ft_putstr_fd(COLOR_RESET, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
 }

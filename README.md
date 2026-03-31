@@ -16,6 +16,9 @@ Minishell is a simplified Unix shell implementation written in C. The goal is to
 
 AI was used as a support for research in order to find and better understand the most relevant resources and concepts related to this project.
 
+#### REPL
+- TODO: add resources
+
 #### Processes and System Calls
 
 - [fork(), exec(), wait() manual pages](https://man7.org/linux/man-pages/man2/fork.2.html)

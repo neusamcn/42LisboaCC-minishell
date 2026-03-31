@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/02/15 20:40:14 by ncruz-ne         ###   ########.fr       */
+/*   Created: 2025/04/22 18:55:51 by megiazar          #+#    #+#             */
+/*   Updated: 2025/04/22 19:06:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "libft.h"
 
-void	init(void)
+void	ft_putstr_fd(char *s, int fd)
 {
-	char	*str;
-
-	while (1)
-	{
-		str = readline("meg&neu minishell > ");
-		if (!str)
-			break ;
-		if (*str)
-			add_history(str);
-		// TODO: tokenize + parse + execute here
-		free(str);
-	}
+	write(fd, s, ft_strlen(s));
 }
+/*
+int	main()
+{
+	char	l[20] = "dogs says meow";
+	ft_putstr_fd(l, 1);
+	return (0);
+}*/
