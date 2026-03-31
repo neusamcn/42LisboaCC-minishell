@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/03/30 20:01:55 by megi             ###   ########.fr       */
+/*   Updated: 2026/03/31 19:42:55 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -33,9 +33,9 @@ int exec(t_pipe *cmd_line, char **envp, int status)
     signal_handler(1);
     pid = fork();
 	if (pid == 0)
-		child_exec(cmd, cmd_line, envp);
+	child_exec(cmd, cmd_line, envp);
     else if (pid != 0)
-		waitpid(pid, &status, 0);
+	waitpid(pid, &status, 0);
 	free(cmd);
     status = status_check(status);
     return status;
@@ -43,16 +43,16 @@ int exec(t_pipe *cmd_line, char **envp, int status)
 
 void	child_exec(char *cmd, t_pipe *cmd_line, char **envp)
 {
+	signal_handler(0);
+	pipe_handler(cmd_line);
 	if (execve(cmd, cmd_line->cmds, envp) == -1)
 	{
-		signal_handler(0);
 		p("minishell: %s", cmd_line->cmds[0]);
 		perror("");
 		free(cmd);
 		exit(127);
 	}
 }
-
 /* 
 Ign: Ignore the signal, do nothing just return.
 Term: Terminate the process. ctrl+z
@@ -72,8 +72,7 @@ void signal_handler(pid_t pid)
     {
         signal(SIGINT, SIG_IGN);
         signal(SIGQUIT, SIG_IGN);
-        signal(SIGSTOP, SIG_IGN);
-        
+        signal(SIGSTOP, SIG_IGN); 
     }
 }
 
