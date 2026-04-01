@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/03/31 19:36:39 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/01 17:02:48 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,8 +14,7 @@
 
 /* ls stdout ──pipe1──► grep stdin
               grep stdout ──pipe2──► wc stdin
-                                      wc stdout ──► terminal */
-
+                                      wc stdout ──► terminal */						  
 void heredoc(t_pipe *cmd_line)
 {
     int pipefd[2];
@@ -40,12 +39,17 @@ void heredoc(t_pipe *cmd_line)
 	close(pipefd[0]);
 }
 
-void pipe_handler(t_pipe *cmd_line)
+void append(t_pipe *cmd_line)
 {
-    int fd[2];
+	int fd[2];
 
 	if (cmd_line->outfile)
 	{
+		if ((access(cmd_line->infile, F_OK)) != 0)
+		{
+			p("minishell: %s: No such file or directory\n", cmd_line->outfile);
+			exit (1);
+		}
 		if (cmd_line->append)
 			fd[1] = open(cmd_line->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (cmd_line->outfile)
@@ -54,6 +58,14 @@ void pipe_handler(t_pipe *cmd_line)
 			dup2(fd[1], STDOUT);
 		close(fd[1]);
 	}
+}
+
+void pipe_handler(t_pipe *cmd_line)
+{
+    int fd[2];
+
+	if (cmd_line->outfile)
+		append(cmd_line);
 	if (cmd_line->heredoc)
 		heredoc(cmd_line);
 	else if (cmd_line->infile)
