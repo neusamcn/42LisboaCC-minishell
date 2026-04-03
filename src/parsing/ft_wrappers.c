@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 23:44:25 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/03/17 23:51:08 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/04/03 23:49:08 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ char	*getcwd_protec(char *buf, size_t size)
 	if (!getcwd(buf, size))
 	{
 		print_err_msg("getcwd failed");
-		// TODO: cleanup function instead of exit
-		exit_cleanup();
-		exit(EXIT_FAILURE);
+		exit_cleanup(EXIT_FAILURE);
 	}
 	return (buf);
 }
@@ -34,9 +32,7 @@ void	*malloc_protec(size_t size)
 	if (!ptr)
 	{
 		print_err_msg("malloc() failed");
-		// TODO: cleanup function instead of exit
-		exit_cleanup();
-		exit(EXIT_FAILURE);
+		exit_cleanup(EXIT_FAILURE);
 	}
 	return (ptr);
 }

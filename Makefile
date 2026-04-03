@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/27 21:38:07 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/03/17 23:58:50 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/04/03 22:43:18 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c signals.c)
 ERRORS_SRCS		= $(addprefix $(SRC_DIR)/errors/, err_msg.c)
 SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(ERRORS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
@@ -27,7 +27,7 @@ HEADERS 		= $(addprefix include/, minishell.h flair.h)
 
 CC 				= cc
 CPPFLAGS 		= -Iinclude
-CFLAGS 			= -Wall -Werror -Wextra
+CFLAGS 			= -Wall -Werror -Wextra -D_POSIX_C_SOURCE=200809L
 LDFLAGS 		= -L$(LIBFT_DIR)
 LDLIBS 			= -lft -lreadline
 RM 				= rm -f
