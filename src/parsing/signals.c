@@ -6,13 +6,14 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/03 23:04:31 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/04/05 14:11:56 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../include/parsing.h"
 
-void	set_sigaction(int signo, void (*handler)(int), int flags)
+// TODO: add *minishell to args?
+static void	set_sigaction(int signo, void (*handler)(int), int flags)
 {
 	struct sigaction	sa;
 
@@ -22,11 +23,11 @@ void	set_sigaction(int signo, void (*handler)(int), int flags)
 	if (sigaction(signo, &sa, NULL) == -1)
 	{
 		print_err_msg("sigaction failed");
-		exit_cleanup(EXIT_FAILURE);
+		exit_cleanup(EXIT_FAILURE, NULL); // TODO: review adding *minishell
 	}
 }
 
-void	sigint_prompt_handler(int signal)
+static void	sigint_prompt_handler(int signal)
 {
 	(void)signal;
 	ft_putendl_fd("", STDOUT_FILENO);

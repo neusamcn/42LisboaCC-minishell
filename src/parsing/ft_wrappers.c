@@ -6,33 +6,54 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 23:44:25 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/03 23:49:08 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/04/05 20:07:31 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../include/parsing.h"
 
-char	*getcwd_protec(char *buf, size_t size)
+char	*getcwd_protec(char *buf, size_t size, t_minishell *minishell)
 {
 	if (!getcwd(buf, size))
 	{
+		// TODO: do I actually need this print? does it have an errno?
 		print_err_msg("getcwd failed");
-		exit_cleanup(EXIT_FAILURE);
+		exit_cleanup(EXIT_FAILURE, minishell);
 	}
 	return (buf);
 }
 
-void	*malloc_protec(size_t size)
+void	*malloc_protec(size_t size, t_minishell *minishell)
 {
 	void	*ptr;
 
+	// TODO: do I actually need this first if()? does it have an errno?
 	if (size == 0)
+	{
 		print_err_msg("malloc() failed; size == 0");
+		exit_cleanup(EXIT_FAILURE, minishell);
+	}
 	ptr = malloc(size);
 	if (!ptr)
 	{
 		print_err_msg("malloc() failed");
-		exit_cleanup(EXIT_FAILURE);
+		exit_cleanup(EXIT_FAILURE, minishell);
 	}
+	// TODO: add ptr to hashmap
+	return (ptr);
+}
+
+// TODO: add *minishell to args?
+void	*ft_calloc_protec(size_t nmemb, size_t size)
+{
+	void	*ptr;
+
+	ptr = ft_calloc(nmemb, size);
+	if (!ptr)
+	{
+		print_err_msg("ft_calloc() failed"); // TODO: test and verify errno
+		exit_cleanup(EXIT_FAILURE, NULL);
+	}
+	// TODO: add ptr to hashmap
 	return (ptr);
 }

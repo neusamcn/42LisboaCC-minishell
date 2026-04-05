@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/27 21:38:07 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/04/03 22:43:18 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/04/05 21:16:29 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,14 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c signals.c)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c minienvp.c prompt.c signals.c)
+# EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, )
 ERRORS_SRCS		= $(addprefix $(SRC_DIR)/errors/, err_msg.c)
-SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(ERRORS_SRCS)
+SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(ERRORS_SRCS) # TODO: add $(EXECUTION_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-HEADERS 		= $(addprefix include/, minishell.h flair.h)
+HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h)
+# TODO: add execution.h
 
 CC 				= cc
 CPPFLAGS 		= -Iinclude
@@ -103,5 +105,6 @@ testset: re $(TEST_DIR)
 tclean:
 	@$(RM) -r $(TEST_DIR)
 
+# TODO: add make norme rule to download most updated Norme pdf
 
 .PHONY: all clean fclean re test tclean testset vsupp
