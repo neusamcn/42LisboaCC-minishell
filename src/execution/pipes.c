@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/01 20:25:54 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 16:13:27 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -17,6 +17,52 @@
                                       wc stdout ──► terminal */		
 									  
 //TODO split functions
+
+//do redir tests
+/* ls > files.txt
+echo "some text" >> files.txt
+sort < files.txt  */
+
+
+//Input piping
+//Output piping allows to pass the output of one cmds as input to anotehr cmd
+
+// we can also pipe the output of a here doc into another cmd
+
+/* cat << EOF | grep "grr"
+cat << EOF > file.txt
+<< EOF
+echo "hi" << EOF
+ftp -n << EOF FILE TRANSFER PROTOCOL can accept cmds via HD for automatic file
+bc << EOF bc cmd is a calculator that can be used with here docs to perform calloc
+sendmail user@mail.ru << end */
+
+
+void heredoc(t_redirects *redir)
+{
+	int pipefd[2];
+	char *msg;
+
+	msg = NULL;
+	msg = readline("> ");
+	//create a child process
+	//why would we ignore expansions Literal Text
+	//cat << 'EOF'
+	//TODO : expands from pars
+	while (msg)
+	{
+		if (strncmp(msg, DELIMETER) == TRUE)
+			break ;
+		if (!msg && )
+		{
+			
+		}
+		write(pipefd[1], msg, ft_strlen(msg));
+		write(pipefd[1], "\n", 1);
+		free(msg);
+	}
+}
+
 void heredoc(t_redirects *redir)
 {
     int pipefd[2];
@@ -24,21 +70,22 @@ void heredoc(t_redirects *redir)
     
     prompt = NULL;
     pipe(pipefd);
-    signal(SIGINT, sigint_glob);
-    signal(SIGQUIT, SIG_IGN);
-	g_signal = 0;
+	signal(SIGINT, sigint_glob);
+	signal(SIGQUIT, SIG_IGN);
+	et_signals_interactive_parent();
     while (1)
     {
         prompt = readline("> ");
-        if (!prompt && g_signal == 130)
+        if (!prompt && get_signal_stat() == 130)
             exit(130);
         if (!prompt)
         {
-            p("minishell: warning: here-document delimited by "
-              "end-of-file (wanted '%s')\n", redir->delimiter);
+            ft_putstr_fd(HD, 2);
+            ft_putstr_fd(redir->delimiter, 2);
+            ft_putstr_fd("')\n", 2);
             break ;
         }
-		if (ft_strcmp(prompt, redir->delimiter) == 0)
+		if (ft_strcmp(prompt, redir->delimiter) == TRUE)
 			break ;
 		write(pipefd[1], prompt, ft_strlen(prompt));
 		write(pipefd[1], "\n", 1);
@@ -48,12 +95,6 @@ void heredoc(t_redirects *redir)
     close(pipefd[1]);
 	dup2(pipefd[0], STDIN);
 	close(pipefd[0]);
-}
-
-void sigint_glob(int sig)
-{
-    (void)sig;
-    g_signal = 130;
 }
 
 void append(t_redirects *redir)
@@ -67,11 +108,10 @@ void append(t_redirects *redir)
         else
             fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd[1] == -1)
-		{
-			p("minishell: ");
-			perror("");
-			exit(1);
-		}
+		//{
+			print_err_msg(redir->filename);
+/* 			exit(1);
+		} */
 		dup2(fd[1], STDOUT);
         close(fd[1]);
     }
@@ -88,10 +128,7 @@ void pipe_handler(t_redirects *redir)
 	else if (redir->type == IN)
     {
         if (access(redir->filename, F_OK) != 0)
-        {
-            p("minishell: %s: No such file or directory\n", redir->filename);
-            return ;
-        }
+            p_log_err(redir->filename, "No such file or directory");
         fd[0] = open(redir->filename, O_RDONLY);
         if (fd[0] != -1)
             dup2(fd[0], STDIN);
@@ -99,34 +136,14 @@ void pipe_handler(t_redirects *redir)
     }
 }
 
-/* void pipe_handler(t_redirects *redir)
-{
-    int fd;
+//TODO: use minienvp instead of envp
 
-    if (redir->type == HEREDOC)
-        heredoc(redir);
-    else if (redir->type == IN)  // < infile
+int exec_pipeline(t_pipe *cmd_line, char **envp, int status)
+{
+    while (cmd_line)
     {
-        if (access(redir->filename, F_OK) != 0)
-        {
-            p("minishell: %s: No such file or directory\n", redir->filename);
-            return ;
-        }
-        fd = open(redir->filename, O_RDONLY);
-        if (fd != -1)
-            dup2(fd, STDIN);
-        close(fd);
+        status = exec(cmd_line, envp, status);
+        cmd_line = cmd_line->next;
     }
-    else if (redir->type == OUT || redir->type == APPEND)
-    {
-        fd = open(redir->filename, O_WRONLY | O_CREAT |
-            (redir->type == APPEND ? O_APPEND : O_TRUNC), 0644);
-        if (fd == -1)
-        {
-            p("minishell: %s: No such file or directory\n", redir->filename);
-            return ;
-        }
-        dup2(fd, STDOUT);
-        close(fd);
-    }
-} */
+    return (status);
+}

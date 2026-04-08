@@ -6,14 +6,36 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/02/13 17:40:15 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/07 20:19:58 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
+/* Our libs */
 # include "../libft/libft.h"
+# include "flair.h"
+# include "execution.h"
 
-#endif
+/* Standard libs */
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "execution.h"
+# include <errno.h>
 
+/* Structs */
+typedef struct s_minishell
+{
+	char	**minienvp;
+	int		*open_fd;
+	void	**malloc_ptrs;
+}	t_minishell;
+
+/* Error handling functions */
+void	print_err_msg(char *my_msg);
+
+/* Utils */
+void	exit_cleanup(int exit_status, t_minishell *minishell);
+
+# endif

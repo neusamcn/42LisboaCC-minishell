@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/01 20:19:13 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 16:20:32 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -32,13 +32,15 @@
 # define ENV "env"
 # define EXPORT "export"
 # define UNSET "unset"
-
-int g_signal = 0;
+# define DELIMETER "delimeter"
+# define TRUE 0
+# define FALSE 1
+# define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
 
 typedef enum e_fds
 {
 	STDIN,
-	STDOUT,
+	STDOUT
 }   t_fds;
 
 typedef enum e_builts
@@ -47,20 +49,26 @@ typedef enum e_builts
 	NON_BUILTINS
 }	t_builtins_check;
 
-typedef enum e_redir_type
+typedef enum e_types_of_redirections
 {
-	IN,
-	OUT,
-	APPEND,
-	HEREDOC,
-	FD,
+	IN,  // < redir input to a cmd, taking input from a file
+	OUT, // > redir output to a file, and overwrites the file if it already exists
+	APPEND, // >> redir output top a file, append the output to the end of the file
+	HEREDOC, // <<
+	FD
 }	t_redir_type;
+
+typedef enum e_signal_types
+{
+	SIG_INT, // ctrl+c
+	SIG_QUIT // ctrl \+
+}	e_signal_types;
 
 typedef struct s_redirections
 {
-	t_redir_type	type;
-	char	*filename;
-    char    *delimiter;
+	t_redir_type			type;
+	char					*filename;
+    char    				*delimiter;
 	struct s_redirections	*next;
 }   t_redirects;
 
@@ -82,27 +90,34 @@ typedef struct s_pipe
 
 // PATH //
 char 	*path(t_pipe *cmd_line, char **envp);
-char 	*paths_helper(t_pipe *cmd_line, char **envp, int i);
+char 	*paths_helper(t_pipe *cmd_line, char *path_var);
 char 	*absolute_path(t_pipe *cmd_line);
 int 	free_path(char **paths);
 
-// FORKs and SIGNALs
+// FORKs // 
 int		exec(t_pipe *cmd_line, char **envp, int status);
 void	child_exec(char *cmd, t_pipe *cmd_line, char **envp);
-void	signal_handler(pid_t pid);
+void	parent_exec(char *cmd, t_pipe *cmd_line, char **envp);
 int		status_check(int status);
 int		are_you_builtin(t_pipe *cmd_line);
 
-// PIPEs //
-/* void 	pipe_handler(t_pipe *cmd_line);
-void 	heredoc(t_pipe *cmd_line);
-void append(t_pipe *cmd_line); */
+// SIGNALs //
+int 	get_signal_stat(void);
+void 	set_signal_stat(int value);
+void 	sigint_glob(int sig);
 
-void heredoc(t_redirects *heredoc);
-void signal_heredoc(t_redirects *heredoc_signals);
-void append(t_redirects *append);
-void pipe_handler(t_redirects *in_or_out);
+// PIPEs and REDIRECTIONs//
+void 	heredoc(t_redirects *redir);
+void 	append(t_redirects *append);
+void 	append(t_redirects *redir);
+void 	pipe_handler(t_redirects *redir);
 
+//TO DELETE FOR PARSER
+void	print_err_msg(char *my_msg);
+void	p_log_err(char *cmd, char *msg);
+void	exit_cleanup(int exit_status, t_minishell *minishell);
+char	*getcwd_protec(char *buf, size_t size);
+int		ft_arrlen(char **arr);
+t_pipe 	*fake_parse(char *line);
 
 # endif
-

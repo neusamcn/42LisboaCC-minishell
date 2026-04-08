@@ -6,58 +6,67 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:48 by megi              #+#    #+#             */
-/*   Updated: 2026/03/30 21:19:04 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/07 20:18:27 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
-//loop + parcing + running
-
-
-// TO DELETE
-t_pipe *fake_parse(char *line)
+// PARSERS
+void	init(int ac, char **av, char **env)
 {
-    t_pipe *p = malloc(sizeof(t_pipe));
-    char **argv = malloc(2 * sizeof(char *));
-    argv[0] = strdup(line);
-    argv[1] = NULL;
-    p->cmds = argv;
-    return p;
-}
-
-// HALF TO DELETE
-int main(int ac, char *av[], char **envp)
-{
-    char *prompt = NULL;
-    t_pipe *cmd_line = NULL;
-    int last_status = 0;
+	char	cwd_str[PATH_MAX];
+	char	*input_str;
+	int		last_status;
+	t_pipe	*cmd_line;
 
 	(void)ac;
-    (void)av;
-    if (!envp)
-        return 0;
-    while (1)
-    {
-        prompt = readline("minishell$ ");
-        if (!prompt)
-            break;
-        if (*prompt)
-            add_history(prompt);
-        cmd_line = fake_parse(prompt);
-        if (!cmd_line)
+	(void)av;
+	last_status = 0;
+	while (1)
+	{
+		getcwd_protec(cwd_str, PATH_MAX);
+		if (isatty(STDIN_FILENO))
 		{
-            free(prompt);
-            continue ;
-        }
-        last_status = exec((t_pipe *)cmd_line, envp, last_status);
-		free(cmd_line->cmds[0]);
-		free(cmd_line->cmds);
-		free(cmd_line);
-		cmd_line = NULL;
-		free(prompt);
-    }
-    return 0;
+			ft_putstr_fd(DEEP_PINK"meg&neu minishell:"COLOR_RESET, STDOUT_FILENO);
+			ft_putstr_fd(cwd_str, STDOUT_FILENO);
+			signal(SIGINT, sigint_glob);
+			signal(SIGQUIT, SIG_IGN);
+			input_str = readline(DEEP_PINK"$ "COLOR_RESET);
+			if (!input_str && get_signal_stat() == 130)
+			{
+    			set_signal_stat(0);
+    			continue ;
+			}
+			if (!input_str)
+				exit_cleanup();
+			if (*input_str)
+				add_history(input_str);
+			// TODO: tokenize + REAL parse
+			cmd_line = fake_parse(input_str);  // DELETE for parse() later
+			if (cmd_line)
+			{
+				last_status = exec(cmd_line, env, last_status);
+				free(cmd_line);
+			}
+			free(input_str);
+		}
+		else
+		{
+			ft_putstr_fd("minishell: stdin is not a terminal\n", 2);
+			exit_cleanup();
+		}
+	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	if (!env)
+		return 0;
+	ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
+	init(ac, av, env);
+	exit_cleanup();
+	return (EXIT_SUCCESS);
 }
 
 // MINE

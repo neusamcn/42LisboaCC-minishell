@@ -12,6 +12,9 @@ Minishell is a simplified Unix shell implementation written in C. The goal is to
 4. Use `make fclean` to remove all generated files.
 5. Use `make re` to rebuild the project from scratch.
 
+//To ignore leaks from readline with Valgrind
+valgrind --suppressions=.ignore_readline_leaks.supp --leak-check=full ./minishell
+
 ## Resources
 
 AI was used as a support for research in order to find and better understand the most relevant resources and concepts related to this project.
