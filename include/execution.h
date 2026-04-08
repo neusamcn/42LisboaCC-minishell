@@ -19,7 +19,6 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../libft/libft.h"
 # include <fcntl.h>
 # include <sys/types.h>
 # include <signal.h>
