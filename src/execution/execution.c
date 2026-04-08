@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/04/08 15:49:03 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 19:48:28 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,8 +19,8 @@ int exec(t_pipe *cmd_line, char **envp, int status)
     char    *cmd;
     pid_t   pid;
 
-	if (are_you_builtin(cmd_line) == BUILTINS)
-		return 1; //delete later
+	//if (are_you_builtin(cmd_line) == BUILTINS)
+		//break ; //delete later
 		//return run_builtins(cmd_line);
     cmd = path(cmd_line, envp);
     if (!cmd)
@@ -38,7 +38,7 @@ int exec(t_pipe *cmd_line, char **envp, int status)
     if (pid == 0)
         child_exec(cmd, cmd_line, envp);
     else
-		parent_exec(1, &status, 0);
+		parent_exec(status, 1);
     free(cmd);
     status = status_check(status);
     return status;
@@ -56,11 +56,8 @@ void child_exec(char *cmd, t_pipe *cmd_line, char **envp)
     }
 }
 
-void	parent_exec(char *cmd, t_pipe *cmd_line, char **envp)
-{
-	int status;
-	pid_t   pid;
-	
+void	parent_exec(int status, pid_t pid)
+{	
 	signal(SIGINT, sigint_glob);
 	signal(SIGQUIT, SIG_IGN); 
 	set_signal_stat(0);

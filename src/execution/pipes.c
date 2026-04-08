@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/08 16:13:27 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 20:01:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -37,32 +37,40 @@ ftp -n << EOF FILE TRANSFER PROTOCOL can accept cmds via HD for automatic file
 bc << EOF bc cmd is a calculator that can be used with here docs to perform calloc
 sendmail user@mail.ru << end */
 
+//create a child process
+//why would we ignore expansions Literal Text
+//cat << 'EOF'
+//TODO : expands from pars
 
 void heredoc(t_redirects *redir)
 {
-	int pipefd[2];
+	int pipefd[3];
 	char *msg;
 
 	msg = NULL;
-	msg = readline("> ");
-	//create a child process
-	//why would we ignore expansions Literal Text
-	//cat << 'EOF'
-	//TODO : expands from pars
+	pipe(pipefd);
 	while (msg)
 	{
-		if (strncmp(msg, DELIMETER) == TRUE)
+		msg = readline("> ");
+		if (strcmp(msg, DELIMETER) == TRUE)
 			break ;
-		if (!msg && )
+		if (!msg)
 		{
-			
+			write(pipefd[2], HD, ft_strlen(HD));
+			//write(pipefd[1], DELIMETER, ft_strlen(DELIMETER));
+			write(pipefd[2], redir->delimiter, ft_strlen(redir->delimiter));
+			write(pipefd[1], "\n", 1);
+			free(msg);
 		}
 		write(pipefd[1], msg, ft_strlen(msg));
 		write(pipefd[1], "\n", 1);
 		free(msg);
 	}
+	close(pipefd[1]);
+	dup2(pipefd[0], STDIN);
+	close(pipefd[1]);
 }
-
+/* 
 void heredoc(t_redirects *redir)
 {
     int pipefd[2];
@@ -95,7 +103,7 @@ void heredoc(t_redirects *redir)
     close(pipefd[1]);
 	dup2(pipefd[0], STDIN);
 	close(pipefd[0]);
-}
+} */
 
 void append(t_redirects *redir)
 {
@@ -108,10 +116,11 @@ void append(t_redirects *redir)
         else
             fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd[1] == -1)
-		//{
+		// do i need exit(1)?
+		{
 			print_err_msg(redir->filename);
-/* 			exit(1);
-		} */
+ 			exit(1);
+		}
 		dup2(fd[1], STDOUT);
         close(fd[1]);
     }
@@ -125,6 +134,7 @@ void pipe_handler(t_redirects *redir)
 		append(redir);
     if (redir->type == HEREDOC)
 		heredoc(redir);
+	//should i do execve() ? 
 	else if (redir->type == IN)
     {
         if (access(redir->filename, F_OK) != 0)

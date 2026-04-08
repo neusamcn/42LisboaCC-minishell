@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/07 20:19:58 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 18:42:05 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -21,7 +21,6 @@
 /* Standard libs */
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "execution.h"
 # include <errno.h>
 
 /* Structs */

@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/07 20:18:27 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 18:37:45 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -39,7 +39,7 @@ void	init(int ac, char **av, char **env)
     			continue ;
 			}
 			if (!input_str)
-				exit_cleanup();
+				exit_cleanup(0, 0);
 			if (*input_str)
 				add_history(input_str);
 			// TODO: tokenize + REAL parse
@@ -54,7 +54,7 @@ void	init(int ac, char **av, char **env)
 		else
 		{
 			ft_putstr_fd("minishell: stdin is not a terminal\n", 2);
-			exit_cleanup();
+			exit_cleanup(0, 0);
 		}
 	}
 }
@@ -65,7 +65,7 @@ int	main(int ac, char **av, char **env)
 		return 0;
 	ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
 	init(ac, av, env);
-	exit_cleanup();
+	exit_cleanup(0, 0);
 	return (EXIT_SUCCESS);
 }
 

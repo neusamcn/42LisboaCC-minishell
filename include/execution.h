@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/08 16:20:32 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 19:58:04 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -97,14 +97,16 @@ int 	free_path(char **paths);
 // FORKs // 
 int		exec(t_pipe *cmd_line, char **envp, int status);
 void	child_exec(char *cmd, t_pipe *cmd_line, char **envp);
-void	parent_exec(char *cmd, t_pipe *cmd_line, char **envp);
+void	parent_exec(int status, pid_t pid);
 int		status_check(int status);
 int		are_you_builtin(t_pipe *cmd_line);
 
 // SIGNALs //
-int 	get_signal_stat(void);
-void 	set_signal_stat(int value);
-void 	sigint_glob(int sig);
+void		sigint_glob(int sig);
+int			get_signal_stat(void);
+void		set_signal_stat(int value);
+void		set_signals_interactive_parent(void);
+void		set_signals_noninteractive(void);
 
 // PIPEs and REDIRECTIONs//
 void 	heredoc(t_redirects *redir);
@@ -115,9 +117,11 @@ void 	pipe_handler(t_redirects *redir);
 //TO DELETE FOR PARSER
 void	print_err_msg(char *my_msg);
 void	p_log_err(char *cmd, char *msg);
-void	exit_cleanup(int exit_status, t_minishell *minishell);
+//void	exit_cleanup(int exit_status, t_minishell *minishell);
 char	*getcwd_protec(char *buf, size_t size);
 int		ft_arrlen(char **arr);
 t_pipe 	*fake_parse(char *line);
 
 # endif
+	
+	

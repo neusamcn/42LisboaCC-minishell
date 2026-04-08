@@ -25,7 +25,7 @@ char	*getcwd_protec(char *buf, size_t size)
 	{
 		print_err_msg("getcwd failed");
 		// TODO: cleanup function instead of exit
-		exit_cleanup();
+		exit_cleanup(0, 0);
 		exit(EXIT_FAILURE);
 	}
 	return (buf);
@@ -43,7 +43,7 @@ int ft_arrlen(char **arr)
 }
 
 //TO DELETEt_pipe *
-fake_parse(char *line)
+t_pipe *fake_parse(char *line)
 {
     t_pipe      *p;
     char        **tokens;

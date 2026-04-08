@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/04/07 15:55:24 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/08 20:10:14 by megi             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,19 +19,19 @@
 char *path(t_pipe *cmd_line, char **envp)
 {
     int i;
-    char *full_path;
+    char *abs_path;
 
     i = 0;
-    full_path = absolute_path(cmd_line);
-    if (full_path)
-        return full_path;
+    abs_path = absolute_path(cmd_line);
+    if (abs_path)
+        return abs_path;
     while (envp[i])
     {
         if (ft_strncmp(envp[i], "PATH=", 5) == 0)
             return paths_helper(cmd_line, envp[i] + 5);
 /*         {
-            full_path = paths_helper(cmd_line, envp, i);
-            return full_path;
+            abs_path = paths_helper(cmd_line, NULL);
+            return abs_path;
         } */
         i++;
     }
@@ -41,7 +41,7 @@ char *path(t_pipe *cmd_line, char **envp)
 char *paths_helper(t_pipe *cmd_line, char *path_var)
 {
     int j;
-    char *full_path;
+    char *abs_path;
     char *tmp;
     char **paths;
 
@@ -52,14 +52,14 @@ char *paths_helper(t_pipe *cmd_line, char *path_var)
     while (paths[j])
     {
         tmp = ft_strjoin(paths[j], "/");
-        full_path = ft_strjoin(tmp, cmd_line->cmds[0]);
+        abs_path = ft_strjoin(tmp, cmd_line->cmds[0]);
         free(tmp);
-        if ((access(full_path, F_OK | X_OK) == 0))
+        if ((access(abs_path, F_OK | X_OK) == 0))
         {
             free_path(paths);
-            return full_path;
+            return abs_path;
         }
-        free(full_path);
+        free(abs_path);
         j++;
     }
     free_path(paths);
