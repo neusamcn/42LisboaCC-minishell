@@ -1,7 +1,8 @@
 NAME = minishell
 HEADER = include/minishell.h
 
-LIBFT = libft/libft.a
+LIBFT_DIR	= libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -42,12 +43,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
 clean:
 	@-rm -f $(OBJS)
 	@-rm -rf $(OBJ_DIR)
-	@$(MAKE) -C libft clean
+	$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "All object files and libraries removed.\n"
 
 fclean: clean
 	@-rm -f $(NAME)
-	@$(MAKE) -C libft fclean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "Executables, object files and libraries removed.\n"
 
 re: fclean all
