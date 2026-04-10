@@ -1,4 +1,4 @@
-#ifndef FLAIR_H
+# ifndef FLAIR_H
 # define FLAIR_H
 
 /* ANSI color codes */
