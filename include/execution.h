@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
+/*   Updated: 2026/04/15 21:46:04 by megi             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # ifndef EXECUTION_H
 # define EXECUTION_H
 
@@ -11,6 +23,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <stdbool.h>
 
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"
@@ -20,52 +33,61 @@
 # define ENV "env"
 # define EXPORT "export"
 # define UNSET "unset"
-# define DELIMETER "delimeter"
 # define TRUE 0
 # define FALSE 1
 # define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
 
-typedef enum e_fds
+typedef enum e_stdio
 {
-	STDIN,
-	STDOUT
-}   t_fds;
+	READ,
+	WRITE
+}   t_stdio;
 
-typedef enum e_builts
+typedef enum e_fd
 {
-	BUILTINS,
-	NON_BUILTINS
-}	t_builtins_check;
+	FD_CLOSED = -1,
+	FD_OPEN
+}	t_fd;
 
 typedef enum e_types_of_redirections
 {
+	NONE, // 0
 	IN,  // < redir input to a cmd, taking input from a file
 	OUT, // > redir output to a file, and overwrites the file if it already exists
 	APPEND, // >> redir output top a file, append the output to the end of the file
 	HEREDOC, // <<
-	FD
 }	t_redir_type;
 
-typedef enum e_signal_types
+typedef enum e_builts
 {
-	SIG_INT, // ctrl+c
-	SIG_QUIT // ctrl \+
-}	e_signal_types;
+	BUILTINS,
+	EXTRENAL
+}	t_builtins_check;
+
+typedef enum e_mode
+{
+	INTERACTIVE, // prompt
+	BLT_EXECUTING, // no fork, no rl
+	CHILD, // fork + execve
+	MNDWAIT
+}	e_mode_for_sig;
 
 typedef struct s_redirections
 {
 	t_redir_type			type;
 	char					*filename;
     char    				*delimiter;
+	int						io[2];
 	struct s_redirections	*next;
 }   t_redirects;
 
-typedef struct s_pipe
+typedef struct s_cmd_line
 {
-    char            **cmds;
-    t_redirects     redir;
-    struct s_pipe   *next;
-}   t_pipe;
+    char            	**cmds;
+	t_builtins_check	isbuiltin;
+    t_redirects     	redir;
+    struct s_cmd_line   *next;
+}   t_cmd_line;
 
 /* typedef struct s_execution
 {
@@ -76,39 +98,38 @@ typedef struct s_pipe
 
 // [ls] → [grep src] → [wc -l] → NULL 
 
-// PATH //
-char 	*path(t_pipe *cmd_line, char **envp);
-char 	*paths_helper(t_pipe *cmd_line, char *path_var);
-char 	*absolute_path(t_pipe *cmd_line);
+// PATH.C //
+char 	*relative_path(t_cmd_line *cmd_line, char **envp);
+char 	*paths_helper(t_cmd_line *cmd_line, char *path_var);
+char 	*absolute_path(t_cmd_line *cmd_line);
 int 	free_path(char **paths);
 
-// FORKs // 
-int		exec(t_pipe *cmd_line, char **envp, int status);
-void	child_exec(char *cmd, t_pipe *cmd_line, char **envp);
-void	parent_exec(int status, pid_t pid);
+// EXECUTION.C // 
+/* int		exec(t_cmd_line *cmd_line, char **envp);
+void	child_exec(char *cmd, t_cmd_line *cmd_line, char **envp);
+void	parent_exec(int status, pid_t pid); */
+int		mommy_n_father(t_cmd_line *s, char **envp);
+int		ex_lonely(t_cmd_line *s_cmd, char **envp);
+void 	exec_loop(t_cmd_line *cmds, char **envp);
+int 	lonely_blt(t_cmd_line *s, char **envp);
+bool	if_redir(t_cmd_line *rd_c, char **envp);
+char    *abs_or_rel_p(t_cmd_line *c, char **envp);
 int		status_check(int status);
-int		are_you_builtin(t_pipe *cmd_line);
+int		are_you_builtin(t_cmd_line *cmd_line);
 
-// SIGNALs //
-void		sigint_glob(int sig);
-int			get_signal_stat(void);
-void		set_signal_stat(int value);
-void		set_signals_interactive_parent(void);
-void		set_signals_noninteractive(void);
+// SIGNALS.C //
+void	sigint_glob(int sig);
+int		get_signal_stat(void);
+void	set_signal_stat(int value);
+void	set_signals_interactive_parent(void);
+void 	sig_mode(int md);
+void	sigint_prompt_handler(int signal);
 
-// PIPEs and REDIRECTIONs//
+// PIPES.C //
 void 	heredoc(t_redirects *redir);
-void 	append(t_redirects *append);
 void 	append(t_redirects *redir);
+void	close_fds(void);
 void 	pipe_handler(t_redirects *redir);
-
-//TO DELETE FOR PARSER
-void	print_err_msg(char *my_msg);
-void	p_log_err(char *cmd, char *msg);
-//void	exit_cleanup(int exit_status, t_minishell *minishell);
-char	*getcwd_protec(char *buf, size_t size);
-int		ft_arrlen(char **arr);
-t_pipe 	*fake_parse(char *line);
 
 # endif
 	

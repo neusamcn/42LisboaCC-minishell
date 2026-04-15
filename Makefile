@@ -18,8 +18,8 @@ SRCS = $(SRC_DIR)/main.c \
 		$(SRC_DIR)/execution/execution.c \
 		$(SRC_DIR)/execution/pipes.c \
 		$(SRC_DIR)/execution/signals.c \
+		$(SRC_DIR)/execution/frees.c \
 		$(SRC_DIR)/execution/errors_to_del.c \
-		$(SRC_DIR)/execution/parsing_to_delete.c \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 

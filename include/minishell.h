@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2026/04/14 16:15:28 by megi             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
@@ -10,19 +22,19 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
+# include <limits.h> 
 
 /* Structs */
 typedef struct s_minishell
 {
 	char	**minienvp;
-	int		*open_fd;
+	int		*open_fd; // can delete
 	void	**malloc_ptrs;
+	struct t_cmd_line	*exec_redir;
 }	t_minishell;
 
 /* Error handling functions */
 void	print_err_msg(char *my_msg);
-
-/* Utils */
-void	exit_cleanup(int exit_status, t_minishell *minishell);
+void	p_log_err(char *msg);
 
 # endif

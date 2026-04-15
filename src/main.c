@@ -1,83 +1,83 @@
-# include "../include/minishell.h"
+#include "execution.h"
+#include "minishell.h"
 
-// PARSERS
-void	init(int ac, char **av, char **env)
+#include "../include/minishell.h"
+
+static int ft_arrlen(char **arr)
 {
-	char	cwd_str[PATH_MAX];
-	char	*input_str;
+    int i;
+
+    i = 0;
+    while (arr[i])
+        i++;
+    return (i);
+}
+
+t_cmd_line *fake_parse(char *line)
+{
+    t_cmd_line  *p;
+    char        **tokens;
+    int         i;
+    int         cmd_i;
+
+    p = malloc(sizeof(t_cmd_line));
+    if (!p)
+        return NULL;
+    ft_memset(p, 0, sizeof(t_cmd_line));
+    tokens = ft_split(line, ' ');
+    if (!tokens)
+        return p;
+    p->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
+    if (!p->cmds)
+        return NULL;
+    cmd_i = 0;
+    i = 0;
+    while (tokens[i])
+    {
+        if (ft_strcmp(tokens[i], ">") == 0 && tokens[i + 1])
+            { p->redir.type = OUT; p->redir.filename = tokens[++i]; }
+        else if (ft_strcmp(tokens[i], ">>") == 0 && tokens[i + 1])
+            { p->redir.type = APPEND; p->redir.filename = tokens[++i]; }
+        else if (ft_strcmp(tokens[i], "<") == 0 && tokens[i + 1])
+            { p->redir.type = IN; p->redir.filename = tokens[++i]; }
+        else if (ft_strcmp(tokens[i], "<<") == 0 && tokens[i + 1])
+            { p->redir.type = HEREDOC; p->redir.delimiter = tokens[++i]; }
+        else
+            p->cmds[cmd_i++] = tokens[i];
+        i++;
+    }
+    p->cmds[cmd_i] = NULL;
+    return (p);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char	*prompt;
+	t_cmd_line	*cmd_line;
 	int		last_status;
-	t_pipe	*cmd_line;
 
 	(void)ac;
 	(void)av;
+	if (!envp)
+		return 0;
 	last_status = 0;
 	while (1)
 	{
-		getcwd_protec(cwd_str, PATH_MAX);
-		if (isatty(STDIN_FILENO))
+		prompt = readline("minishell$ ");
+		if (!prompt)
+			break ;
+		if (*prompt)
+			add_history(prompt);
+		cmd_line = fake_parse(prompt);
+		if (!cmd_line)
 		{
-			ft_putstr_fd(DEEP_PINK"meg&neu minishell:"COLOR_RESET, STDOUT_FILENO);
-			ft_putstr_fd(cwd_str, STDOUT_FILENO);
-			signal(SIGINT, sigint_glob);
-			signal(SIGQUIT, SIG_IGN);
-			input_str = readline(DEEP_PINK"$ "COLOR_RESET);
-			if (!input_str && get_signal_stat() == 130)
-			{
-    			set_signal_stat(0);
-    			continue ;
-			}
-			if (!input_str)
-				exit_cleanup(0, 0);
-			if (*input_str)
-				add_history(input_str);
-			// TODO: tokenize + REAL parse
-			cmd_line = fake_parse(input_str);  // DELETE for parse() later
-			if (cmd_line)
-			{
-				last_status = exec(cmd_line, env, last_status);
-				free(cmd_line);
-			}
-			free(input_str);
+			free(prompt);
+			continue ;
 		}
-		else
-		{
-			ft_putstr_fd("minishell: stdin is not a terminal\n", 2);
-			exit_cleanup(0, 0);
-		}
+		last_status = exec(cmd_line, envp, last_status);
+		free(prompt);
 	}
+	return 0;
 }
 
-int	main(int ac, char **av, char **env)
-{
-	if (!env)
-		return 0;
-	ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
-	init(ac, av, env);
-	exit_cleanup(0, 0);
-	return (EXIT_SUCCESS);
-}
 
-// MINE
-/* int main(int ac, char *av[], char **envp)
-{
-	char *prompt = NULL;
-	t_pipe	cmd_line;
-	
-	(void)ac;
-	(void)av;
-  if (!envp)
-    return (0);
-	//the signals should be here TD
-  while (envp)
-  {
-    prompt = readline("minishell$ ");
-    if (!prompt)
-      return (0);
-    else if (prompt)
-      add_history(prompt);
-    p("%s", prompt);
-	exec(&cmd_line, envp, 0, 0, 0);
-	free(prompt);
-  }	
-  return (0);
-} */

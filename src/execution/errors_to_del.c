@@ -1,4 +1,16 @@
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors_to_del.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
+/*   Updated: 2026/04/14 16:12:27 by megi             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 //FILE TO DELETE BUT PREVIOUSLY DISCUSS W NEUSA
 void	print_err_msg(char *my_msg)
@@ -13,8 +25,10 @@ void	print_err_msg(char *my_msg)
 }
 
 //TODO: SHOW IT TO NEUAAAS
-void	p_log_err(char *cmd, char *msg)
+void	p_log_err(char *msg)
 {
+	char *cmd;
+
 	ft_putstr_fd(PALE_VIOLET_RED, 2);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
@@ -22,5 +36,4 @@ void	p_log_err(char *cmd, char *msg)
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);
 	ft_putchar_fd('\n', 2);
-    exit (1);
 }

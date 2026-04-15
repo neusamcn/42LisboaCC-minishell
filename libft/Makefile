@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: megi <megi@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/23 19:26:39 by megiazar          #+#    #+#              #
-#    Updated: 2025/05/01 14:28:41 by megiazar         ###   ########.fr        #
+#    Updated: 2026/04/10 14:52:07 by megi             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC = ft_atoi.c \
 	ft_strlen.c \
 	ft_strmapi.c \
 	ft_strncmp.c \
+	ft_strcmp.c \
 	ft_strnstr.c \
 	ft_strrchr.c \
 	ft_strtrim.c \
