@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/04/15 21:05:38 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/16 15:27:15 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void sig_mode(int md)
 	else if (md == MNDWAIT)
 	{
 		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);	
+		signal(SIGQUIT, SIG_IGN);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/15 21:06:53 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/16 20:32:12 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,59 @@ sendmail user@mail.ru << end */
 //TODO hd msg after output should be before)
 //TODO when its no cmd before it should be msg
 
+int	ex_pipeline_ec(t_cmd_line *pipeline, char *envp)
+{
+	pid_t pid;
+	int status;
+
+	pipeline->prevfd = -1;
+	while (pipeline)
+	{
+		if (pipeline->next)
+			pipe(pipeline->pipefd);
+		pid = fork();
+		if (pid == -1)
+			return (perror("fork"), 1);
+		if (pid == 0)
+				child_ex(0, pipeline, envp);
+		if (pipeline->prevfd != -1)
+			close(pipeline->prevfd);
+		if (pipeline->next)
+		{
+			close(pipeline->pipefd[1]);
+			pipeline->pipefd[0] = pipeline->prevfd;
+		}
+		sig_mode(MNDWAIT);
+		pipeline = pipeline->next;
+	}
+	waitpid(pid, &status, 0); //TODO parent_wait func
+	return (set_signal_stat(status), 1);
+}
+
+
+void child_ex(char *cmd, t_cmd_line *kid, char **envp)
+{
+    sig_mode(CHILD);
+    if (kid->prevfd != -1)
+	dup2(kid->prevfd, STDIN_FILENO);
+    if (kid->is_there_more_pipes == true)
+	dup2(kid->pipefd[1], STDOUT_FILENO);
+    if (kid->is_there_more_pipes == true)
+    {
+		close(kid->pipefd[0]);
+        close(kid->pipefd[1]);
+    }
+	if (kid->prevfd != -1)
+	close(kid->prevfd);
+    if (if_redir(kid))
+		do_redri(kid);
+	if (are_you_builtin(kid) == BUILTINS)
+		exit(r_bltn(kid));
+    execve(cmd, kid->cmds, envp);
+    print_err_msg(kid->cmds[0]);
+    exit(127);
+}
+
 void pipe_handler(t_redirects *redir)
 {
 	int fd[2];
@@ -55,7 +108,7 @@ void pipe_handler(t_redirects *redir)
 	else if (redir->type == IN)
 	{
 		if (access(redir->filename, F_OK) != 0)
-			p_log_err(redir->filename); // "No such file or directory";
+			p_log_err("No such file or directory\n"); // redir->filename ;
 		fd[0] = open(redir->filename, O_RDONLY);
 		if (fd[0] != -1)
 		{
@@ -77,12 +130,11 @@ void heredoc(t_redirects *redir)
 		if (!msg)
 		{
 			p_log_err(HD);
-			//write(pipefd[1], "\n", 1);
 			break ;
 		}
 		if (strcmp(msg, redir->delimiter) == TRUE)
 		{
-			free (msg);
+			free(msg);
 			break ;
 		}
 		write(pipefd[1], msg, ft_strlen(msg));
@@ -114,6 +166,8 @@ void append(t_redirects *redir)
     }
 }
 
+
+//TODO: in a exec success
 void	close_fds(void)
 {
 	int fd[2];
@@ -130,68 +184,3 @@ void	close_fds(void)
 	}
 }
 
-/* void	apply_fd(int fd[2])
-{
-	if (fd[0] != -1)
-	{
-		if (dup2(fd[0], STDIN_FILENO) == -1)
-		{
-			perror("dup2 stdin");
-			exit(1);
-		}
-	}
-	if (fd[1] != -1)
-	{
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
-		{
-			perror("dup2 stdout");
-			exit(1);
-		}
-	}
-}
-
-/* 
-void	init_fds(t_redirects *check)
-{
-	check->io[STDIN] = -1;
-	check->io[STDOUT] = -1;
-	check->fd_state[STDIN] = FD_CLOSED;
-	check->fd_state[STDOUT] = FD_CLOSED;
-}
-
-int	fd_set(t_redirects *c, int io_type, int fd)
-{
-	if (fd >= 0)
-	{
-		c->io[io_type] = fd;
-		c->fd_state[io_type] = FD_OPEN;
-	}
-}
-
-void fd_close_all(t_redirects *c, int fd)
-{
-	if (fd >= 0)
-	{
-		if (c->fd_state[STDIN] == FD_OPEN)
-		{
-			close(c->io[STDIN]);
-			c->fd_state[STDIN] = FD_CLOSED;
-		}
-		if (c->fd_state[STDOUT] == FD_OPEN)
-		{
-			close(c->io[STDOUT]);
-			c->fd_state[STDOUT] = FD_CLOSED;
-		}
-	}
-} */
-/* void	connect_fd(t_redirects *r, int io_type, int std)
-{
-	if (r->fd_state[io_type] == FD_OPEN)
-	{
-		if (dup2(r->io[io_type], std) == -1)
-		{
-			perror("dup2");
-			exit(1);
-		}
-	}
-} */

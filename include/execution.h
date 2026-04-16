@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/15 21:46:04 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/16 18:47:10 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,19 @@ typedef struct s_redirections
 	t_redir_type			type;
 	char					*filename;
     char    				*delimiter;
-	int						io[2];
+	int						fd[2];
 	struct s_redirections	*next;
 }   t_redirects;
+
 
 typedef struct s_cmd_line
 {
     char            	**cmds;
 	t_builtins_check	isbuiltin;
     t_redirects     	redir;
+	int					pipefd[2];
+	int					prevfd;
+	int 				is_there_more_pipes;
     struct s_cmd_line   *next;
 }   t_cmd_line;
 
@@ -109,13 +113,14 @@ int 	free_path(char **paths);
 void	child_exec(char *cmd, t_cmd_line *cmd_line, char **envp);
 void	parent_exec(int status, pid_t pid); */
 int		mommy_n_father(t_cmd_line *s, char **envp);
-int		ex_lonely(t_cmd_line *s_cmd, char **envp);
 void 	exec_loop(t_cmd_line *cmds, char **envp);
 int 	lonely_blt(t_cmd_line *s, char **envp);
-bool	if_redir(t_cmd_line *rd_c, char **envp);
+bool 	if_redir(t_cmd_line *s);
+void 	do_redri(t_cmd_line *s);
 char    *abs_or_rel_p(t_cmd_line *c, char **envp);
 int		status_check(int status);
 int		are_you_builtin(t_cmd_line *cmd_line);
+void child_ex(char *cmd, t_cmd_line *kid, char **envp);
 
 // SIGNALS.C //
 void	sigint_glob(int sig);
