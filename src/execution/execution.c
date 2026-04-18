@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/04/18 02:47:24 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/18 02:54:28 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@
 
 void exec_loop(t_cmd_line *cmds, char **envp)
 {
-    if (if_redir(cmds))
-        do_redri(cmds);
+    if (!cmds->cmds || !cmds->cmds[0])  // нет команды — только редирекшн
+    {
+        if (if_redir(cmds))
+            do_redri(cmds);
+        return ;
+    }
 	else if (cmds->next == NULL && are_you_builtin(cmds) == BUILTINS)
 		lonely_blt(cmds, envp);              // in a parent process, no fork
 	else if (cmds->next == NULL)
