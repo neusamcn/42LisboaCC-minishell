@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 16:31:59 by megi              #+#    #+#             */
-/*   Updated: 2026/04/15 21:05:59 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/18 01:19:29 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void set_signal_stat(int value)
     g_signal_stat = value;
 }
 
-static void	set_sigaction(int signo, void (*handler)(int), int flags)
+void	set_sigaction(int signo, void (*handler)(int), int flags)
 {
 	struct sigaction	sa;
 
@@ -45,26 +45,8 @@ static void	set_sigaction(int signo, void (*handler)(int), int flags)
 	}
 }
 
-void	sigint_prompt_handler(int signal)
-{
-	(void)signal;
-	ft_putendl_fd("", STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 void	set_signals_interactive_parent(void)
 {
 	set_sigaction(SIGINT, sigint_prompt_handler, 0);
 	set_sigaction(SIGQUIT, SIG_IGN, 0);
-}
-
-int status_check(int status)
-{
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		status = 128 + WTERMSIG(status);
-	return status;
 }

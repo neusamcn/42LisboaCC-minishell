@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/16 18:47:10 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/18 01:07:32 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <stdbool.h>
+
 
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"
@@ -120,15 +121,19 @@ void 	do_redri(t_cmd_line *s);
 char    *abs_or_rel_p(t_cmd_line *c, char **envp);
 int		status_check(int status);
 int		are_you_builtin(t_cmd_line *cmd_line);
-void child_ex(char *cmd, t_cmd_line *kid, char **envp);
+void 	child_ex(char *cmd, t_cmd_line *kid, char **envp);
+void 	single_child_ex(char *cmd, t_cmd_line *kid, char **envp);
+int 	mndwait(pid_t status_of_last_child, int cmd_nmb);
+int		ex_pipeline_ec(t_cmd_line *pipeline, char **envp);
 
 // SIGNALS.C //
 void	sigint_glob(int sig);
 int		get_signal_stat(void);
 void	set_signal_stat(int value);
-void	set_signals_interactive_parent(void);
 void 	sig_mode(int md);
 void	sigint_prompt_handler(int signal);
+void	set_signals_interactive_parent(void);
+void	set_sigaction(int signo, void (*handler)(int), int flags);
 
 // PIPES.C //
 void 	heredoc(t_redirects *redir);

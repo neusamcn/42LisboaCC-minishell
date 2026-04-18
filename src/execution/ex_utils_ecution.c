@@ -6,47 +6,49 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/04/16 15:27:15 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/18 01:12:37 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	set_signals_interactive_parent(void)
+char    *abs_or_rel_p(t_cmd_line *c, char **envp)
 {
-	set_sigaction(SIGINT, sigint_prompt_handler, 0);
-	set_sigaction(SIGQUIT, SIG_IGN, 0);
+	char *p;
+	
+	p = c->cmds[0];
+	if (!p)
+	{
+		p_log_err("Command not found\n");
+		return (NULL);
+	}
+	if (ft_strchr(p, '/'))
+		return (absolute_path(c));
+	return(relative_path(c, envp));
 }
 
-void sig_mode(int md)
+bool if_redir(t_cmd_line *s)
 {
-	if (md == INTERACTIVE)
-	{
-		signal(SIGINT, sigint_prompt_handler);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (md == BLT_EXECUTING)
-	{
-		signal(SIGINT, sigint_glob);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (md == CHILD)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
-	else if (md == MNDWAIT)
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	}
+	return (s->redir.type != NONE);
 }
 
-int are_you_builtin(t_cmd_line *cmd_line)
+void do_redri(t_cmd_line *s)
 {
-	if ((!ft_strcmp(cmd_line->cmds[0], CD)) || (!ft_strcmp(cmd_line->cmds[0], ECHO)) || (!ft_strcmp(cmd_line->cmds[0], EXIT)) ||
-		(!ft_strcmp(cmd_line->cmds[0], PWD)) || (!ft_strcmp(cmd_line->cmds[0], ENV)) || (!ft_strcmp(cmd_line->cmds[0], EXPORT)) ||
-		(!ft_strcmp(cmd_line->cmds[0], UNSET)))
-		return (BUILTINS);
-	return (EXTRENAL);
+	pipe_handler(&s->redir);
+}
+
+void	close_fds(void)
+{
+	int fd[2];
+
+	if (fd[0] == FD_OPEN)
+	{
+		close(fd[0]);
+		fd[0] = FD_CLOSED;
+	}
+	if (fd[1] == FD_OPEN)
+	{
+		close(fd[1]);
+		fd[1] = FD_CLOSED;
+	}
 }

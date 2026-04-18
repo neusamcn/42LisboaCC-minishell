@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/04/14 16:12:27 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/18 01:28:50 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ void	print_err_msg(char *my_msg)
 //TODO: SHOW IT TO NEUAAAS
 void	p_log_err(char *msg)
 {
-	char *cmd;
-
 	ft_putstr_fd(PALE_VIOLET_RED, 2);
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);

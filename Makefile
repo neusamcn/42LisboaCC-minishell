@@ -14,12 +14,16 @@ CPPFLAGS = -I/opt/homebrew/opt/readline/include
 LDLIBS = -lreadline
 
 SRCS = $(SRC_DIR)/main.c \
-		$(SRC_DIR)/execution/path.c \
+		$(SRC_DIR)/execution/ex_path_ecution.c \
 		$(SRC_DIR)/execution/execution.c \
-		$(SRC_DIR)/execution/pipes.c \
-		$(SRC_DIR)/execution/signals.c \
-		$(SRC_DIR)/execution/frees.c \
+		$(SRC_DIR)/execution/ex_pipes_ecution.c \
+		$(SRC_DIR)/execution/ex_signals_ecution.c \
+		$(SRC_DIR)/execution/ex_frees_ecution.c \
 		$(SRC_DIR)/execution/errors_to_del.c \
+		$(SRC_DIR)/execution/ex_signals2_ecution.c \
+		$(SRC_DIR)/execution/ex_redir_ecution.c \
+		$(SRC_DIR)/execution/ex_utils_ecution.c \
+		$(SRC_DIR)/execution/ex_bltn_ecution.c \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 

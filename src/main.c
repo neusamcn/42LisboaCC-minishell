@@ -15,52 +15,59 @@ static int ft_arrlen(char **arr)
 
 t_cmd_line *fake_parse(char *line)
 {
-    t_cmd_line  *p;
     char        **tokens;
+    t_cmd_line  *head;
+    t_cmd_line  *current;
     int         i;
     int         cmd_i;
 
-    p = malloc(sizeof(t_cmd_line));
-    if (!p)
-        return NULL;
-    ft_memset(p, 0, sizeof(t_cmd_line));
     tokens = ft_split(line, ' ');
     if (!tokens)
-        return p;
-    p->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
-    if (!p->cmds)
         return NULL;
+    head = malloc(sizeof(t_cmd_line));
+    ft_memset(head, 0, sizeof(t_cmd_line));
+    head->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
+    current = head;
     cmd_i = 0;
     i = 0;
     while (tokens[i])
     {
-        if (ft_strcmp(tokens[i], ">") == 0 && tokens[i + 1])
-            { p->redir.type = OUT; p->redir.filename = tokens[++i]; }
+        if (ft_strcmp(tokens[i], "|") == 0)
+        {
+            current->cmds[cmd_i] = NULL;  // завершаем текущую ноду
+            current->next = malloc(sizeof(t_cmd_line)); // новая нода
+            ft_memset(current->next, 0, sizeof(t_cmd_line));
+            current = current->next;
+            current->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
+            cmd_i = 0;
+        }
+        else if (ft_strcmp(tokens[i], ">") == 0 && tokens[i + 1])
+            { current->redir.type = OUT; current->redir.filename = tokens[++i]; }
         else if (ft_strcmp(tokens[i], ">>") == 0 && tokens[i + 1])
-            { p->redir.type = APPEND; p->redir.filename = tokens[++i]; }
+            { current->redir.type = APPEND; current->redir.filename = tokens[++i]; }
         else if (ft_strcmp(tokens[i], "<") == 0 && tokens[i + 1])
-            { p->redir.type = IN; p->redir.filename = tokens[++i]; }
+            { current->redir.type = IN; current->redir.filename = tokens[++i]; }
         else if (ft_strcmp(tokens[i], "<<") == 0 && tokens[i + 1])
-            { p->redir.type = HEREDOC; p->redir.delimiter = tokens[++i]; }
+            { current->redir.type = HEREDOC; current->redir.delimiter = tokens[++i]; }
         else
-            p->cmds[cmd_i++] = tokens[i];
+            current->cmds[cmd_i++] = tokens[i];
         i++;
     }
-    p->cmds[cmd_i] = NULL;
-    return (p);
+    current->cmds[cmd_i] = NULL;
+    return head;
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*prompt;
+	char	    *prompt;
 	t_cmd_line	*cmd_line;
-	int		last_status;
+//	int		status;
 
 	(void)ac;
 	(void)av;
-	if (!envp)
-		return 0;
-	last_status = 0;
+    if (!envp || !envp[0])
+        write(1, "envp is NULL!\n", 14);
+	//status = 0;
 	while (1)
 	{
 		prompt = readline("minishell$ ");
@@ -74,7 +81,7 @@ int	main(int ac, char **av, char **envp)
 			free(prompt);
 			continue ;
 		}
-		last_status = exec(cmd_line, envp, last_status);
+        exec_loop(cmd_line, envp);
 		free(prompt);
 	}
 	return 0;
