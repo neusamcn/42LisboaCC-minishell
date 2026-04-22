@@ -13,6 +13,36 @@ static int ft_arrlen(char **arr)
     return (i);
 }
 
+static void add_redir(t_cmd_line *current, t_redir_type type, char *filename, char *delimiter)
+{
+    t_redirects *new;
+    t_redirects *tmp;
+
+    write(2, "add_redir called, type: ", 24);
+    if (type == OUT) write(2, "OUT\n", 4);
+    else if (type == HEREDOC) write(2, "HEREDOC\n", 8);
+    else if (type == IN) write(2, "IN\n", 3);
+    else if (type == APPEND) write(2, "APPEND\n", 7);
+
+    if (current->redir.type == NONE)
+    {
+        current->redir.type = type;
+        current->redir.filename = filename;
+        current->redir.delimiter = delimiter;
+        return ;
+    }
+    new = malloc(sizeof(t_redirects));
+    ft_memset(new, 0, sizeof(t_redirects));
+    new->type = type;
+    new->filename = filename;
+    new->delimiter = delimiter;
+    new->next = NULL;
+    tmp = &current->redir;
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = new;
+}
+
 t_cmd_line *fake_parse(char *line)
 {
     char        **tokens;
@@ -34,21 +64,21 @@ t_cmd_line *fake_parse(char *line)
     {
         if (ft_strcmp(tokens[i], "|") == 0)
         {
-            current->cmds[cmd_i] = NULL;  // завершаем текущую ноду
-            current->next = malloc(sizeof(t_cmd_line)); // новая нода
+            current->cmds[cmd_i] = NULL;
+            current->next = malloc(sizeof(t_cmd_line));
             ft_memset(current->next, 0, sizeof(t_cmd_line));
+            current->next->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
             current = current->next;
-            current->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
             cmd_i = 0;
         }
         else if (ft_strcmp(tokens[i], ">") == 0 && tokens[i + 1])
-            { current->redir.type = OUT; current->redir.filename = tokens[++i]; }
+            add_redir(current, OUT, tokens[++i], NULL);
         else if (ft_strcmp(tokens[i], ">>") == 0 && tokens[i + 1])
-            { current->redir.type = APPEND; current->redir.filename = tokens[++i]; }
+            add_redir(current, APPEND, tokens[++i], NULL);
         else if (ft_strcmp(tokens[i], "<") == 0 && tokens[i + 1])
-            { current->redir.type = IN; current->redir.filename = tokens[++i]; }
+            add_redir(current, IN, tokens[++i], NULL);
         else if (ft_strcmp(tokens[i], "<<") == 0 && tokens[i + 1])
-            { current->redir.type = HEREDOC; current->redir.delimiter = tokens[++i]; }
+            add_redir(current, HEREDOC, NULL, tokens[++i]);
         else
             current->cmds[cmd_i++] = tokens[i];
         i++;

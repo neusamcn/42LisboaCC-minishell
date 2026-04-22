@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/18 01:07:32 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/21 21:14:39 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_redirections
 	char					*filename;
     char    				*delimiter;
 	int						fd[2];
+	int						xd_fd;
 	struct s_redirections	*next;
 }   t_redirects;
 
@@ -90,7 +91,6 @@ typedef struct s_cmd_line
     t_redirects     	redir;
 	int					pipefd[2];
 	int					prevfd;
-	int 				is_there_more_pipes;
     struct s_cmd_line   *next;
 }   t_cmd_line;
 
@@ -107,24 +107,28 @@ typedef struct s_cmd_line
 char 	*relative_path(t_cmd_line *cmd_line, char **envp);
 char 	*paths_helper(t_cmd_line *cmd_line, char *path_var);
 char 	*absolute_path(t_cmd_line *cmd_line);
-int 	free_path(char **paths);
 
 // EXECUTION.C // 
-/* int		exec(t_cmd_line *cmd_line, char **envp);
-void	child_exec(char *cmd, t_cmd_line *cmd_line, char **envp);
-void	parent_exec(int status, pid_t pid); */
-int		mommy_n_father(t_cmd_line *s, char **envp);
 void 	exec_loop(t_cmd_line *cmds, char **envp);
+int		mommy_n_father(t_cmd_line *s, char **envp);
 int 	lonely_blt(t_cmd_line *s, char **envp);
-bool 	if_redir(t_cmd_line *s);
-void 	do_redri(t_cmd_line *s);
-char    *abs_or_rel_p(t_cmd_line *c, char **envp);
-int		status_check(int status);
 int		are_you_builtin(t_cmd_line *cmd_line);
 void 	child_ex(char *cmd, t_cmd_line *kid, char **envp);
-void 	single_child_ex(char *cmd, t_cmd_line *kid, char **envp);
-int 	mndwait(pid_t status_of_last_child, int cmd_nmb);
+int 	single_child_ex(t_cmd_line *kid, char **envp);
+int 	mndwait(pid_t last_p, int cmd_nmb);
 int		ex_pipeline_ec(t_cmd_line *pipeline, char **envp);
+
+// EXECUTION UTILS //
+bool 	if_redir(t_cmd_line *s);
+int		do_redri(t_redirects *s);
+char    *abs_or_rel_p(t_cmd_line *c, char **envp);
+char    *abs_or_rel_p(t_cmd_line *c, char **envp);
+
+// REDIRECTIONs //
+int 	which_redir_type(t_redirects *redir);
+int 	in_redir(t_redirects *redir);
+void 	heredoc(t_redirects *redir);
+void 	append(t_redirects *redir);
 
 // SIGNALS.C //
 void	sigint_glob(int sig);
@@ -134,12 +138,15 @@ void 	sig_mode(int md);
 void	sigint_prompt_handler(int signal);
 void	set_signals_interactive_parent(void);
 void	set_sigaction(int signo, void (*handler)(int), int flags);
+int		status_check(int status);
 
-// PIPES.C //
-void 	heredoc(t_redirects *redir);
-void 	append(t_redirects *redir);
+// ERRORs //
+void	p_log_err(char *msg, char *cmd);
+int		mndp_log_err(char *msg, char *cmd);
+
+// FREEs //
 void	close_fds(void);
-void 	pipe_handler(t_redirects *redir);
+int 	free_path(char **paths);
 
 # endif
 	

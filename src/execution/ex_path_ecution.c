@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/04/18 01:42:43 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/21 22:08:17 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ char *absolute_path(t_cmd_line *cmd_line)
         if (access(cmd_line->cmds[0], F_OK | X_OK) == 0)
             return ft_strdup(cmd_line->cmds[0]);
         else
-            p_log_err(cmd_line->cmds[0]); // , "No such file or directory\n"
+        {
+            mndp_log_err("No such file or directory", cmd_line->cmds[0]);
+            return (NULL);
+        }
     }
-    return 0;
+    return (0);
 }

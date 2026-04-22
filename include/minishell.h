@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/14 16:15:28 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/21 15:05:21 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,5 @@ typedef struct s_minishell
 
 /* Error handling functions */
 void	print_err_msg(char *my_msg);
-void	p_log_err(char *msg);
 
 # endif

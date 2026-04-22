@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 16:31:59 by megi              #+#    #+#             */
-/*   Updated: 2026/04/18 01:19:29 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/21 16:01:15 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ void	set_sigaction(int signo, void (*handler)(int), int flags)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = flags;
 	if (sigaction(signo, &sa, NULL) == -1)
-	{
 		print_err_msg("sigaction failed");
-		exit(1);
-	}
 }
 
 void	set_signals_interactive_parent(void)

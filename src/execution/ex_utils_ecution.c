@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/04/18 01:12:37 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/22 15:03:23 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,9 @@ char    *abs_or_rel_p(t_cmd_line *c, char **envp)
 	char *p;
 	
 	p = c->cmds[0];
-	if (!p)
-	{
-		p_log_err("Command not found\n");
-		return (NULL);
-	}
 	if (ft_strchr(p, '/'))
 		return (absolute_path(c));
-	return(relative_path(c, envp));
+	return (relative_path(c, envp));
 }
 
 bool if_redir(t_cmd_line *s)
@@ -32,9 +27,14 @@ bool if_redir(t_cmd_line *s)
 	return (s->redir.type != NONE);
 }
 
-void do_redri(t_cmd_line *s)
+int do_redri(t_redirects *s)
 {
-	pipe_handler(&s->redir);
+	if (s->type == HEREDOC)
+	{
+		dup2(s->xd_fd, READ);
+    	close(s->xd_fd);
+	}
+	return (which_redir_type(s));
 }
 
 void	close_fds(void)

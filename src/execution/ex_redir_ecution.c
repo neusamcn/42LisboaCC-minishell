@@ -6,48 +6,83 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/04/17 23:44:07 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/22 15:29:26 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "execution.h"
 
-void pipe_handler(t_redirects *redir)
+int which_redir_type(t_redirects *redir)
 {
-	int fd[2];
-	
-	if (redir->type == APPEND || redir->type == OUT)
-		append(redir);
-	else if (redir->type == HEREDOC)
-		heredoc(redir);
-	else if (redir->type == IN)
+	while (redir && redir->type != NONE)
 	{
-		if (access(redir->filename, F_OK) != 0)
-			p_log_err("No such file or directory\n"); // redir->filename ;
-		fd[0] = open(redir->filename, O_RDONLY);
-		if (fd[0] != -1)
+        if (redir->type == HEREDOC)
+        {
+    		ft_putnbr_fd(redir->xd_fd, 2);
+   			write(2, "\n", 1);
+            dup2(redir->xd_fd, READ);
+        }
+		else if (redir->type == APPEND || redir->type == OUT)
+			append(redir);
+		else if (redir->type == IN)
 		{
-			dup2(fd[0], READ);
-			close(fd[0]);	
+			if (in_redir(redir) != 0)
+        		return (1);
 		}
+		redir = redir->next;
 	}
+	return (0);
 }
 
-void heredoc(t_redirects *redir)
+void append(t_redirects *redir)
 {
-	int pipefd[2];
-	char *msg;
-	
-	pipe(pipefd);
+    if (redir->filename)
+    {
+		if (redir->type == APPEND)
+			redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        else
+			redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (redir->fd[1] == -1)
+			print_err_msg(redir->filename);
+		dup2(redir->fd[1], WRITE);
+        close(redir->fd[1]);
+    }
+}
+
+int in_redir(t_redirects *redir)
+{
+	if (redir->type == IN)
+	{
+		if (access(redir->filename, F_OK) != 0)
+		{
+			mndp_log_err("No such file or directory\n", redir->filename);	
+			return (1);
+		}
+		redir->fd[0] = open(redir->filename, O_RDONLY);
+		if (redir->fd[0] != -1)
+		{
+			dup2(redir->fd[0], READ);
+			close(redir->fd[0]);	
+		}
+	}
+	return (0);
+}
+
+static void child_hd(t_redirects *redir, int pipefd[2])
+{
+	char	*msg;
+
+	close(pipefd[0]);
+	sig_mode(CHILD);
 	while (1)
 	{
 		msg = readline("> ");
 		if (!msg)
 		{
-			p_log_err(HD);
+			mndp_log_err(HD, redir->delimiter);
 			break ;
 		}
-		if (strcmp(msg, redir->delimiter) == TRUE)
+		if (ft_strcmp(msg, redir->delimiter) == TRUE)
 		{
 			free(msg);
 			break ;
@@ -57,26 +92,23 @@ void heredoc(t_redirects *redir)
 		free(msg);
 	}
 	close(pipefd[1]);
-	dup2(pipefd[0], READ);
-	close(pipefd[0]);
+	exit(0);
 }
 
-void append(t_redirects *redir)
+void heredoc(t_redirects *redir)
 {
-	int fd[2];
-	
-    if (redir->filename)
-    {
-		if (redir->type == APPEND)
-			fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        else
-			fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd[1] == -1)
-		{
-			print_err_msg(redir->filename);
-			exit(1);
-		}
-		dup2(fd[1], WRITE);
-        close(fd[1]);
-    }
+    int     pipefd[2];
+    pid_t   pid;
+    int     status;
+
+    pipe(pipefd);
+    pid = fork();
+    if (pid == 0)
+        child_hd(redir, pipefd);
+    sig_mode(MNDWAIT);
+    waitpid(pid, &status, 0);
+    sig_mode(INTERACTIVE);
+    close(pipefd[1]);
+    redir->xd_fd = dup(pipefd[0]);
+    close(pipefd[0]);
 }
