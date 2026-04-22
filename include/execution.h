@@ -87,19 +87,22 @@ typedef struct s_redirections
 typedef struct s_cmd_line
 {
     char            	**cmds;
-	t_builtins_check	isbuiltin;
+//	t_builtins_check	isbuiltin;
     t_redirects     	redir;
 	int					pipefd[2];
 	int					prevfd;
     struct s_cmd_line   *next;
 }   t_cmd_line;
 
-/* typedef struct s_execution
+typedef struct s_bltn
 {
-	t_builtin_cmd		builtins[12];
-	char				*cmd_name;
-	int					*pid;
-}	t_execution; */
+	//t_builtin_cmd		builtins[12];
+	char				*builtin_name;
+	struct 				s_cmd_line;
+	int (*foo)(char **); // prototype for any bltn 
+	// TODO check how to do the union inside pls? 
+    struct s_cmd_line   *next;
+}	t_bltn; 
 
 // [ls] → [grep src] → [wc -l] → NULL 
 
@@ -147,6 +150,8 @@ int		mndp_log_err(char *msg, char *cmd);
 // FREEs //
 void	close_fds(void);
 int 	free_path(char **paths);
+void 	pipe_cl(t_cmd_line *pipeline);
+void	cleanup_xd_fds(t_cmd_line *start);
 
 # endif
 	

@@ -12,26 +12,6 @@
 
 #include "execution.h"
 
-static void pipe_cl(t_cmd_line *pipeline)
-{
-    if (pipeline->prevfd != -1)
-        close(pipeline->prevfd);
-    if (pipeline->next)
-    {
-        close(pipeline->pipefd[1]);
-        pipeline->next->prevfd = pipeline->pipefd[0];
-    }
-}
-
-static void	cleanup_xd_fds(t_cmd_line *start)
-{
-	while (start)
-	{
-		if (start->redir.xd_fd > 0)
-			close(start->redir.xd_fd);
-		start = start->next;
-	}
-}
 
 static pid_t	fork_pipeline(t_cmd_line *pipeline, char **envp)
 {

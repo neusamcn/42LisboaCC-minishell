@@ -17,11 +17,7 @@ int which_redir_type(t_redirects *redir)
 	while (redir && redir->type != NONE)
 	{
         if (redir->type == HEREDOC)
-        {
-    		ft_putnbr_fd(redir->xd_fd, 2);
-   			write(2, "\n", 1);
             dup2(redir->xd_fd, READ);
-        }
 		else if (redir->type == APPEND || redir->type == OUT)
 			append(redir);
 		else if (redir->type == IN)
