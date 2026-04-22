@@ -91,18 +91,20 @@ int	main(int ac, char **av, char **envp)
 {
 	char	    *prompt;
 	t_cmd_line	*cmd_line;
-//	int		status;
 
 	(void)ac;
 	(void)av;
+    sig_mode(INTERACTIVE);
     if (!envp || !envp[0])
         write(1, "envp is NULL!\n", 14);
-	//status = 0;
 	while (1)
 	{
 		prompt = readline("minishell$ ");
 		if (!prompt)
-			break ;
+        {
+            ft_putstr_fd("exit\n", 1);
+            exit(get_signal_stat());
+        }
 		if (*prompt)
 			add_history(prompt);
 		cmd_line = fake_parse(prompt);
@@ -113,6 +115,7 @@ int	main(int ac, char **av, char **envp)
 		}
         exec_loop(cmd_line, envp);
 		free(prompt);
+        sig_mode(INTERACTIVE);
 	}
 	return 0;
 }
