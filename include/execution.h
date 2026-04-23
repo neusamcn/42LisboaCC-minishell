@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/22 19:24:21 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/22 21:13:44 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,9 @@ typedef struct s_bltn
 {
 //	t_builtin_cmd		builtins[12];
 	char				*builtin_name;
-	struct 				s_cmd_line;
+	char				**bltn_av;
+	int					bltn_ac;
+	//struct 				s_cmd_line;
     struct s_cmd_line   *next;
 }	t_bltn;
 
@@ -148,6 +150,10 @@ int		mndp_log_err(char *msg, char *cmd);
 // FREEs //
 void	close_fds(void);
 int 	free_path(char **paths);
+
+
+// EXECUTION BUILTINS //
+int myecho(t_bltn *echo, char **envp);
 
 # endif
 	

@@ -23,8 +23,8 @@ SRCS = $(SRC_DIR)/main.c \
 		$(SRC_DIR)/execution/ex_signals2_ecution.c \
 		$(SRC_DIR)/execution/ex_redir_ecution.c \
 		$(SRC_DIR)/execution/ex_utils_ecution.c \
-		$(SRC_DIR)/builtins/ex_bltn_ecution.c \
-
+		$(SRC_DIR)/biultins/bltn_echo_in.c \
+		$(SRC_DIR)/biultins/bltn_run_in.c \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
