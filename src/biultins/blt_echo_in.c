@@ -19,14 +19,28 @@
 // untill a newline
 
 // getchar and putchar till receive a newline
-int myecho(t_bltn *echo, char **envp)
-{
-    char whoareyou;
 
-    whoareyou = echo;
-    while (whoareyou != '\n')
-    {
-        ft_putchar_fd(whoareyou);
-    }
-    return (0);
+int myecho(t_cmd_line *cmd, char **envp)
+{
+	int i;
+	int newline;
+
+	(void)envp;
+	i = 1;
+	newline = 1;
+	while (cmd->cmds[i] && ft_strcmp(cmd->cmds[i], "-n") == 0)
+	{
+		newline = 0;
+		i++;
+	}
+	while (cmd->cmds[i])
+	{
+		p("%s", cmd->cmds[i]);
+		if (cmd->cmds[i + 1])
+			p(" ");
+		i++;
+	}
+	if (newline)
+		p("\n");
+	return (0);
 }
