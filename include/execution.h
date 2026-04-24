@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/22 21:13:44 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/24 18:12:17 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ typedef struct s_redirections
 typedef struct s_cmd_line
 {
     char            	**cmds;
-    t_redirects     	redir;
-	char            	**cmds;
 	t_redirects     	redir;
 	int					pipefd[2];
 	int					prevfd;
@@ -149,9 +147,13 @@ int 	free_path(char **paths);
 void 	pipe_cl(t_cmd_line *pipeline);
 void	cleanup_xd_fds(t_cmd_line *start);
 
+// BUILTINS //
+int myecho(t_cmd_line *echo, char **envp);
+int myenv(t_cmd_line *env, char **envp);
 
-// EXECUTION BUILTINS //
-int myecho(t_bltn *echo, char **envp);
+
+int r_bltn(t_cmd_line *cmd_line, char **envp);
+
 
 # endif
 	
