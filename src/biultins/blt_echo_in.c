@@ -19,26 +19,28 @@
 // untill a newline
 
 // getchar and putchar till receive a newline
-int myecho(t_bltn *echo, char **envp)
+int myecho(t_cmd_line *cmd, char **envp)
 {
-    int i;
-    int newline;
+	int i;
+	int newline;
 
-   // minishell$ echo [-n] argv [>] or [ | ] 
-    while (i < echo->bltn_ac)
-    {
-        i = 1;
-        newline = 1;
-        if (ft_strcmp(echo->bltn_av[i], '-n') == 0)
-            newline = 0;
-        else 
-        {
-            p("%s", echo->bltn_av);
-            if (i < echo->bltn_ac - 1)
-                p(" ");
-        }
-        if (newline)
-            p(" ");
-    }
-    return (0);
+	(void)envp;
+	i = 1;
+	newline = 1;
+	while (cmd->cmds[i] && ft_strcmp(cmd->cmds[i], "-n") == 0)
+	{
+		newline = 0;
+		i++;
+	}
+	while (cmd->cmds[i])
+	{
+		p("%s", cmd->cmds[i]);
+		if (cmd->cmds[i + 1])
+			p(" ");
+		i++;
+	}
+	if (newline)
+		p("\n");
+	return (0);
+>>>>>>> 13821a44efc7e1df35d8db44c41dd885ef316a3d
 }

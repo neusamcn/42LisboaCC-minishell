@@ -36,19 +36,3 @@ int do_redri(t_redirects *s)
 	}
 	return (which_redir_type(s));
 }
-
-void	close_fds(void)
-{
-	int fd[2];
-
-	if (fd[0] == FD_OPEN)
-	{
-		close(fd[0]);
-		fd[0] = FD_CLOSED;
-	}
-	if (fd[1] == FD_OPEN)
-	{
-		close(fd[1]);
-		fd[1] = FD_CLOSED;
-	}
-}

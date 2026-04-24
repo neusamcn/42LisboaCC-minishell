@@ -24,6 +24,7 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <sys/wait.h>
 
 
 # define p(...) printf(__VA_ARGS__)
@@ -77,32 +78,23 @@ typedef struct s_redirections
 {
 	t_redir_type			type;
 	char					*filename;
-    char    				*delimiter;
+	char    				*delimiter;
 	int						fd[2];
 	int						xd_fd;
 	struct s_redirections	*next;
 }   t_redirects;
 
-
 typedef struct s_cmd_line
 {
     char            	**cmds;
-//	t_builtins_check	isbuiltin;
     t_redirects     	redir;
+	char            	**cmds;
+	t_redirects     	redir;
 	int					pipefd[2];
 	int					prevfd;
-    struct s_cmd_line   *next;
+	struct s_cmd_line   *next;
 }   t_cmd_line;
 
-typedef struct s_bltn
-{
-//	t_builtin_cmd		builtins[12];
-	char				*builtin_name;
-	char				**bltn_av;
-	int					bltn_ac;
-	//struct 				s_cmd_line;
-    struct s_cmd_line   *next;
-}	t_bltn;
 
 // [ls] → [grep src] → [wc -l] → NULL 
 
@@ -120,6 +112,10 @@ void 	child_ex(char *cmd, t_cmd_line *kid, char **envp);
 int 	single_child_ex(t_cmd_line *kid, char **envp);
 int 	mndwait(pid_t last_p, int cmd_nmb);
 int		ex_pipeline_ec(t_cmd_line *pipeline, char **envp);
+
+// BUILTINs //
+int myecho(t_cmd_line *cmd, char **envp);
+int r_bltn(t_cmd_line *cmd_line, char **envp);
 
 // EXECUTION UTILS //
 bool 	if_redir(t_cmd_line *s);
@@ -150,6 +146,8 @@ int		mndp_log_err(char *msg, char *cmd);
 // FREEs //
 void	close_fds(void);
 int 	free_path(char **paths);
+void 	pipe_cl(t_cmd_line *pipeline);
+void	cleanup_xd_fds(t_cmd_line *start);
 
 
 // EXECUTION BUILTINS //
