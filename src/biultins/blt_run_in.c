@@ -23,17 +23,11 @@ int are_you_builtin(t_cmd_line *cmd_line)
 	return (EXTRENAL);
 }
 
-
-int run_bltn(t_bltn *names, char **envp)
+int r_bltn(t_cmd_line *cmd_line, char **envp)
 {
-	char *whoareyou;
-
-	while (1)
-	{
-		if (!ft_strcmp(whoareyou, CD))
-		{
-			myecho();
-		}
-	}
-	// FORK->EXEC
+    if (!cmd_line || !cmd_line->cmds || !cmd_line->cmds[0])
+        return (1);
+    if (!ft_strcmp(cmd_line->cmds[0], ECHO))
+        return (myecho(cmd_line, envp));
+    return (1);
 }
