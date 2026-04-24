@@ -24,8 +24,23 @@ char    *abs_or_rel_p(t_cmd_line *c, char **envp)
 
 bool if_redir(t_cmd_line *s)
 {
-	return (s->redir.type != NONE);
+    t_redirects *tmp;
+
+    tmp = &s->redir;
+    while (tmp)
+    {
+        if (tmp->type != NONE)
+            return (true);
+        tmp = tmp->next;
+    }
+    return (false);
 }
+
+/*
+bool if_redir(t_cmd_line *s)
+{
+	return (s->redir.type != NONE);
+}*/
 
 int do_redri(t_redirects *s)
 {
