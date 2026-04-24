@@ -12,7 +12,6 @@
 
 #include "execution.h"
 
-
 static pid_t	fork_pipeline(t_cmd_line *pipeline, char **envp)
 {
 	pid_t	pid;
@@ -72,29 +71,32 @@ int mndwait(pid_t last_p, int cmd_nmb)
 
 void child_ex(char *path, t_cmd_line *kid, char **envp)
 {
-    sig_mode(CHILD);
-    if (kid->prevfd != -1)
-        dup2(kid->prevfd, READ);
-    if (kid->next != NULL)
-        dup2(kid->pipefd[1], WRITE);
-    if (kid->prevfd != -1)
-        close(kid->prevfd);
-    if (kid->next != NULL)
-    {
-        close(kid->pipefd[0]);
-        close(kid->pipefd[1]);
-    }
-    if (if_redir(kid) && do_redri(&kid->redir) != 0)
-        exit(1);
-    if (!kid->cmds || !kid->cmds[0])
-        exit(0);
-    path = relative_path(kid, envp);
-    if (!path)
-    {
+	sig_mode(CHILD);
+	if (kid->prevfd != -1)
+		dup2(kid->prevfd, 0);
+	if (kid->next)
+		dup2(kid->pipefd[1], 1);
+	if (kid->prevfd != -1)
+		close(kid->prevfd);
+	if (kid->next)
+	{
+		close(kid->pipefd[0]);
+		close(kid->pipefd[1]);
+	}
+	if (if_redir(kid))
+	{
+		if (do_redri(&kid->redir) != 0)
+			exit(1);
+	}
+	if (!kid->cmds || !kid->cmds[0])
+		exit(0);
+	path = relative_path(kid, envp);
+	if (!path)
+	{
 		mndp_log_err("Command not found\n", kid->cmds[0]);
-        exit(127);
-    }
-    execve(path, kid->cmds, envp);
-    mndp_log_err("Execution failed!\n", kid->cmds[0]);
-    exit(127);
+		exit(127);
+	}
+	execve(path, kid->cmds, envp);
+	mndp_log_err("Execution failed!\n", kid->cmds[0]);
+	exit(127);
 }
