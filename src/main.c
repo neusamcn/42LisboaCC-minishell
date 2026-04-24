@@ -89,7 +89,7 @@ t_cmd_line *fake_parse(char *line)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	    *prompt;
+	char		*prompt;
 	t_cmd_line	*cmd_line;
 
 	(void)ac;

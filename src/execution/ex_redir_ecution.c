@@ -32,17 +32,19 @@ int which_redir_type(t_redirects *redir)
 
 void append(t_redirects *redir)
 {
-    if (redir->filename)
+    if (!redir->filename)
+        return;
+    if (redir->type == APPEND)
+        redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    else
+        redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (redir->fd[1] == -1)
     {
-		if (redir->type == APPEND)
-			redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        else
-			redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (redir->fd[1] == -1)
-			print_err_msg(redir->filename);
-		dup2(redir->fd[1], WRITE);
-        close(redir->fd[1]);
+        perror(redir->filename);
+        return;
     }
+    dup2(redir->fd[1], 1);
+    close(redir->fd[1]);
 }
 
 int in_redir(t_redirects *redir)
