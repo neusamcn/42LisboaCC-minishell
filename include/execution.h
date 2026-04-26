@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/24 18:12:17 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:45:24 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,14 @@ typedef struct s_cmd_line
 	struct s_cmd_line   *next;
 }   t_cmd_line;
 
+typedef struct s_export
+{
+    char    *argv;
+    int     flag;
+    char    **envp;
+	char 	**mini_env;
+	char 	*new_var;
+}   t_export;
 
 // [ls] → [grep src] → [wc -l] → NULL 
 
