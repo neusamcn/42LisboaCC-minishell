@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/04/21 22:08:17 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/25 17:10:52 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ char *absolute_path(t_cmd_line *cmd_line)
             return (NULL);
         }
     }
-    return (0);
+    return NULL;
 }
