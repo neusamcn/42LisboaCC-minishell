@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/01/27 21:38:07 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/04/05 21:16:29 by ncruz-ne         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME 			= minishell
 
 LIBFT_DIR		= libft
@@ -19,13 +7,13 @@ SRC_DIR 		= src
 OBJ_DIR 		= obj
 
 PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c minienvp.c prompt.c signals.c)
-# EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, )
+EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, errors_to_del.c execution.c parsing_to_delete.c path.c 
+					pipes.c signals.c)
 ERRORS_SRCS		= $(addprefix $(SRC_DIR)/errors/, err_msg.c)
-SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(ERRORS_SRCS) # TODO: add $(EXECUTION_SRCS)
+SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) (EXECUTION_SRCS) $(ERRORS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h)
-# TODO: add execution.h
+HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h execution.h)
 
 CC 				= cc
 CPPFLAGS 		= -Iinclude
@@ -56,6 +44,7 @@ PATH_COLOR      := $(ESC)[38;2;221;160;221m
 
 all: $(NAME)
 
+# TODO: can we hide this libft anouncement? 
 
 $(NAME): $(LIBFT_A) $(OBJS)
 	@$(CC) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
