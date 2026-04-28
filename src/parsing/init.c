@@ -6,11 +6,13 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/26 23:50:16 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/04/28 20:58:03 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+
+// Milena, this file is crazy right now, don't freak out :(
 
 static char	find_unclosed_quote_rec(char *input_str, char open_qmark)
 {

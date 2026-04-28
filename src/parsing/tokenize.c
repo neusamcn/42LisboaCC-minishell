@@ -6,11 +6,13 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 21:02:43 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/26 18:23:44 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/04/28 20:57:07 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+
+ // Milena, it's not finished!!!!!
 
 static t_token	*add_token_word(char *word, int word_len, t_token *tokens)
 {
