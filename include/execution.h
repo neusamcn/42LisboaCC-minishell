@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/08 19:58:04 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/19 20:52:58 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef EXECUTION_H
 #define EXECUTION_H
@@ -37,6 +37,7 @@
 # define FALSE 1
 # define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
 
+// TODO: needed? or use default macros?
 typedef enum e_fds
 {
 	STDIN,
@@ -49,21 +50,24 @@ typedef enum e_builts
 	NON_BUILTINS
 }	t_builtins_check;
 
+// TODO: use here or in parsing.h ?
 typedef enum e_types_of_redirections
 {
 	IN,  // < redir input to a cmd, taking input from a file
 	OUT, // > redir output to a file, and overwrites the file if it already exists
 	APPEND, // >> redir output top a file, append the output to the end of the file
 	HEREDOC, // <<
-	FD
+	FD // TODO: should be somewhere else since it's not a redir type
 }	t_redir_type;
 
+// TODO: necessary? or use default macros?
 typedef enum e_signal_types
 {
 	SIG_INT, // ctrl+c
 	SIG_QUIT // ctrl \+
 }	e_signal_types;
 
+// TODO: use here or in parsing.h ? Milena check struct_notes.md
 typedef struct s_redirections
 {
 	t_redir_type			type;
@@ -72,6 +76,7 @@ typedef struct s_redirections
 	struct s_redirections	*next;
 }   t_redirects;
 
+// TODO: use here or in parsing.h ?
 typedef struct s_pipe
 {
     char            **cmds;
@@ -118,7 +123,7 @@ void 	pipe_handler(t_redirects *redir);
 void	print_err_msg(char *my_msg);
 void	p_log_err(char *cmd, char *msg);
 //void	exit_cleanup(int exit_status, t_minishell *minishell);
-char	*getcwd_protec(char *buf, size_t size);
+char	*getcwd_protec(char *buf, size_t size); // TODO: review, repeated from parsing.h
 int		ft_arrlen(char **arr);
 t_pipe 	*fake_parse(char *line);
 

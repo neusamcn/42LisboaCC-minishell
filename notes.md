@@ -243,3 +243,256 @@ If you want, I can also explain what happens in memory when you do char cwd_str[
 
 ---
 ---
+
+**Tokenization** in a shell is the **lexing step**: turning the raw command line into meaningful pieces called **tokens**.
+
+A shell tokenizer usually recognizes:
+- **words**: `ls`, `grep`, `file.txt`
+- **operators**: `|`, `>`, `>>`, `<`, `<<`, `&&`, `||`
+- **special handling for quotes/escapes** so spaces inside quotes stay part of the same token
+
+Example:
+
+```sh
+echo "hello world" | grep hello
+```
+
+Possible tokens:
+- `echo`
+- `"hello world"`
+- `|`
+- `grep`
+- `hello`
+
+In a shell, tokenization happens **before parsing and execution**. After tokenization, the shell typically:
+1. tokenizes
+2. parses into a syntax structure
+3. performs expansions
+4. executes commands
+
+## Good resources
+
+### Official / authoritative
+- **POSIX Shell Command Language**  
+  https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html
+- **GNU Bash Reference Manual**
+  - Shell Grammar
+  - Quoting
+  - Word Splitting
+  - Shell Expansions  
+  https://www.gnu.org/software/bash/manual/
+
+### Very useful for learning
+- **The Linux Command Line** by William Shotts  
+  https://linuxcommand.org/tlcl.php
+- **BashGuide**  
+  https://mywiki.wooledge.org/BashGuide
+- **Bash Pitfalls**  
+  https://mywiki.wooledge.org/BashPitfalls
+
+### For minishell / parser work
+Search for:
+- **lexical analysis in shells**
+- **shell grammar**
+- **AST for shell commands**
+- **quote handling and word splitting**
+
+---
+---
+
+## Walkthrough: tokenization in a minishell
+
+Tokenization is the step where the shell reads the raw input line and splits it into **tokens**: words, operators, and special syntax pieces.
+
+Example input:
+
+```sh
+echo "hello world" | grep hello > out.txt
+```
+
+A tokenizer might produce:
+
+- `echo` → word
+- `"hello world"` → word with quotes preserved or marked
+- `|` → pipe operator
+- `grep` → word
+- `hello` → word
+- `>` → redirection operator
+- `out.txt` → word
+
+---
+
+## What the tokenizer must handle
+
+### 1. Spaces separate tokens
+Normally, spaces split words:
+
+```sh
+ls -l /tmp
+```
+
+Tokens:
+- `ls`
+- `-l`
+- tmp
+
+### 2. Quotes protect spaces and special chars
+Inside quotes, spaces are part of the same token:
+
+```sh
+echo "a b c"
+```
+
+Tokens:
+- `echo`
+- `a b c`
+
+Single quotes and double quotes behave differently later in expansion, but during tokenization they both group text.
+
+### 3. Operators are separate tokens
+Shell operators must be recognized as their own tokens:
+
+- `|`
+- `<`
+- `>`
+- `>>`
+- `<<`
+- `&&`
+- `||`
+
+Example:
+
+```sh
+cat < infile >> outfile
+```
+
+Tokens:
+- `cat`
+- `<`
+- `infile`
+- `>>`
+- `outfile`
+
+### 4. Escapes matter
+A backslash can prevent special meaning:
+
+```sh
+echo hello\ world
+```
+
+Tokens:
+- `echo`
+- `hello world`
+
+### 5. Empty input and syntax errors
+Tokenizer should also detect invalid cases:
+
+- unclosed quote: `echo "hello`
+- invalid operator placement: `| ls`
+- consecutive operators if not allowed by your grammar
+
+---
+
+## Typical minishell flow
+
+For a project like `minishell`, the pipeline is usually:
+
+1. **Read line**
+2. **Tokenize**
+3. **Parse tokens into commands / AST**
+4. **Expand variables**
+5. **Execute**
+
+Tokenization should **not** execute anything. It only classifies text.
+
+---
+
+## Example walkthrough
+
+Input:
+
+```sh
+export PATH="$PATH:/my/bin" | grep bin
+```
+
+A simple tokenizer may scan character by character:
+
+- `export` → word token
+- `PATH="$PATH:/my/bin"` → word token, with quoted section inside
+- `|` → pipe token
+- `grep` → word token
+- `bin` → word token
+
+Then the parser later decides:
+
+- first command: `export ...`
+- pipe to second command: `grep bin`
+
+---
+
+## Common token categories for minishell
+
+You may want enums like:
+
+- `WORD`
+- `PIPE`
+- `REDIR_IN`
+- `REDIR_OUT`
+- `APPEND`
+- `HEREDOC`
+
+This makes parsing easier.
+
+---
+
+## Important implementation idea
+
+A tokenizer often tracks:
+
+- current index in the input
+- current quote state:
+  - none
+  - single quote
+  - double quote
+- current token start/end
+- whether an operator starts here
+
+This is usually easier if you scan one character at a time.
+
+---
+
+## In your `minishell`
+
+For your project, the tokenizer should probably:
+
+- ignore spaces outside quotes
+- keep quoted strings as one token
+- separate shell operators
+- report syntax errors early
+- preserve enough info for later expansion and parsing
+
+---
+
+## Good next step
+
+A useful exercise is to test these inputs:
+
+```sh
+ls -l
+echo "hello world"
+cat < infile | grep a > out
+echo 'a | b'
+echo "$HOME"
+```
+
+For each one, write down the expected tokens before coding.
+
+If useful, I can also provide:
+- a **step-by-step tokenizer algorithm**
+- a **token struct design for minishell**
+- or a **sample `tokenize()` pseudocode**.
+
+---
+---
+
+

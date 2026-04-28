@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/05 19:41:33 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/04/25 21:58:36 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/history.h>
 
 /* Structs */
+// TODO: use here or in parsing.h?
 typedef struct s_minishell
 {
 	char	**minienvp;
@@ -32,6 +33,8 @@ typedef struct s_minishell
 
 /* Error handling functions */
 void	print_err_msg(char *my_msg);
+void	p_log_err(char *cmd, char *msg);
+void	syntax_err_msg(char *err_token);
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_minishell *minishell);

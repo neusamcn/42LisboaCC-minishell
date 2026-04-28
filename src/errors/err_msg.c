@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   err_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/10 13:28:41 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/25 22:52:09 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
@@ -29,5 +29,12 @@ void	p_log_err(char *cmd, char *msg)
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);
 	ft_putchar_fd('\n', 2);
-    exit (1);
+	exit (1);
+}
+
+void	syntax_err_msg(char *err_token)
+{
+	// TODO: should it output to STDERR ? use print_err_msg?
+	ft_printf("-bash minishelly: syntax error near unexpected token `%s'\n",
+		err_token);
 }

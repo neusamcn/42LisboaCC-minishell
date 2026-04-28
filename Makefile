@@ -6,7 +6,8 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c minienvp.c prompt.c signals.c)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c minienvp.c prompt.c signals.c tokenize.c \
+					syntax_utils.c syntax_check.c)
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, errors_to_del.c execution.c parsing_to_delete.c path.c 
 					pipes.c signals.c)
 ERRORS_SRCS		= $(addprefix $(SRC_DIR)/errors/, err_msg.c)
