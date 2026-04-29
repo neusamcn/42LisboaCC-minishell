@@ -26,7 +26,7 @@ SRCS = 	$(SRC_DIR)/main.c \
 		$(SRC_DIR)/biultins/blt_echo_in.c \
 		$(SRC_DIR)/biultins/blt_env_in.c \
 		$(SRC_DIR)/biultins/blt_export_in.c \
-		$(SRC_DIR)/biultins/blt_utils_in.c \
+		$(SRC_DIR)/biultins/blt_export_utils_in.c \
 		$(SRC_DIR)/biultins/blt_run_in.c \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
