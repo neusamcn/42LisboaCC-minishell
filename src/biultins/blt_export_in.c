@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/04/26 16:46:34 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/04/29 14:16:33 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,39 @@
 // split key=value
 // dont exit the shell
 
+int myexport(t_cmd_line *exp, char **envp)
+{
+    int i;
+    int exported;
+    t_export ex;
+
+    if (exp->cmds[1] == NULL)
+    {
+        print_export(envp);
+        return (0);
+    }
+    i = 0;
+    while (exp->cmds[i++])
+    {
+        exported = parse_export_arg(exp->cmds[i++]);
+        if (exported != -1)
+        {
+            ex.arg = exp->cmds[i++];
+            ex.flag = exported;
+            ex.envp = envp;
+            envp = export_flag(ex);
+        }
+        i++;
+    }
+    return (0);
+}
+
 int parse_export_arg(char *arg)
 {
     int j;
     char c;
 
-    j = 0;
+    j = -1;
     while (arg[j++])
     {
         c = arg[j];
@@ -33,46 +60,11 @@ int parse_export_arg(char *arg)
         }
         else
         {
-            mndp_log_err("export: not valid in this context\n");
+            mndp_log_err("export: not valid in this context\n", arg);
             return (-1);
         }
     }
     return (1);
-}
-
-bool export_argv(char c, int j)
-{
-    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-        c == '_' || (j > 0 && c >= '0' && c <= '9') || c == '=')
-        return (1);
-    return (0);
-}
-
-int myexport(t_cmd_line *exp, char **envp)
-{
-    int i;
-    int exported;
-    t_export ex;
-
-    if (exp->cmd[1] == NULL)
-    {
-        print_export(envp);
-        return (0);
-    }
-    i = 1;
-    while (exp->cmd[i])
-    {
-        exported = parse_export_arg(exp->cmd[i]);
-        if (exported != -1)
-        {
-            ex.arg = exp->cmd[i];
-            ex.flag = exported;
-            ex.envp = envp;
-            envp = export_flag(ex);
-        }
-        i++;
-    }
-    return (0);
 }
 
 char **export_flag(t_export exp)
@@ -96,24 +88,25 @@ char **export_flag(t_export exp)
 char **export_variable(char **envp, char *key)
 {
     int i;
-    int len;
 
-    i = 0;
-    len = ft_strlen(key);
+    i = -1;
     while (envp[i++])
     {
-        if (ft_strncmp(envp[i], key, len) == 0 && envp[i][len] == '=')
+        if (ft_strncmp(envp[i], key, ft_strlen(key)) == 0 && 
+            envp[i][ft_strlen(key)] == '=')
             return (envp);
     }
-    return (export_minienv(envp, key, NULL));
+    return (export_minienv(envp, key, envp, NULL, 0, 0));
 }
 
-char **export_minienv(t_export export, char *key, char *value, int i, int len)
+char **export_minienv(t_export export, char **envp, char *key, int i, int len)
 {
+    char *value;
+
     len = ft_strlen(key);
     export.newvar = ft_strjoin(key, "=");
     if (value)
-        export.newvar = ft_strjoin_free(export.newvar, value);
+        export.newvar = ft_strjoin(export.newvar, value); //free?
     while (envp[i++])
     {
         if (ft_strncmp(envp[i], key, len) == 0 && envp[i][len] == '=')
@@ -129,7 +122,7 @@ char **export_minienv(t_export export, char *key, char *value, int i, int len)
     i = 0;
     while (envp[i++])
         export.mini_env[i] = envp[i];
-    export.mini_env[i++] = new_var;
+    export.mini_env[i] = new_var;
     export.mini_env[i] = NULL;
     free(envp);
     return (export.mini_env);

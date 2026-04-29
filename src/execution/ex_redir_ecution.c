@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redir_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/04/22 15:36:46 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 13:59:35 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,15 @@ void append(t_redirects *redir)
     if (!redir->filename)
         return;
     if (redir->type == APPEND)
-        redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | 
+			O_APPEND, 0644);
     else
-        redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT | 
+			O_TRUNC, 0644);
     if (redir->fd[1] == -1)
     {
         perror(redir->filename);
-        return;
+        return ;
     }
     dup2(redir->fd[1], 1);
     close(redir->fd[1]);
@@ -93,6 +95,7 @@ static void child_hd(t_redirects *redir, int pipefd[2])
 	close(pipefd[1]);
 	exit(0);
 }
+
 
 void heredoc(t_redirects *redir)
 {

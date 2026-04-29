@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/26 16:45:24 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/04/29 14:15:09 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"
-# define ECHO "echo"
+# define ECHO "echo" //done
 # define EXIT "exit"
 # define PWD "pwd"
-# define ENV "env"
-# define EXPORT "export"
+# define ENV "env" //done
+# define EXPORT "export" //dome
 # define UNSET "unset"
 # define TRUE 0
 # define FALSE 1
@@ -95,8 +95,9 @@ typedef struct s_cmd_line
 
 typedef struct s_export
 {
-    char    *argv;
+    char    *arg;
     int     flag;
+	int 	newvar;
     char    **envp;
 	char 	**mini_env;
 	char 	*new_var;
@@ -156,11 +157,21 @@ void 	pipe_cl(t_cmd_line *pipeline);
 void	cleanup_xd_fds(t_cmd_line *start);
 
 // BUILTINS //
+int r_bltn(t_cmd_line *cmd_line, char **envp);
+
+// ECHO //
 int myecho(t_cmd_line *echo, char **envp);
+
+// ENV //
 int myenv(t_cmd_line *env, char **envp);
 
-
-int r_bltn(t_cmd_line *cmd_line, char **envp);
+// EXPORT //
+int parse_export_arg(char *arg);
+bool export_argv(char c, int j);
+int myexport(t_cmd_line *exp, char **envp);
+char **export_flag(t_export exp);
+char **export_variable(char **envp, char *key);
+char **export_minienv(t_export export, char *key, char *value, int i, int len);
 
 
 # endif

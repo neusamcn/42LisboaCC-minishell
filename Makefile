@@ -13,7 +13,7 @@ LDFLAGS = -L/opt/homebrew/opt/readline/lib
 CPPFLAGS = -I/opt/homebrew/opt/readline/include
 LDLIBS = -lreadline
 
-SRCS = $(SRC_DIR)/main.c \
+SRCS = 	$(SRC_DIR)/main.c \
 		$(SRC_DIR)/execution/ex_path_ecution.c \
 		$(SRC_DIR)/execution/execution.c \
 		$(SRC_DIR)/execution/ex_pipes_ecution.c \
@@ -25,6 +25,8 @@ SRCS = $(SRC_DIR)/main.c \
 		$(SRC_DIR)/execution/ex_utils_ecution.c \
 		$(SRC_DIR)/biultins/blt_echo_in.c \
 		$(SRC_DIR)/biultins/blt_env_in.c \
+		$(SRC_DIR)/biultins/blt_export_in.c \
+		$(SRC_DIR)/biultins/blt_utils_in.c \
 		$(SRC_DIR)/biultins/blt_run_in.c \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))

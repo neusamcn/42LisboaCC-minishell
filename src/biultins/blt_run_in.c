@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ex_bltn_ecution.c                                  :+:      :+:    :+:   */
+/*   blt_run_in.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 21:00:17 by megi              #+#    #+#             */
-/*   Updated: 2026/04/18 23:37:11 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 14:09:10 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,9 @@ int r_bltn(t_cmd_line *cmd_line, char **envp)
         return (1);
     if (!ft_strcmp(cmd_line->cmds[0], ECHO))
         return (myecho(cmd_line, envp));
+    if (!ft_strcmp(cmd_line->cmds[0], ENV))
+        return (myenv(cmd_line, envp));
+    if (!ft_strcmp(cmd_line->cmds[0], EXPORT))
+        return (myexport(cmd_line, envp));
     return (1);
 }
