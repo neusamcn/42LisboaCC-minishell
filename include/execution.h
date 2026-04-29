@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 16:23:10 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 18:20:32 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 
-
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"
 # define ECHO "echo" //done
@@ -38,6 +37,8 @@
 # define TRUE 0
 # define FALSE 1
 # define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
+
+typedef struct s_minishell	t_minishell;
 
 typedef enum e_stdio
 {
@@ -108,25 +109,25 @@ typedef struct s_export
 }   t_export;
 
 // 									PATH.C 									//
-char 	*relative_path(t_cmd_line *cmd_line, char **envp);
+char 	*relative_path(t_cmd_line *cmd_line, t_minishell *shelly);
 char 	*paths_helper(t_cmd_line *cmd_line, char *path_var);
 char 	*absolute_path(t_cmd_line *cmd_line);
 
 // 								EXECUTION.C 								// 
-void 	exec_loop(t_cmd_line *cmds, char **envp);
-int		mommy_n_father(t_cmd_line *s, char **envp);
-int 	lonely_blt(t_cmd_line *s, char **envp);
+void 	exec_loop(t_cmd_line *cmds, t_minishell *shelly);
+int		mommy_n_father(t_cmd_line *s, t_minishell *shelly);
+int 	lonely_blt(t_cmd_line *s, t_minishell *shelly);
 int		are_you_builtin(t_cmd_line *cmd_line);
-void 	child_ex(char *cmd, t_cmd_line *kid, char **envp);
-int 	single_child_ex(t_cmd_line *kid, char **envp);
+void 	child_ex(char *cmd, t_cmd_line *kid, t_minishell *shelly);
+int 	single_child_ex(t_cmd_line *kid, t_minishell *shelly);
 int 	mndwait(pid_t last_p, int cmd_nmb);
-int		ex_pipeline_ec(t_cmd_line *pipeline, char **envp);
+int		ex_pipeline_ec(t_cmd_line *pipeline, t_minishell *shelly);
 
 // 								EXECUTION UTILS 							//
 bool 	if_redir(t_cmd_line *s);
 int		do_redri(t_redirects *s);
-char    *abs_or_rel_p(t_cmd_line *c, char **envp);
-char    *abs_or_rel_p(t_cmd_line *c, char **envp);
+char    *abs_or_rel_p(t_cmd_line *c, t_minishell *shelly);
+char    *abs_or_rel_p(t_cmd_line *c, t_minishell *shelly);
 
 // 								REDIRECTIONs 								//
 int 	which_redir_type(t_redirects *redir);
@@ -155,23 +156,23 @@ void 	pipe_cl(t_cmd_line *pipeline);
 void	cleanup_xd_fds(t_cmd_line *start);
 
 // 								BUILTINS 									//
-int r_bltn(t_cmd_line *cmd_line, char **envp);
+int r_bltn(t_cmd_line *cmd_line, t_minishell *shelly);
 
 // 									ECHO 									//
-int myecho(t_cmd_line *echo, char **envp);
+int myecho(t_cmd_line *echo, t_minishell *shelly);
 
 // 									ENV 									//
-int myenv(t_cmd_line *env, char **envp);
+int myenv(t_cmd_line *env, t_minishell *shelly);
 
 // EXPORT //
-int 	myexport(t_cmd_line *exp, char **envp);
+int 	myexport(t_cmd_line *exp, t_minishell *shelly);
 int 	parse_exp_arg(char *arg);
 bool 	exp_argv(char c, int j);
 char	**exp_flag(t_export *exp);
 char	**exp_var(t_export *mini, char *key);
 char	**exp_minienv(t_export *mini, char *key, char *value, int i);
 void 	pexp_var(char *env_entry);
-void    pexp(char **envp);
+void    pexp(t_minishell *shelly);
 char	*ft_free_strjoin(char *s1, char *s2);
 
 # endif

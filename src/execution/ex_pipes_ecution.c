@@ -6,13 +6,13 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/25 17:12:25 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 17:19:41 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static pid_t	fork_pipeline(t_cmd_line *pipeline, char **envp)
+static pid_t	fork_pipeline(t_cmd_line *pipeline, t_minishell *shelly)
 {
 	pid_t	pid;
 
@@ -22,13 +22,13 @@ static pid_t	fork_pipeline(t_cmd_line *pipeline, char **envp)
 	if (pid == -1)
 		return (perror("fork"), -1);
 	if (pid == 0)
-		child_ex(0, pipeline, envp);
+		child_ex(0, pipeline, shelly);
 	pipe_cl(pipeline);
 	sig_mode(MNDWAIT);
 	return (pid);
 }
 
-int	ex_pipeline_ec(t_cmd_line *pipeline, char **envp)
+int	ex_pipeline_ec(t_cmd_line *pipeline, t_minishell *shelly)
 {
 	pid_t		last_st;
 	int			status;
@@ -41,7 +41,7 @@ int	ex_pipeline_ec(t_cmd_line *pipeline, char **envp)
 	cmd_num = 0;
 	while (pipeline)
 	{
-		last_st = fork_pipeline(pipeline, envp);
+		last_st = fork_pipeline(pipeline, shelly);
 		if (last_st == -1)
 			return (1);
 		cmd_num++;
@@ -69,7 +69,7 @@ int mndwait(pid_t last_p, int cmd_nmb)
 	return (status_check(last_stat));
 }
 
-void child_ex(char *path, t_cmd_line *kid, char **envp)
+void child_ex(char *path, t_cmd_line *kid, t_minishell *shelly)
 {
 	sig_mode(CHILD);
 	if (kid->prevfd != -1)
@@ -90,13 +90,13 @@ void child_ex(char *path, t_cmd_line *kid, char **envp)
 	}
 	if (!kid->cmds || !kid->cmds[0])
 		exit(0);
-	path = relative_path(kid, envp);
+	path = relative_path(kid, shelly);
 	if (!path)
 	{
 		mndp_log_err("Command not found\n", kid->cmds[0]);
 		exit(127);
 	}
-	execve(path, kid->cmds, envp);
+	execve(path, kid->cmds, shelly->minienvp);
 	mndp_log_err("Execution failed!\n", kid->cmds[0]);
 	exit(127);
 }

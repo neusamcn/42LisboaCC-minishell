@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 16:25:12 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 18:17:37 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,31 @@
 // split key=value
 // dont exit the shell
 
-int myexport(t_cmd_line *exp, char **envp)
+int	myexport(t_cmd_line *exp, t_minishell *shelly)
 {
-    int i;
-    int exported;
-    t_export ex;
+	int			i;
+	int			exported;
+	t_export	ex;
 
-    if (exp->cmds[1] == NULL)
-    {
-        pexp(envp);
-        return (0);
-    }
-    i = 0;
-    while (exp->cmds[i])
-    {
-        exported = parse_exp_arg(exp->cmds[i]);
-        if (exported != -1)
-        {
-            ex.arg = exp->cmds[i];
-            ex.flag = exported;
-            ex.envp = envp;
-            envp = exp_flag(&ex);
-        }
-        i++;
-    }
-    return (0);
+	if (exp->cmds[1] == NULL)
+	{
+		pexp(shelly);
+		return (0);
+	}
+	i = 1;
+	while (exp->cmds[i])
+	{
+		exported = parse_exp_arg(exp->cmds[i]);
+		if (exported != -1)
+		{
+			ex.arg = exp->cmds[i];
+			ex.flag = exported;
+			ex.envp = shelly->minienvp;
+			shelly->minienvp = exp_flag(&ex);
+		}
+		i++;
+	}
+	return (0);
 }
 
 int parse_exp_arg(char *arg)
@@ -68,14 +68,18 @@ int parse_exp_arg(char *arg)
 char **exp_flag(t_export *exp)
 {
     char **split;
+    int i;
 
+    i = -1;
     if (exp->flag == 0)
     {
         split = ft_split(exp->arg, '=');
         if (split)
         {
             exp->envp = exp_minienv(exp, split[0], split[1], -1);
-            free(split);
+            while (split[i++])
+                free(split[i]);
+            free(split[i]);
         }
     }
     else if (exp->flag == 1)

@@ -6,13 +6,13 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 18:08:07 by megiazar          #+#    #+#             */
-/*   Updated: 2026/04/25 15:31:59 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 16:58:37 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "execution.h"
 
-int myenv(t_cmd_line *cmd, char **envp)
+int myenv(t_cmd_line *cmd, t_minishell *shelly)
 {
 	size_t i;
 
@@ -22,10 +22,10 @@ int myenv(t_cmd_line *cmd, char **envp)
 		return (1);
 	}
 	i = 0;
-	while (envp && envp[i])
+	while (shelly->minienvp && shelly->minienvp[i])
 	{
-		if (ft_strchr(envp[i], '='))
-			ft_putendl_fd(envp[i], 1);
+		if (ft_strchr(shelly->minienvp[i], '='))
+			ft_putendl_fd(shelly->minienvp[i], 1);
 		i++;
 	}
 	return (0);

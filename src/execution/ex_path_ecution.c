@@ -6,13 +6,13 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/04/25 17:10:52 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 16:59:35 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-char *relative_path(t_cmd_line *cmd_line, char **envp)
+char *relative_path(t_cmd_line *cmd_line, t_minishell *shelly)
 {
     int i;
     char *abs_path;
@@ -21,10 +21,10 @@ char *relative_path(t_cmd_line *cmd_line, char **envp)
     abs_path = absolute_path(cmd_line);
     if (abs_path)
         return abs_path;
-    while (envp[i])
+    while (shelly->minienvp[i])
     {
-        if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-            return paths_helper(cmd_line, envp[i] + 5);
+        if (ft_strncmp(shelly->minienvp[i], "PATH=", 5) == 0)
+            return paths_helper(cmd_line, shelly->minienvp[i] + 5);
         i++;
     }
     return NULL;

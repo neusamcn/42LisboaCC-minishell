@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 14:59:05 by megiazar          #+#    #+#             */
-/*   Updated: 2025/04/25 16:31:47 by megiazar         ###   ########.fr       */
+/*   Created: 2025/05/09 22:14:51 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2025/05/10 22:48:28 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,10 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	int		i;
-	int		size;
+	t_list	*lastnode;
 
-	i = 0;
-	if (!lst)
-		return (NULL);
-	size = ft_lstsize(lst);
-	while (i < size - 1)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (lst);
+	lastnode = lst;
+	while (lastnode && lastnode->next != NULL)
+		lastnode = lastnode->next;
+	return (lastnode);
 }
-/*
-int	main(void)
-{
-	char	*str = "First child";
-	char	*str2 = "Middle child";
-	char	*str3 = "Youngest child";
-
-	t_list	*node1 = ft_lstnew(str);
-	t_list	*node2 = ft_lstnew(str2);
-	t_list	*node3 = ft_lstnew(str3);
-
-	node1->next = node2;
-	node2->next = node3;
-	node3->next = NULL;
-
-	t_list	*last = ft_lstlast(node1);
-	printf("The last string iiiiiis %s\n", (char *)last->content);
-	free(node1);
-	free(node2);
-	free(node3);
-	return (0);
-}*/

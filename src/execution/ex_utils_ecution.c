@@ -6,20 +6,20 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/04/22 15:03:23 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 17:20:35 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-char    *abs_or_rel_p(t_cmd_line *c, char **envp)
+char    *abs_or_rel_p(t_cmd_line *c, t_minishell *shelly)
 {
 	char *p;
 	
 	p = c->cmds[0];
 	if (ft_strchr(p, '/'))
 		return (absolute_path(c));
-	return (relative_path(c, envp));
+	return (relative_path(c, shelly));
 }
 
 bool if_redir(t_cmd_line *s)

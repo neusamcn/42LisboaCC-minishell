@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 17:12:08 by megiazar          #+#    #+#             */
-/*   Updated: 2025/04/27 14:36:57 by megiazar         ###   ########.fr       */
+/*   Created: 2025/05/09 22:15:51 by ncruz-ne          #+#    #+#             */
+/*   Updated: 2025/05/10 22:48:28 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,14 @@
 
 void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
+	t_list	*currentnode;
+
+	currentnode = lst;
 	if (!lst || !f)
 		return ;
-	while (lst)
+	while (currentnode != NULL)
 	{
-		f(lst->content);
-		lst = lst->next;
+		f(currentnode->content);
+		currentnode = currentnode->next;
 	}
 }
-/*
-static void	ft_example(void *ptr)
-{
-	printf("%s\n", "AIII PAPI"); 
-}
-
-int	main(void)
-{
-	t_list	*node = ft_lstnew("hi");
-	t_list	*node2 = ft_lstnew("bye");
-
-	node->next = node2;
-	node2->next = NULL;
-
-	t_list	*tmp = node;
-	while (tmp)
-	{
-		printf("%s\n", (char *)tmp->content);
-		tmp = tmp->next;
-	}
-	tmp = node;
-	ft_lstiter(tmp, ft_example);
-	free(node);
-	free(node2);
-	return (0);
-}*/

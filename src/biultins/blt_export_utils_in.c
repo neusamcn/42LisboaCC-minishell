@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/04/29 15:28:03 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 18:15:19 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ void pexp_var(char *env_entry)
     }
 }
 
-void    pexp(char **envp)
+void    pexp(t_minishell *shelly)
 {
     int i;
 
     i = 0;
-    while (envp[i])
+    while (shelly->minienvp[i])
     {
-        pexp_var(envp[i]);
+        pexp_var(shelly->minienvp[i]);
         i++;
     }
 }
@@ -61,3 +61,4 @@ char	*ft_free_strjoin(char *s1, char *s2)
 	free(s1);
 	return (res);
 }
+

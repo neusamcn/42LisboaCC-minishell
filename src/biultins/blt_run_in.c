@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 21:00:17 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 16:22:47 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/29 16:56:52 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ int are_you_builtin(t_cmd_line *cmd_line)
 	return (EXTRENAL);
 }
 
-int r_bltn(t_cmd_line *cmd_line, char **envp)
+int r_bltn(t_cmd_line *cmd_line, t_minishell *shelly)
 {
     if (!cmd_line || !cmd_line->cmds || !cmd_line->cmds[0])
         return (1);
     if (!ft_strcmp(cmd_line->cmds[0], ECHO))
-        return (myecho(cmd_line, envp));
+        return (myecho(cmd_line, shelly));
     if (!ft_strcmp(cmd_line->cmds[0], ENV))
-        return (myenv(cmd_line, envp));
+        return (myenv(cmd_line, shelly));
     if (!ft_strcmp(cmd_line->cmds[0], EXPORT))
-        return (myexport(cmd_line, envp));
+        return (myexport(cmd_line, shelly));
     return (1);
 }
