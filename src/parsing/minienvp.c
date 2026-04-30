@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minienvp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/30 17:53:29 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/04/30 19:11:38 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
 
 // Neusa, am i allowed to change and allocate memory?
 static t_minishell	*set_minimal_minienvp(t_minishell *minishell)

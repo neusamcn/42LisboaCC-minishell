@@ -42,7 +42,6 @@ static void add_redir(t_cmd_line *current, t_redir_type type, char *filename, ch
 		tmp = tmp->next;
 	tmp->next = new;
 }
-
 t_cmd_line *fake_parse(char *line)
 {
 	char        **tokens;
@@ -56,6 +55,7 @@ t_cmd_line *fake_parse(char *line)
 		return NULL;
 	head = malloc(sizeof(t_cmd_line));
 	ft_memset(head, 0, sizeof(t_cmd_line));
+	head->redir.xd_fd = -1;        // <-- ADD
 	head->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
 	current = head;
 	cmd_i = 0;
@@ -67,6 +67,7 @@ t_cmd_line *fake_parse(char *line)
 			current->cmds[cmd_i] = NULL;
 			current->next = malloc(sizeof(t_cmd_line));
 			ft_memset(current->next, 0, sizeof(t_cmd_line));
+			current->next->redir.xd_fd = -1;   // <-- ADD
 			current->next->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
 			current = current->next;
 			cmd_i = 0;
@@ -125,8 +126,6 @@ void	exit_cleanup(int exit_status, t_minishell *minishell)
 	free(minishell);
 	exit(exit_status);
 }
-
-
 
 //changing envp(initializing shell's envp (copied))
 int	main(int ac, char **av, char **envp)
