@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 20:59:12 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/30 21:18:18 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,5 +175,9 @@ char	**exp_minienv(t_export *mini, char *key, char *value, int i);
 void 	pexp_var(char *env_entry);
 void    pexp(t_minishell *shelly);
 char	*ft_free_strjoin(char *s1, char *s2);
+
+
+// 								PWD.                                       //
+int	mypwd(t_cmd_line *cmd, t_minishell *shelly);
 
 # endif
