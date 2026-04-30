@@ -87,6 +87,8 @@ t_cmd_line *fake_parse(char *line)
 	return head;
 }
 
+// Neusa, if minishell is invalid -? it crashed
+/*
 void	exit_cleanup(int exit_status, t_minishell *minishell)
 {
 	int	i;
@@ -94,29 +96,51 @@ void	exit_cleanup(int exit_status, t_minishell *minishell)
 	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
 	clear_history();
 	i = 0;
+	// segf if mini is NULL
 	while (minishell->minienvp[i])
 		free(minishell->minienvp[i++]);
 	free(minishell->minienvp);
-	// TODO: function to close all previously opened fd?
+	// TODO: function to close all previously opened fd? // the OS is closing them
+	// automatically on exit()
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	// TODO: can i close stderr before sending an exit status?
+	close(STDERR_FILENO); // closing it bad idea here
+	// TODO: can i close stderr before sending an exit status? // no
+	exit(exit_status);
+}*/
+
+void	exit_cleanup(int exit_status, t_minishell *minishell)
+{
+	int	i;
+
+	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
+	clear_history();
+	i = 0;
+	if (minishell)
+	{
+		while (minishell->minienvp[i])
+			free(minishell->minienvp[i++]);
+		free(minishell->minienvp);	
+	}
+	free(minishell);
 	exit(exit_status);
 }
 
+
+
+//changing envp(initializing shell's envp (copied))
 int	main(int ac, char **av, char **envp)
 {
 	char		*prompt;
 	t_cmd_line	*cmd_line;
-    t_minishell shelly;
+    t_minishell *shelly;
 
 	(void)ac;
 	(void)av;
 	sig_mode(INTERACTIVE);
 	if (!envp)
 		write(1, "envp is NULL!\n", 14);
-    set_minienvp(envp);
+    shelly = set_minienvp(envp);
 	while (1)
 	{
 		prompt = readline("minishell$ ");
@@ -133,7 +157,7 @@ int	main(int ac, char **av, char **envp)
 			free(prompt);
 			continue ;
 		}
-		exec_loop(cmd_line, &shelly);
+		exec_loop(cmd_line, shelly);
 		free(prompt);
 		sig_mode(INTERACTIVE);
 	}

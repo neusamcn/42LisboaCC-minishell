@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 17:19:41 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/30 18:47:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void child_ex(char *path, t_cmd_line *kid, t_minishell *shelly)
 {
 	sig_mode(CHILD);
 	if (kid->prevfd != -1)
-		dup2(kid->prevfd, 0);
+		dup2(kid->prevfd, STDIN_FILENO);
 	if (kid->next)
-		dup2(kid->pipefd[1], 1);
+		dup2(kid->pipefd[1], STDOUT_FILENO);
 	if (kid->prevfd != -1)
 		close(kid->prevfd);
 	if (kid->next)

@@ -3,26 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minienvp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/29 18:37:14 by megi             ###   ########.fr       */
+/*   Updated: 2026/04/30 17:53:29 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-// TODO: remove tester:
-static void	print_envp_vars(char **envp)
-{
-	int	i = 0;
-	while (envp[i])
-	{
-		ft_printf(MAGENTA"%d"COLOR_RESET": %s\n\n", i, envp[i]);
-		i++;
-	}
-}
 
+// Neusa, am i allowed to change and allocate memory?
 static t_minishell	*set_minimal_minienvp(t_minishell *minishell)
 {
 	char	*cwd;
@@ -33,7 +24,7 @@ static t_minishell	*set_minimal_minienvp(t_minishell *minishell)
 	minishell->minienvp[0] = ft_strdup(path);
 	if (!(minishell->minienvp[0]))
 		exit_cleanup(EXIT_FAILURE, minishell);
-	cwd = NULL;
+	cwd = NULL; // should allocate memory for this, = malloc_protect
 	getcwd_protec(cwd, PATH_MAX, minishell);
 	// TODO: if result is nil, cwd = "\"?
 	minishell->minienvp[1] = ft_strjoin("PWD=", cwd);
@@ -88,7 +79,7 @@ t_minishell	*copy_envp(char **envp, t_minishell *minishell)
 	{
 		minishell->minienvp[i] = eval_set_strminienvp(envp, minishell, i);
 		if (!(minishell->minienvp[i]))
-		{
+		{// Neusa, was it debugging output? 
 			print_err_msg("setting minienvp failed");
 			exit_cleanup(EXIT_FAILURE, minishell);
 		}
@@ -98,15 +89,14 @@ t_minishell	*copy_envp(char **envp, t_minishell *minishell)
 	return (minishell);
 }
 
+
 t_minishell	*set_minienvp(char **envp)
 {
 	t_minishell	*minishell;
 
-	print_envp_vars(envp);
 	minishell = malloc_protec(sizeof(t_minishell), NULL);
 	if (!*envp)
 		return (set_minimal_minienvp(minishell));
 	minishell = copy_envp(envp, minishell);
-	print_envp_vars(minishell->minienvp);
 	return (minishell);
 }
