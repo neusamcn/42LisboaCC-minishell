@@ -13,26 +13,47 @@ static int ft_arrlen(char **arr)
 	return (i);
 }
 
+static char *expand_var(char *token, t_minishell *shelly)
+{
+	char	*key;
+	char	*value;
+	int		i;
+
+	if (token[0] != '$')
+		return (ft_strdup(token));
+	key = token + 1;
+	if (!*key)
+		return (ft_strdup("$"));
+	i = 0;
+	while (shelly->minienvp[i])
+	{
+		if (ft_strncmp(shelly->minienvp[i], key, ft_strlen(key)) == 0
+			&& shelly->minienvp[i][ft_strlen(key)] == '=')
+		{
+			value = ft_strchr(shelly->minienvp[i], '=') + 1;
+			return (ft_strdup(value));
+		}
+		i++;
+	}
+	return (ft_strdup(""));
+}
+
 static void add_redir(t_cmd_line *current, t_redir_type type, char *filename, char *delimiter)
 {
 	t_redirects *new;
 	t_redirects *tmp;
-
-	write(2, "add_redir called, type: ", 24);
-	if (type == OUT) write(2, "OUT\n", 4);
-	else if (type == HEREDOC) write(2, "HEREDOC\n", 8);
-	else if (type == IN) write(2, "IN\n", 3);
-	else if (type == APPEND) write(2, "APPEND\n", 7);
 
 	if (current->redir.type == NONE)
 	{
 		current->redir.type = type;
 		current->redir.filename = filename;
 		current->redir.delimiter = delimiter;
+		current->redir.xd_fd = -1;
 		return ;
 	}
 	new = malloc(sizeof(t_redirects));
 	ft_memset(new, 0, sizeof(t_redirects));
+	new->xd_fd = -1;
 	new->type = type;
 	new->filename = filename;
 	new->delimiter = delimiter;
@@ -42,21 +63,34 @@ static void add_redir(t_cmd_line *current, t_redir_type type, char *filename, ch
 		tmp = tmp->next;
 	tmp->next = new;
 }
-t_cmd_line *fake_parse(char *line)
+
+static t_cmd_line	*new_node(int token_count)
+{
+	t_cmd_line	*node;
+
+	node = malloc(sizeof(t_cmd_line));
+	ft_memset(node, 0, sizeof(t_cmd_line));
+	node->redir.xd_fd = -1;
+	node->redir.type = NONE;
+	node->prevfd = -1;
+	node->cmds = malloc(sizeof(char *) * (token_count + 1));
+	return (node);
+}
+
+t_cmd_line *fake_parse(char *line, t_minishell *shelly)
 {
 	char        **tokens;
 	t_cmd_line  *head;
 	t_cmd_line  *current;
 	int         i;
 	int         cmd_i;
+	int         token_count;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens)
-		return NULL;
-	head = malloc(sizeof(t_cmd_line));
-	ft_memset(head, 0, sizeof(t_cmd_line));
-	head->redir.xd_fd = -1;        // <-- ADD
-	head->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
+		return (NULL);
+	token_count = ft_arrlen(tokens);
+	head = new_node(token_count);
 	current = head;
 	cmd_i = 0;
 	i = 0;
@@ -65,10 +99,7 @@ t_cmd_line *fake_parse(char *line)
 		if (ft_strcmp(tokens[i], "|") == 0)
 		{
 			current->cmds[cmd_i] = NULL;
-			current->next = malloc(sizeof(t_cmd_line));
-			ft_memset(current->next, 0, sizeof(t_cmd_line));
-			current->next->redir.xd_fd = -1;   // <-- ADD
-			current->next->cmds = malloc(sizeof(char *) * (ft_arrlen(tokens) + 1));
+			current->next = new_node(token_count);
 			current = current->next;
 			cmd_i = 0;
 		}
@@ -81,15 +112,15 @@ t_cmd_line *fake_parse(char *line)
 		else if (ft_strcmp(tokens[i], "<<") == 0 && tokens[i + 1])
 			add_redir(current, HEREDOC, NULL, tokens[++i]);
 		else
-			current->cmds[cmd_i++] = tokens[i];
+			current->cmds[cmd_i++] = expand_var(tokens[i], shelly);
 		i++;
 	}
 	current->cmds[cmd_i] = NULL;
-	return head;
+	free(tokens);
+	return (head);
 }
 
-// Neusa, if minishell is invalid -? it crashed
-/*
+/* // Neusa, if minishell is invalid -? it crashed
 void	exit_cleanup(int exit_status, t_minishell *minishell)
 {
 	int	i;
@@ -108,7 +139,7 @@ void	exit_cleanup(int exit_status, t_minishell *minishell)
 	close(STDERR_FILENO); // closing it bad idea here
 	// TODO: can i close stderr before sending an exit status? // no
 	exit(exit_status);
-}*/
+} */
 
 void	exit_cleanup(int exit_status, t_minishell *minishell)
 {
@@ -150,7 +181,7 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (*prompt)
 			add_history(prompt);
-		cmd_line = fake_parse(prompt);
+		cmd_line = fake_parse(prompt, shelly);
 		if (!cmd_line)
 		{
 			free(prompt);
