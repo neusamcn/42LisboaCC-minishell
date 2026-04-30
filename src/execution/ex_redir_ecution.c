@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redir_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 13:59:35 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/04/30 20:59:20 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ static void child_hd(t_redirects *redir, int pipefd[2])
 	close(pipefd[1]);
 	exit(0);
 }
-
 
 void heredoc(t_redirects *redir)
 {
