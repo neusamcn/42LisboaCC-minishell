@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 18:47:14 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/04/30 20:58:32 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ int mndwait(pid_t last_p, int cmd_nmb)
 	return (status_check(last_stat));
 }
 
-void child_ex(char *path, t_cmd_line *kid, t_minishell *shelly)
+void	child_ex_fds(t_cmd_line *kid)
 {
-	sig_mode(CHILD);
 	if (kid->prevfd != -1)
 		dup2(kid->prevfd, STDIN_FILENO);
 	if (kid->next)
@@ -83,20 +82,29 @@ void child_ex(char *path, t_cmd_line *kid, t_minishell *shelly)
 		close(kid->pipefd[0]);
 		close(kid->pipefd[1]);
 	}
-	if (if_redir(kid))
-	{
-		if (do_redri(&kid->redir) != 0)
-			exit(1);
-	}
+	if (if_redir(kid) && do_redri(&kid->redir) != 0)
+		exit(1);
+}
+
+void	child_ex(char *path, t_cmd_line *kid, t_minishell *shelly)
+{
+	sig_mode(CHILD);
+	child_ex_fds(kid);
 	if (!kid->cmds || !kid->cmds[0])
 		exit(0);
+	if (are_you_builtin(kid) == 0)
+	{
+		r_bltn(kid, shelly);
+		exit(get_signal_stat());
+	}
 	path = relative_path(kid, shelly);
 	if (!path)
 	{
-		mndp_log_err("Command not found\n", kid->cmds[0]);
+		mndp_log_err("command not found\n", kid->cmds[0]);
 		exit(127);
 	}
 	execve(path, kid->cmds, shelly->minienvp);
-	mndp_log_err("Execution failed!\n", kid->cmds[0]);
+	mndp_log_err("execution failed!\n", kid->cmds[0]);
 	exit(127);
 }
+
