@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 21:18:18 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/01 16:43:42 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define CD "cd"
 # define ECHO "echo" //done
 # define EXIT "exit"
-# define PWD "pwd"
+# define PWD "pwd" // done
 # define ENV "env" //done
 # define EXPORT "export" //dome
 # define UNSET "unset"
@@ -45,12 +45,6 @@ typedef enum e_stdio
 	READ,
 	WRITE
 }   t_stdio;
-
-typedef enum e_fd
-{
-	FD_CLOSED = -1,
-	FD_OPEN
-}	t_fd;
 
 typedef enum e_types_of_redirections
 {
@@ -74,7 +68,6 @@ typedef enum e_mode
 	CHILD, // fork + execve
 	MNDWAIT
 }	e_mode_for_sig;
-
 
 typedef struct s_redirections
 {

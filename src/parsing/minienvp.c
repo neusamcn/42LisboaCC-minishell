@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/30 19:11:38 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/01 16:46:06 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_minishell	*copy_envp(char **envp, t_minishell *minishell)
 	{
 		minishell->minienvp[i] = eval_set_strminienvp(envp, minishell, i);
 		if (!(minishell->minienvp[i]))
-		{// Neusa, was it debugging output? 
+		{
 			print_err_msg("setting minienvp failed");
 			exit_cleanup(EXIT_FAILURE, minishell);
 		}
