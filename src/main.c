@@ -6,29 +6,29 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 13:11:54 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 13:34:21 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "../include/minishell.h"
 #include "../include/parsing.h"
 
-void	exit_cleanup(int exit_status, t_minishell *minishell)
+void	exit_cleanup(int exit_status, t_minishell *shelly)
 {
 	int	i;
 
-	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
+	ft_putendl_fd("Exiting shelly...", STDOUT_FILENO);
 	rl_clear_history();
 	i = 0;
-	while (minishell->minienvp[i])
-		free(minishell->minienvp[i++]);
-	free(minishell->minienvp);
+	while (shelly->minienvp[i])
+		free(shelly->minienvp[i++]);
+	free(shelly->minienvp);
 	exit(exit_status);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_minishell	*minishell;
+	t_minishell	*shelly;
 
 	if (ac != 1 || av[1])
 	{
@@ -39,7 +39,7 @@ int	main(int ac, char **av, char **envp)
 		exit(EXIT_SUCCESS);
 	}
 	ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
-	minishell = init(envp);
+	shelly = init(envp);
 	// TODO: add **av/*av/av[0] as arg?
-	exit_cleanup(EXIT_SUCCESS, minishell);
+	exit_cleanup(EXIT_SUCCESS, shelly);
 }

@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/26 22:37:14 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 13:27:24 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,13 @@ typedef struct s_cmd
 
 // TODO: review functions that should be general =>> minishell.h & =/= files
 /* Wrapper functions - maybe Protected std functions? */
-char		*getcwd_protec(char *buf, size_t size, t_minishell *minishell);
-void		*malloc_protec(size_t size, t_minishell *minishell);
+char		*getcwd_protec(char *buf, size_t size, t_minishell *shelly);
+void		*malloc_protec(size_t size, t_minishell *shelly);
 void		*ft_calloc_protec(size_t nmemb, size_t size);
 
 /* Parsing functions */
 t_minishell	*init(char **envp);
-char		*put_prompt(t_minishell *minishell, char *prompt);
+char		*put_prompt(t_minishell *shelly, char *prompt);
 t_minishell	*set_minienvp(char **envp);
 // void	read_eval_print_loop(char **minienvp); // currently static
 // void	non_interactive_mode(void); // currently static

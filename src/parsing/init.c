@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/28 20:58:03 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 13:32:38 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	quote_err_check(char *input_str)
 
 // TODO: add to prompt.c ?
 // return full input with all input strs appended
-static char	*put_2ary_prompt(char *input_str, t_minishell *minishell)
+static char	*put_2ary_prompt(char *input_str, t_minishell *shelly)
 {
 	char	*trimmed_input;
 	char	*extra_prompt;
@@ -79,12 +79,12 @@ static char	*put_2ary_prompt(char *input_str, t_minishell *minishell)
 		free(trimmed_input);
 		extra_prompt = readline("> ");
 		if (!extra_prompt)
-			exit_cleanup(EXIT_SUCCESS, minishell);
+			exit_cleanup(EXIT_SUCCESS, shelly);
 		input_str_nl = ft_strjoin(full_prompt, "\n");
 		free(full_prompt);
 		full_prompt = ft_strjoin(input_str_nl, extra_prompt);
 		if (!full_prompt)
-			return (free(input_str_nl), free(extra_prompt))
+			return (free(input_str_nl), free(extra_prompt));
 		free(input_str_nl);
 		free(extra_prompt);
 		// check if another 2ndary prompt isn't needed
@@ -100,7 +100,7 @@ static char	*put_2ary_prompt(char *input_str, t_minishell *minishell)
 	return (full_prompt);
 }
 
-static void	read_eval_print_loop(t_minishell *minishell)
+static void	read_eval_print_loop(t_minishell *shelly)
 {
 	char	*input_str;
 	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
@@ -108,12 +108,12 @@ static void	read_eval_print_loop(t_minishell *minishell)
 	set_signals_interactive_parent();
 	while (1)
 	{
-		input_str = put_prompt(minishell, "minishelly");
+		input_str = put_prompt(shelly, "minishelly");
 		if (!input_str)
-			exit_cleanup(EXIT_SUCCESS, minishell);
+			exit_cleanup(EXIT_SUCCESS, shelly);
 		if (*input_str)
 		{
-			input_str = put_2ary_prompt(input_str, minishell);
+			input_str = put_2ary_prompt(input_str, shelly);
 			add_history(input_str);
 			tokenize_input(input_str);
 			// TODO: tokenize + parse + execute here
@@ -122,7 +122,7 @@ static void	read_eval_print_loop(t_minishell *minishell)
 	}
 }
 
-static void	non_interactive_mode(t_minishell *minishell)
+static void	non_interactive_mode(t_minishell *shelly)
 {
 	char	*line;
 
@@ -133,25 +133,25 @@ static void	non_interactive_mode(t_minishell *minishell)
 		if (!line)
 			break ;
 		// TODO: tokenize + parse + execute here
-		(void)minishell;
+		(void)shelly;
 		free(line);
 	}
 }
 
 t_minishell	*init(char **envp)
 {
-	t_minishell	*minishell;
+	t_minishell	*shelly;
 
-	minishell = set_minienvp(envp);
-	// TODO: initialise other elements of *minishell
+	shelly = set_minienvp(envp);
+	// TODO: initialise other elements of *shelly
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
-		read_eval_print_loop(minishell);
+		read_eval_print_loop(shelly);
 	else
-		non_interactive_mode(minishell);
+		non_interactive_mode(shelly);
 		// TODO: does this mode not need minienvp?
 		// Read line from stdin
 		// Parse + execute
 		// Repeat until EOF
 		// Exit with proper status
-	return (minishell);
+	return (shelly);
 }
