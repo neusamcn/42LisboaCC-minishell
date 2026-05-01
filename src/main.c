@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/05 16:37:51 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 13:11:54 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@ void	exit_cleanup(int exit_status, t_minishell *minishell)
 	while (minishell->minienvp[i])
 		free(minishell->minienvp[i++]);
 	free(minishell->minienvp);
-	// TODO: function to close all previously opened fd?
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	// TODO: can i close stderr before sending an exit status?
 	exit(exit_status);
 }
 
