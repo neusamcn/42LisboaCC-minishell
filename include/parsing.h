@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 13:27:24 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 14:33:26 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 // TODO: create separate header?
 
 // TODO: use here or in minishell.h?
-// typedef struct s_minishell
+// typedef struct s_shelly
 // {
-// 	char	**minienvp;
+// 	char	**shelly_envp;
 // 	int		*open_fd;
 // 	void	*malloc_ptrs;
-// }	t_minishell;
+// }	t_shelly;
 
 // TODO: use here or in execution.h?
 typedef enum e_token_type
@@ -102,7 +102,7 @@ typedef struct s_redir
 	struct s_redir	*next; // Linked list of redirections in lexical order.
 }	t_redir;
 
-// TODO: use here or in execution.h ? Milena check struct_notes.md
+// TODO: use here or in execution.h ? Milena check struct_notes.md pls
 // one command in a pipeline. This represents a single simple command, with args + its redirections.
 
 typedef struct s_cmd
@@ -125,15 +125,16 @@ typedef struct s_cmd
 
 // TODO: review functions that should be general =>> minishell.h & =/= files
 /* Wrapper functions - maybe Protected std functions? */
-char		*getcwd_protec(char *buf, size_t size, t_minishell *shelly);
-void		*malloc_protec(size_t size, t_minishell *shelly);
+char		*getcwd_protec(char *buf, size_t size, t_shelly *shelly);
+void		*malloc_protec(size_t size, t_shelly *shelly);
 void		*ft_calloc_protec(size_t nmemb, size_t size);
 
 /* Parsing functions */
-t_minishell	*init(char **envp);
-char		*put_prompt(t_minishell *shelly, char *prompt);
-t_minishell	*set_minienvp(char **envp);
-// void	read_eval_print_loop(char **minienvp); // currently static
+t_shelly	*init(char **envp);
+char		*put_prompt(t_shelly *shelly, char *prompt);
+t_shelly	*set_minienvp(char **envp);
+char		*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
+// void	read_eval_print_loop(char **shelly_envp); // currently static
 // void	non_interactive_mode(void); // currently static
 // void	set_sigaction(int signo, void (*handler)(int), int flags); // currently static
 // void	sigint_prompt_handler(int signal); // currently static

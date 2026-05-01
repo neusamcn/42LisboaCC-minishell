@@ -1,19 +1,19 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/04/08 19:48:28 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/01 15:04:45 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected the path here
 
 //PUSH IN MAIN BRUNCH
-//TODO: use minienvp instead of envp
+//TODO: use shelly_envp instead of envp
 int exec(t_pipe *cmd_line, char **envp, int status)
 {
     char    *cmd;

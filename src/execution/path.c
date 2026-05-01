@@ -1,19 +1,19 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/04/08 20:10:14 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/01 15:05:02 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected the path here
 
 // FILE TO PUSH
-//TODO: use minienvp instead of envp
+//TODO: use shelly_envp instead of envp
 //TODO: USE CLOSE_FD TRACKER
 
 char *path(t_pipe *cmd_line, char **envp)

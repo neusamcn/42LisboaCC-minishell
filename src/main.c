@@ -6,29 +6,29 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 13:34:21 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 14:21:55 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "../include/minishell.h"
 #include "../include/parsing.h"
 
-void	exit_cleanup(int exit_status, t_minishell *shelly)
+void	exit_cleanup(int exit_status, t_shelly *shelly)
 {
 	int	i;
 
 	ft_putendl_fd("Exiting shelly...", STDOUT_FILENO);
 	rl_clear_history();
 	i = 0;
-	while (shelly->minienvp[i])
-		free(shelly->minienvp[i++]);
-	free(shelly->minienvp);
+	while (shelly->shelly_envp[i])
+		free(shelly->shelly_envp[i++]);
+	free(shelly->shelly_envp);
 	exit(exit_status);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_minishell	*shelly;
+	t_shelly	*shelly;
 
 	if (ac != 1 || av[1])
 	{

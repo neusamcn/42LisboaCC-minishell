@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minienvp.c                                         :+:      :+:    :+:   */
+/*   shelly_envp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/05 22:24:24 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 14:20:13 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,53 @@ static void	print_envp_vars(char **envp)
 	}
 }
 
-static t_minishell	*set_minimal_minienvp(t_minishell *minishell)
+char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
+{
+	size_t	search_key_len;
+	char	*found_envp;
+	int		i;
+
+	if (!shelly || !shelly->shelly_envp || !envp_var_key)
+		return (""); // TODO: exit_cleanup() instead ?
+	search_key_len = ft_strlen(envp_var_key);
+	i = -1;
+	while ((found_envp = shelly->shelly_envp[++i]))
+	{
+		if (!ft_strncmp(found_envp, envp_var_key, search_key_len)
+			&& found_envp[search_key_len] == '=')
+			return (found_envp + search_key_len + 1);
+	}
+	return ("");
+}
+
+static t_shelly	*set_minimal_minienvp(t_shelly *shelly)
 {
 	char	*cwd;
 	char	*path;
 
-	minishell->minienvp = malloc_protec(sizeof(char *) * 5, minishell);
+	shelly->shelly_envp = malloc_protec(sizeof(char *) * 5, shelly);
 	path = "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
-	minishell->minienvp[0] = ft_strdup(path);
-	if (!(minishell->minienvp[0]))
-		exit_cleanup(EXIT_FAILURE, minishell);
+	shelly->shelly_envp[0] = ft_strdup(path);
+	if (!(shelly->shelly_envp[0]))
+		exit_cleanup(EXIT_FAILURE, shelly);
 	cwd = NULL;
-	getcwd_protec(cwd, PATH_MAX, minishell);
+	getcwd_protec(cwd, PATH_MAX, shelly);
 	// TODO: if result is nil, cwd = "\"?
-	minishell->minienvp[1] = ft_strjoin("PWD=", cwd);
-	if (!(minishell->minienvp[1]))
-		exit_cleanup(EXIT_FAILURE, minishell);
-	minishell->minienvp[2] = ft_strdup("SHLVL=1");
-	if (!(minishell->minienvp[2]))
-		exit_cleanup(EXIT_FAILURE, minishell);
-	minishell->minienvp[3] = ft_strdup("HOME=");
-	if (!(minishell->minienvp[3]))
-		exit_cleanup(EXIT_FAILURE, minishell);
-	minishell->minienvp[4] = NULL;
+	shelly->shelly_envp[1] = ft_strjoin("PWD=", cwd);
+	if (!(shelly->shelly_envp[1]))
+		exit_cleanup(EXIT_FAILURE, shelly);
+	shelly->shelly_envp[2] = ft_strdup("SHLVL=1");
+	if (!(shelly->shelly_envp[2]))
+		exit_cleanup(EXIT_FAILURE, shelly);
+	shelly->shelly_envp[3] = ft_strdup("HOME=");
+	if (!(shelly->shelly_envp[3]))
+		exit_cleanup(EXIT_FAILURE, shelly);
+	shelly->shelly_envp[4] = NULL;
 	// TODO: set PATH, PWD, SHLVL, HOME in hashmap ?
-	return (minishell);
+	return (shelly);
 }
 
-static char	*eval_set_strminienvp(char **envp, t_minishell *minishell, int i)
+static char	*eval_set_strminienvp(char **envp, t_shelly *shelly, int i)
 {
 	int		shlvl_envp;
 	char	*shlvl_minienvp;
@@ -64,17 +83,17 @@ static char	*eval_set_strminienvp(char **envp, t_minishell *minishell, int i)
 		if (!shlvl_minienvp)
 		{
 			print_err_msg("ft_itoa() failed");
-			exit_cleanup(EXIT_FAILURE, minishell);
+			exit_cleanup(EXIT_FAILURE, shelly);
 		}
-		minishell->minienvp[i] = ft_strjoin("SHLVL=", shlvl_minienvp);
+		shelly->shelly_envp[i] = ft_strjoin("SHLVL=", shlvl_minienvp);
 		free(shlvl_minienvp);
 	}
 	else
-		minishell->minienvp[i] = ft_strdup(envp[i]);
-	return (minishell->minienvp[i]);
+		shelly->shelly_envp[i] = ft_strdup(envp[i]);
+	return (shelly->shelly_envp[i]);
 }
 
-static t_minishell	*copy_envp(char **envp, t_minishell *minishell)
+static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 {
 	size_t		envp_sz;
 	size_t		i;
@@ -82,31 +101,31 @@ static t_minishell	*copy_envp(char **envp, t_minishell *minishell)
 	envp_sz = 0;
 	while (envp[envp_sz++])
 		;
-	minishell->minienvp = malloc_protec(sizeof(char *) * envp_sz, minishell);
+	shelly->shelly_envp = malloc_protec(sizeof(char *) * envp_sz, shelly);
 	i = 0;
 	while (envp[i])
 	{
-		minishell->minienvp[i] = eval_set_strminienvp(envp, minishell, i);
-		if (!(minishell->minienvp[i]))
+		shelly->shelly_envp[i] = eval_set_strminienvp(envp, shelly, i);
+		if (!(shelly->shelly_envp[i]))
 		{
-			print_err_msg("setting minienvp failed");
-			exit_cleanup(EXIT_FAILURE, minishell);
+			print_err_msg("setting shelly_envp failed");
+			exit_cleanup(EXIT_FAILURE, shelly);
 		}
 		i++;
 	}
-	minishell->minienvp[i] = NULL;
-	return (minishell);
+	shelly->shelly_envp[i] = NULL;
+	return (shelly);
 }
 
-t_minishell	*set_minienvp(char **envp)
+t_shelly	*set_minienvp(char **envp)
 {
-	t_minishell	*minishell;
+	t_shelly	*shelly;
 
-	print_envp_vars(envp);
-	minishell = malloc_protec(sizeof(t_minishell), NULL);
+	print_envp_vars(envp); // TODO: delete tester
+	shelly = malloc_protec(sizeof(t_shelly), NULL);
 	if (!*envp)
-		return (set_minimal_minienvp(minishell));
-	minishell = copy_envp(envp, minishell);
-	print_envp_vars(minishell->minienvp);
-	return (minishell);
+		return (set_minimal_minienvp(shelly));
+	shelly = copy_envp(envp, shelly);
+	print_envp_vars(shelly->shelly_envp); // TODO: delete tester
+	return (shelly);
 }

@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/04/19 20:52:58 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:12:52 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <sys/wait.h> // Milena, I added this bc there was compilation error
 
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"
@@ -122,10 +123,14 @@ void 	pipe_handler(t_redirects *redir);
 //TO DELETE FOR PARSER
 void	print_err_msg(char *my_msg);
 void	p_log_err(char *cmd, char *msg);
-//void	exit_cleanup(int exit_status, t_minishell *minishell);
+//void	exit_cleanup(int exit_status, t_shelly *shelly);
 char	*getcwd_protec(char *buf, size_t size); // TODO: review, repeated from parsing.h
 int		ft_arrlen(char **arr);
 t_pipe 	*fake_parse(char *line);
+
+// Milena, I created this because of compilation error
+/* UTILS */
+int	ft_strcmp(const char *s1, const char *s2);
 
 # endif
 	

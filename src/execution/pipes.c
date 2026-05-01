@@ -6,11 +6,11 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/19 19:19:51 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:05:05 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected the path here
 
 /* ls stdout ──pipe1──► grep stdin
               grep stdout ──pipe2──► wc stdin
@@ -146,7 +146,7 @@ void pipe_handler(t_redirects *redir)
     }
 }
 
-//TODO: use minienvp instead of envp
+//TODO: use shelly_envp instead of envp
 
 int exec_pipeline(t_pipe *cmd_line, char **envp, int status)
 {

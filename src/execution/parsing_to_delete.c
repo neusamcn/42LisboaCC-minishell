@@ -1,16 +1,16 @@
 #include "../../include/minishell.h"
 
 //FILE TO DELETE
-void	exit_cleanup(int exit_status, t_minishell *minishell)
+void	exit_cleanup(int exit_status, t_shelly *minishell)
 {
 	int	i;
 
 	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
 	rl_clear_history();
 	i = 0;
-	while (minishell->minienvp[i])
-		free(minishell->minienvp[i++]);
-	free(minishell->minienvp);
+	while (minishell->shelly_envp[i])
+		free(minishell->shelly_envp[i++]);
+	free(minishell->shelly_envp);
 	// TODO: function to close all previously opened fd?
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);

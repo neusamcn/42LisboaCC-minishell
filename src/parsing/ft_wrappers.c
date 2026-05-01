@@ -6,13 +6,13 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 23:44:25 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 13:28:07 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 13:49:48 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-char	*getcwd_protec(char *buf, size_t size, t_minishell *shelly)
+char	*getcwd_protec(char *buf, size_t size, t_shelly *shelly)
 {
 	if (!getcwd(buf, size))
 	{
@@ -23,7 +23,7 @@ char	*getcwd_protec(char *buf, size_t size, t_minishell *shelly)
 	return (buf);
 }
 
-void	*malloc_protec(size_t size, t_minishell *shelly)
+void	*malloc_protec(size_t size, t_shelly *shelly)
 {
 	void	*ptr;
 

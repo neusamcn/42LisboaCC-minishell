@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 00:04:41 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 13:30:12 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/01 14:48:21 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,7 @@ static char	*build_pretty_prompt(char *user, char *prompt, char *cwd)
 	return (full_prompt);
 }
 
-// TODO: change it to be more general? find key & get value? hashmap?
-static char	*find_user_minienvp(t_minishell *shelly)
-{
-	char	*user_minienvp;
-	int		i;
-
-	user_minienvp = NULL;
-	i = -1;
-	while (shelly->minienvp[++i] && !user_minienvp)
-		user_minienvp = ft_strnstr(shelly->minienvp[i], "USER=",
-				ft_strlen(shelly->minienvp[i]));
-	if (user_minienvp)
-		return (ft_strchr(user_minienvp, '=') + 1);
-	return ("user");
-}
-
-char	*put_prompt(t_minishell *shelly, char *prompt)
+char	*put_prompt(t_shelly *shelly, char *prompt)
 {
 	char	cwd[PATH_MAX];
 	char	*full_prompt;
@@ -62,7 +46,7 @@ char	*put_prompt(t_minishell *shelly, char *prompt)
 	char	*user;
 
 	getcwd_protec(cwd, PATH_MAX, shelly);
-	user = find_user_minienvp(shelly);
+	user = find_var_shellyenvp(shelly, "USER");
 	full_prompt = build_pretty_prompt(user, prompt, cwd);
 	input = readline(full_prompt);
 	free(full_prompt);
