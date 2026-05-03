@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/01 15:12:52 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/03 15:26:19 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-#define EXECUTION_H
+# ifndef EXECUTION_H
+# define EXECUTION_H
 
 # include "minishell.h"
 # include <unistd.h>
@@ -23,115 +23,156 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <signal.h>
-# include <sys/wait.h> // Milena, I added this bc there was compilation error
+# include <stdbool.h>
+# include <sys/wait.h>
 
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"
-# define ECHO "echo"
+# define ECHO "echo" //done
 # define EXIT "exit"
-# define PWD "pwd"
-# define ENV "env"
-# define EXPORT "export"
-# define UNSET "unset"
-# define DELIMETER "delimeter"
+# define PWD "pwd" // done
+# define ENV "env" //done
+# define EXPORT "export" //dome
+# define UNSET "unset" // done
 # define TRUE 0
 # define FALSE 1
 # define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
 
-// TODO: needed? or use default macros?
-typedef enum e_fds
-{
-	STDIN,
-	STDOUT
-}   t_fds;
+typedef struct s_minishell	t_minishell;
 
-typedef enum e_builts
+typedef enum e_stdio
 {
-	BUILTINS,
-	NON_BUILTINS
-}	t_builtins_check;
+	READ,
+	WRITE
+}   t_stdio;
 
-// TODO: use here or in parsing.h ?
 typedef enum e_types_of_redirections
 {
+	NONE, // 0
 	IN,  // < redir input to a cmd, taking input from a file
 	OUT, // > redir output to a file, and overwrites the file if it already exists
 	APPEND, // >> redir output top a file, append the output to the end of the file
 	HEREDOC, // <<
-	FD // TODO: should be somewhere else since it's not a redir type
 }	t_redir_type;
 
-// TODO: necessary? or use default macros?
-typedef enum e_signal_types
+typedef enum e_builts
 {
-	SIG_INT, // ctrl+c
-	SIG_QUIT // ctrl \+
-}	e_signal_types;
+	BUILTINS,
+	EXTRENAL
+}	t_builtins_check;
 
-// TODO: use here or in parsing.h ? Milena check struct_notes.md
+typedef enum e_mode
+{
+	INTERACTIVE, // prompt
+	BLT_EXECUTING, // no fork, no rl
+	CHILD, // fork + execve
+	MNDWAIT
+}	e_mode_for_sig;
+
 typedef struct s_redirections
 {
 	t_redir_type			type;
 	char					*filename;
-    char    				*delimiter;
+	char    				*delimiter;
+	int						fd[2];
+	int						xd_fd;
 	struct s_redirections	*next;
 }   t_redirects;
 
-// TODO: use here or in parsing.h ?
-typedef struct s_pipe
+typedef struct s_export 	t_export;
+
+typedef struct s_cmd_line
 {
-    char            **cmds;
-    t_redirects     redir;
-    struct s_pipe   *next;
-}   t_pipe;
+    char            	**cmds;
+	t_redirects     	redir;
+	int					pipefd[2];
+	int					prevfd;
+	struct s_export		*bltn_export;
+	struct s_cmd_line   *next;
+}   t_cmd_line;
 
-/* typedef struct s_execution
+typedef struct s_export
 {
-	t_builtin_cmd		builtins[12];
-	char				*cmd_name;
-	int					*pid;
-}	t_execution; */
+    char    *arg;
+    int     flag;
+	char 	*new_var;
+	char 	**envp;
+    char    **newenv;
+	struct s_cmd_line   *expline;
+}   t_export;
 
-// [ls] → [grep src] → [wc -l] → NULL 
+// 									PATH.C 									//
+char 	*relative_path(t_cmd_line *cmd_line, t_minishell *shelly);
+char 	*paths_helper(t_cmd_line *cmd_line, char *path_var);
+char 	*absolute_path(t_cmd_line *cmd_line);
 
-// PATH //
-char 	*path(t_pipe *cmd_line, char **envp);
-char 	*paths_helper(t_pipe *cmd_line, char *path_var);
-char 	*absolute_path(t_pipe *cmd_line);
-int 	free_path(char **paths);
+// 								EXECUTION.C 								// 
+void 	exec_loop(t_cmd_line *cmds, t_minishell *shelly);
+int		mommy_n_father(t_cmd_line *s, t_minishell *shelly);
+int 	lonely_blt(t_cmd_line *s, t_minishell *shelly);
+int		are_you_builtin(t_cmd_line *cmd_line);
+void	child_ex(char *path, t_cmd_line *kid, t_minishell *shelly);
+void	child_ex_fds(t_cmd_line *kid);
+int 	single_child_ex(t_cmd_line *kid, t_minishell *shelly);
+int 	mndwait(pid_t last_p, int cmd_nmb);
+int		ex_pipeline_ec(t_cmd_line *pipeline, t_minishell *shelly);
 
-// FORKs // 
-int		exec(t_pipe *cmd_line, char **envp, int status);
-void	child_exec(char *cmd, t_pipe *cmd_line, char **envp);
-void	parent_exec(int status, pid_t pid);
-int		status_check(int status);
-int		are_you_builtin(t_pipe *cmd_line);
+// 								EXECUTION UTILS 							//
+bool 	if_redir(t_cmd_line *s);
+int		do_redri(t_redirects *s);
+char    *abs_or_rel_p(t_cmd_line *c, t_minishell *shelly);
+char    *abs_or_rel_p(t_cmd_line *c, t_minishell *shelly);
 
-// SIGNALs //
-void		sigint_glob(int sig);
-int			get_signal_stat(void);
-void		set_signal_stat(int value);
-void		set_signals_interactive_parent(void);
-void		set_signals_noninteractive(void);
-
-// PIPEs and REDIRECTIONs//
+// 								REDIRECTIONs 								//
+int 	which_redir_type(t_redirects *redir);
+int 	in_redir(t_redirects *redir);
 void 	heredoc(t_redirects *redir);
-void 	append(t_redirects *append);
 void 	append(t_redirects *redir);
-void 	pipe_handler(t_redirects *redir);
 
-//TO DELETE FOR PARSER
-void	print_err_msg(char *my_msg);
-void	p_log_err(char *cmd, char *msg);
-//void	exit_cleanup(int exit_status, t_shelly *shelly);
-char	*getcwd_protec(char *buf, size_t size); // TODO: review, repeated from parsing.h
-int		ft_arrlen(char **arr);
-t_pipe 	*fake_parse(char *line);
+//								SIGNALS.C 									//
+void	sigint_glob(int sig);
+int		get_signal_stat(void);
+void	set_signal_stat(int value);
+void 	sig_mode(int md);
+void	sigint_prompt_handler(int signal);
+void	set_signals_interactive_parent(void);
+void	set_sigaction(int signo, void (*handler)(int), int flags);
+int		status_check(int status);
 
-// Milena, I created this because of compilation error
-/* UTILS */
-int	ft_strcmp(const char *s1, const char *s2);
+// 								ERRORs 										//
+void	p_log_err(char *msg, char *cmd);
+int		mndp_log_err(char *msg, char *cmd);
+
+// 								FREEs 										//
+void	close_fds(void);
+int 	free_path(char **paths);
+void 	pipe_cl(t_cmd_line *pipeline);
+void	cleanup_xd_fds(t_cmd_line *start);
+
+// 								BUILTINS 									//
+int r_bltn(t_cmd_line *cmd_line, t_minishell *shelly);
+
+// 									ECHO 									//
+int myecho(t_cmd_line *echo, t_minishell *shelly);
+
+// 									ENV 									//
+int myenv(t_cmd_line *env, t_minishell *shelly);
+
+// 								EXPORT 										//
+int 	myexport(t_cmd_line *exp, t_minishell *shelly);
+int 	parse_exp_arg(char *arg);
+bool 	exp_argv(char c, int j);
+char	**exp_flag(t_export *exp);
+char	**exp_var(t_export *mini, char *key);
+char	**exp_minienv(t_export *mini, char *key, char *value, int i);
+void 	pexp_var(char *env_entry);
+void    pexp(t_minishell *shelly);
+char	*ft_free_strjoin(char *s1, char *s2);
+
+// 								PWD.                                       //
+int	mypwd(t_cmd_line *cmd, t_minishell *shelly);
+
+//								UNSET										//
+int	mysunset(t_cmd_line *unset, t_minishell *shelly);
 
 # endif
-	
-	
