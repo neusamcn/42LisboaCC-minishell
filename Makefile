@@ -19,8 +19,8 @@ OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h execution.h)
 
 CC 				= cc
-CPPFLAGS 		= -Iinclude
-CFLAGS 			= -Wall -Werror -Wextra -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
+CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
+CFLAGS 			= -Wall -Werror -Wextra
 LDFLAGS 		= -L$(LIBFT_DIR)
 LDLIBS 			= -lft -lreadline
 RM 				= rm -f
