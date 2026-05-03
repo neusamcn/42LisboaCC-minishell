@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ex_utils_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 17:20:35 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 20:24:24 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected your path
 
-char    *abs_or_rel_p(t_cmd_line *c, t_minishell *shelly)
+char    *abs_or_rel_p(t_cmd_line *c, t_shelly *shelly)
 {
 	char *p;
 	

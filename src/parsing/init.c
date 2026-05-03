@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 14:55:28 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/03 20:12:43 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ t_shelly	*init(char **envp)
 {
 	t_shelly	*shelly;
 
-	shelly = set_minienvp(envp);
+	shelly = set_shellyenvp(envp);
 	// TODO: initialise other elements of *shelly
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		read_eval_print_loop(shelly);

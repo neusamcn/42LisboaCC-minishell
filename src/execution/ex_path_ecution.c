@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path_ecution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/01 16:39:04 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 20:24:24 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected your path
 
-char *relative_path(t_cmd_line *cmd_line, t_minishell *shelly)
+char *relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 {
     int i;
     char *abs_path;
@@ -21,10 +21,10 @@ char *relative_path(t_cmd_line *cmd_line, t_minishell *shelly)
     abs_path = absolute_path(cmd_line);
     if (abs_path)
         return abs_path;
-    while (shelly->minienvp[i])
+    while (shelly->envp[i])
     {
-        if (ft_strncmp(shelly->minienvp[i], "PATH=", 5) == 0)
-            return paths_helper(cmd_line, shelly->minienvp[i] + 5);
+        if (ft_strncmp(shelly->envp[i], "PATH=", 5) == 0)
+            return paths_helper(cmd_line, shelly->envp[i] + 5);
         i++;
     }
     return NULL;

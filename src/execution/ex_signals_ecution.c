@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ex_signals_ecution.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 16:31:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/01 16:34:49 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 20:50:45 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected your path
 
 //run oing google.com and then terminate w SIGINT to check the correct way 
 static int g_signal_stat = 0;
@@ -41,7 +41,7 @@ void	set_sigaction(int signo, void (*handler)(int), int flags)
 	if (sigaction(signo, &sa, NULL) == -1)
 	{
 		print_err_msg("sigaction failed");
-		exit_cleanup(EXIT_FAILURE, NULL);		
+		exit_cleanup(EXIT_FAILURE, NULL);
 	}
 }
 
