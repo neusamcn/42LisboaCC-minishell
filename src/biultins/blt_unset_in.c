@@ -6,13 +6,14 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 15:25:00 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 15:29:40 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "execution.h"
 
 // unset is a builtins that deletes a variable (any var, even the one, you set using an export)
+
 static void	remove_var(t_minishell *shelly, int i)
 {
 	int	mini_env;

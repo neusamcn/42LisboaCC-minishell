@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 16:46:06 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 16:29:12 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,3 +99,4 @@ t_minishell	*set_minienvp(char **envp)
 	minishell = copy_envp(envp, minishell);
 	return (minishell);
 }
+

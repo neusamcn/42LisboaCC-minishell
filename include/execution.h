@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/01 16:43:42 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 15:26:19 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define PWD "pwd" // done
 # define ENV "env" //done
 # define EXPORT "export" //dome
-# define UNSET "unset"
+# define UNSET "unset" // done
 # define TRUE 0
 # define FALSE 1
 # define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
@@ -158,7 +158,7 @@ int myecho(t_cmd_line *echo, t_minishell *shelly);
 // 									ENV 									//
 int myenv(t_cmd_line *env, t_minishell *shelly);
 
-// EXPORT //
+// 								EXPORT 										//
 int 	myexport(t_cmd_line *exp, t_minishell *shelly);
 int 	parse_exp_arg(char *arg);
 bool 	exp_argv(char c, int j);
@@ -169,8 +169,10 @@ void 	pexp_var(char *env_entry);
 void    pexp(t_minishell *shelly);
 char	*ft_free_strjoin(char *s1, char *s2);
 
-
 // 								PWD.                                       //
 int	mypwd(t_cmd_line *cmd, t_minishell *shelly);
+
+//								UNSET										//
+int	mysunset(t_cmd_line *unset, t_minishell *shelly);
 
 # endif

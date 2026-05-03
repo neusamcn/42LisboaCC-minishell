@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/megi/Desktop/42/minishelly/execution",
-      "program": "/Users/megi/Desktop/42/minishelly/execution/build/Debug/outDebug"
+      "cwd": "/Users/megi/Desktop/42/minishelly/src/biultins.c",
+      "program": "/Users/megi/Desktop/42/minishelly/src/biultins.c/build/Debug/outDebug"
     }
   ]
 }
