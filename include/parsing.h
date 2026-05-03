@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 14:33:26 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/03 16:43:27 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void		*ft_calloc_protec(size_t nmemb, size_t size);
 /* Parsing functions */
 t_shelly	*init(char **envp);
 char		*put_prompt(t_shelly *shelly, char *prompt);
-t_shelly	*set_minienvp(char **envp);
+t_shelly	*set_shellyenvp(char **envp);
 char		*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
 // void	read_eval_print_loop(char **shelly_envp); // currently static
 // void	non_interactive_mode(void); // currently static

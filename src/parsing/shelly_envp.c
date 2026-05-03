@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shelly_envp.c                                         :+:      :+:    :+:   */
+/*   shelly_envp.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 14:20:13 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/03 16:43:27 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 	return ("");
 }
 
-static t_shelly	*set_minimal_minienvp(t_shelly *shelly)
+static t_shelly	*set_minimal_shellyenvp(t_shelly *shelly)
 {
 	char	*cwd;
 	char	*path;
@@ -69,7 +69,7 @@ static t_shelly	*set_minimal_minienvp(t_shelly *shelly)
 	return (shelly);
 }
 
-static char	*eval_set_strminienvp(char **envp, t_shelly *shelly, int i)
+static char	*eval_set_str_shellyenvp(char **envp, t_shelly *shelly, int i)
 {
 	int		shlvl_envp;
 	char	*shlvl_minienvp;
@@ -105,7 +105,7 @@ static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 	i = 0;
 	while (envp[i])
 	{
-		shelly->shelly_envp[i] = eval_set_strminienvp(envp, shelly, i);
+		shelly->shelly_envp[i] = eval_set_str_shellyenvp(envp, shelly, i);
 		if (!(shelly->shelly_envp[i]))
 		{
 			print_err_msg("setting shelly_envp failed");
@@ -117,14 +117,14 @@ static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 	return (shelly);
 }
 
-t_shelly	*set_minienvp(char **envp)
+t_shelly	*set_shellyenvp(char **envp)
 {
 	t_shelly	*shelly;
 
 	print_envp_vars(envp); // TODO: delete tester
 	shelly = malloc_protec(sizeof(t_shelly), NULL);
 	if (!*envp)
-		return (set_minimal_minienvp(shelly));
+		return (set_minimal_shellyenvp(shelly));
 	shelly = copy_envp(envp, shelly);
 	print_envp_vars(shelly->shelly_envp); // TODO: delete tester
 	return (shelly);
