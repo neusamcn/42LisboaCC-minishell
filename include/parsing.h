@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/04 18:30:16 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 19:40:27 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 /* Standard libs */
 # include <sys/wait.h>
 # include <signal.h>
-// TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
-# include <linux/limits.h>
+/* // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
+# include <linux/limits.h> */
 
 /* Structs */
 // TODO: create separate header?
@@ -88,22 +88,12 @@ void		*ft_calloc_protec(size_t nmemb, size_t size);
 /* Parsing functions */
 t_shelly	*init(char **envp);
 char		*put_prompt(t_shelly *shelly, char *prompt);
-t_shelly	*set_minienvp(char **envp);
+t_shelly	*set_shellyenvp(char **envp);
 char		*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
 // void	read_eval_print_loop(char **shelly_envp); // currently static
 // void	non_interactive_mode(void); // currently static
 // void	set_sigaction(int signo, void (*handler)(int), int flags); // currently static
 // void	sigint_prompt_handler(int signal); // currently static
 void		set_signals_interactive_parent(void);
-void		set_signals_noninteractive(void);
-
-/* Tokenizing functions */
-t_token		*tokenize_input(char *input_str);
-
-/* Tokenizing utils */
-int			ft_isspace(int c);
-char		quote_check(char *str);
-char		*syntax_err_check(char *trimmed_input);
-
 
 #endif

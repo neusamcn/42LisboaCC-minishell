@@ -6,18 +6,18 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 19:22:39 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 19:39:08 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static void no_cmds_execution(t_cmd_line *cmds, t_minishell *shelly)
+static void no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 {
 	t_redirects *redir;
 	int save_out;
 
-	(void)shelly->minienvp;
+	(void)shelly->envp;
 	if (!cmds->cmds || !cmds->cmds[0])
 	{
 		save_out = dup(1);
@@ -37,7 +37,7 @@ static void no_cmds_execution(t_cmd_line *cmds, t_minishell *shelly)
 	}
 }
 
-void exec_loop(t_cmd_line *cmds, t_minishell *shelly)
+void exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	t_cmd_line  *tmp;
 	t_redirects *redir;
@@ -64,12 +64,12 @@ void exec_loop(t_cmd_line *cmds, t_minishell *shelly)
 		ex_pipeline_ec(cmds, shelly);
 }
 
-int lonely_blt(t_cmd_line *s, t_minishell *shelly)
+int lonely_blt(t_cmd_line *s, t_shelly *shelly)
 {
     int read_save;
     int write_save;
 
-    (void)shelly->minienvp;
+    (void)shelly->envp;
     read_save = dup(0);
     write_save = dup(1);
     if (read_save == -1 || write_save == -1)
@@ -95,7 +95,7 @@ int lonely_blt(t_cmd_line *s, t_minishell *shelly)
     return (get_signal_stat());
 }
 
-int mommy_n_father(t_cmd_line *s_cmd, t_minishell *shelly)
+int mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 {
 	int status;
 	pid_t only_child;
@@ -112,7 +112,7 @@ int mommy_n_father(t_cmd_line *s_cmd, t_minishell *shelly)
 	return (status_check(status));
 }
 
-int single_child_ex(t_cmd_line *kid, t_minishell *shelly)
+int single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 {
 	char *path;
 
@@ -125,7 +125,7 @@ int single_child_ex(t_cmd_line *kid, t_minishell *shelly)
 		mndp_log_err("commad not found\n", kid->cmds[0]);
 		exit (127);
 	}
-	execve(path, kid->cmds, shelly->minienvp);
+	execve(path, kid->cmds, shelly->envp);
 	free (path);
 	mndp_log_err("Execution failed!\n", kid->cmds[0]);
 	exit(127);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/03 20:12:43 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/04 19:43:26 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 	}
 }
 
-static void	non_interactive_mode(t_shelly *shelly)
+/* static void	non_interactive_mode(t_shelly *shelly)
 {
 	char	*line;
 
@@ -136,7 +136,7 @@ static void	non_interactive_mode(t_shelly *shelly)
 		(void)shelly;
 		free(line);
 	}
-}
+} */
 
 t_shelly	*init(char **envp)
 {
@@ -146,8 +146,8 @@ t_shelly	*init(char **envp)
 	// TODO: initialise other elements of *shelly
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		read_eval_print_loop(shelly);
-	else
-		non_interactive_mode(shelly);
+/* 	else
+		non_interactive_mode(shelly); */
 		// TODO: does this mode not need shelly_envp?
 		// Read line from stdin
 		// Parse + execute
