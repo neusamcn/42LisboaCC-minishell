@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:22 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 16:59:06 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 17:04:22 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 // untill a newline
 
 // getchar and putchar till receive a newline
-int myecho(t_cmd_line *cmd, t_minishell *shelly)
+int myecho(t_cmd_line *cmd, t_shelly *shelly)
 {
 	int i;
 	int newline;
 
-	(void)shelly->minienvp;
+	(void)shelly->envp;
 	i = 1;
 	newline = 1;
 	while (cmd->cmds[i] && ft_strcmp(cmd->cmds[i], "-n") == 0)

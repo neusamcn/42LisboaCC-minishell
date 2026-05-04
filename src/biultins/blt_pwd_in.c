@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:00:13 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 15:52:06 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 17:04:02 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 // searching PWD in the env variables and print 
 // ft_strcmp(PWD=) 
 
-int	mypwd(t_cmd_line *cmd, t_minishell *shelly)
+int	mypwd(t_cmd_line *cmd, t_shelly *shelly)
 {
 	int	i;
 
 	(void)cmd;
 	i = 0;
-	while (shelly->minienvp[i])
+	while (shelly->envp[i])
 	{
-		if (ft_strncmp(shelly->minienvp[i], "PWD=", 4) == 0)
+		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == 0)
 		{
-			ft_putendl_fd(shelly->minienvp[i] + 4, STDOUT_FILENO);
+			ft_putendl_fd(shelly->envp[i] + 4, STDOUT_FILENO);
 			return (0);
 		}
 		i++;

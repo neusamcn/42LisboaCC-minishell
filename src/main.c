@@ -13,7 +13,7 @@ static int ft_arrlen(char **arr)
 	return (i);
 }
 
-static char *expand_var(char *token, t_minishell *shelly)
+static char *expand_var(char *token, t_shelly *shelly)
 {
 	char	*key;
 	char	*value;
@@ -25,12 +25,12 @@ static char *expand_var(char *token, t_minishell *shelly)
 	if (!*key)
 		return (ft_strdup("$"));
 	i = 0;
-	while (shelly->minienvp[i])
+	while (shelly->envp[i])
 	{
-		if (ft_strncmp(shelly->minienvp[i], key, ft_strlen(key)) == 0
-			&& shelly->minienvp[i][ft_strlen(key)] == '=')
+		if (ft_strncmp(shelly->envp[i], key, ft_strlen(key)) == 0
+			&& shelly->envp[i][ft_strlen(key)] == '=')
 		{
-			value = ft_strchr(shelly->minienvp[i], '=') + 1;
+			value = ft_strchr(shelly->envp[i], '=') + 1;
 			return (ft_strdup(value));
 		}
 		i++;
@@ -77,7 +77,7 @@ static t_cmd_line	*new_node(int token_count)
 	return (node);
 }
 
-t_cmd_line *fake_parse(char *line, t_minishell *shelly)
+t_cmd_line *fake_parse(char *line, t_shelly *shelly)
 {
 	char        **tokens;
 	t_cmd_line  *head;
@@ -120,28 +120,7 @@ t_cmd_line *fake_parse(char *line, t_minishell *shelly)
 	return (head);
 }
 
-/* // Neusa, if minishell is invalid -? it crashed
-void	exit_cleanup(int exit_status, t_minishell *minishell)
-{
-	int	i;
-
-	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
-	clear_history();
-	i = 0;
-	// segf if mini is NULL
-	while (minishell->minienvp[i])
-		free(minishell->minienvp[i++]);
-	free(minishell->minienvp);
-	// TODO: function to close all previously opened fd? // the OS is closing them
-	// automatically on exit()
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO); // closing it bad idea here
-	// TODO: can i close stderr before sending an exit status? // no
-	exit(exit_status);
-} */
-
-void	exit_cleanup(int exit_status, t_minishell *minishell)
+void	exit_cleanup(int exit_status, t_shelly *minishell)
 {
 	int	i;
 
@@ -163,7 +142,7 @@ int	main(int ac, char **av, char **envp)
 {
 	char		*prompt;
 	t_cmd_line	*cmd_line;
-    t_minishell *shelly;
+    t_shelly *shelly;
 
 	(void)ac;
 	(void)av;

@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 21:00:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 15:25:22 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 17:03:31 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int are_you_builtin(t_cmd_line *cmd_line)
 	return (EXTRENAL);
 }
 
-int r_bltn(t_cmd_line *cmd_line, t_minishell *shelly)
+int r_bltn(t_cmd_line *cmd_line, t_shelly *shelly)
 {
     if (!cmd_line || !cmd_line->cmds || !cmd_line->cmds[0])
         return (1);

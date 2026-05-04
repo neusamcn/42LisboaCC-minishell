@@ -6,13 +6,13 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 17:20:35 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 17:02:15 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-char    *abs_or_rel_p(t_cmd_line *c, t_minishell *shelly)
+char    *abs_or_rel_p(t_cmd_line *c, t_shelly *shelly)
 {
 	char *p;
 	

@@ -6,13 +6,13 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 20:58:32 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 17:01:59 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static pid_t	fork_pipeline(t_cmd_line *pipeline, t_minishell *shelly)
+static pid_t	fork_pipeline(t_cmd_line *pipeline, t_shelly *shelly)
 {
 	pid_t	pid;
 
@@ -28,7 +28,7 @@ static pid_t	fork_pipeline(t_cmd_line *pipeline, t_minishell *shelly)
 	return (pid);
 }
 
-int	ex_pipeline_ec(t_cmd_line *pipeline, t_minishell *shelly)
+int	ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly)
 {
 	pid_t		last_st;
 	int			status;
@@ -86,7 +86,7 @@ void	child_ex_fds(t_cmd_line *kid)
 		exit(1);
 }
 
-void	child_ex(char *path, t_cmd_line *kid, t_minishell *shelly)
+void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 {
 	sig_mode(CHILD);
 	child_ex_fds(kid);
@@ -103,7 +103,7 @@ void	child_ex(char *path, t_cmd_line *kid, t_minishell *shelly)
 		mndp_log_err("command not found\n", kid->cmds[0]);
 		exit(127);
 	}
-	execve(path, kid->cmds, shelly->minienvp);
+	execve(path, kid->cmds, shelly->envp);
 	mndp_log_err("execution failed!\n", kid->cmds[0]);
 	exit(127);
 }

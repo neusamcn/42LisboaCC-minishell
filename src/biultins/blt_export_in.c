@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 19:09:58 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 17:03:09 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // split key=value
 // dont exit the shell
 
-int	myexport(t_cmd_line *exp, t_minishell *shelly)
+int	myexport(t_cmd_line *exp, t_shelly *shelly)
 {
 	int			i;
 	int			exported;
@@ -36,8 +36,8 @@ int	myexport(t_cmd_line *exp, t_minishell *shelly)
 		{
 			ex.arg = exp->cmds[i];
 			ex.flag = exported;
-			ex.envp = shelly->minienvp;
-			shelly->minienvp = exp_flag(&ex);
+			ex.envp = shelly->envp;
+			shelly->envp = exp_flag(&ex);
 		}
 		i++;
 	}
