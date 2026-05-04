@@ -1,6 +1,3 @@
-#include "execution.h"
-#include "minishell.h"
-
 #include "../include/minishell.h"
 
 static int ft_arrlen(char **arr)
@@ -129,9 +126,9 @@ void	exit_cleanup(int exit_status, t_shelly *minishell)
 	i = 0;
 	if (minishell)
 	{
-		while (minishell->minienvp[i])
-			free(minishell->minienvp[i++]);
-		free(minishell->minienvp);	
+		while (minishell->envp[i])
+			free(minishell->envp[i++]);
+		free(minishell->envp);	
 	}
 	free(minishell);
 	exit(exit_status);
@@ -142,14 +139,14 @@ int	main(int ac, char **av, char **envp)
 {
 	char		*prompt;
 	t_cmd_line	*cmd_line;
-    t_shelly *shelly;
+    t_shelly 	*shelly;
 
 	(void)ac;
 	(void)av;
 	sig_mode(INTERACTIVE);
 	if (!envp)
 		write(1, "envp is NULL!\n", 14);
-    shelly = set_minienvp(envp);
+    shelly = set_shellyenvp(envp);
 	while (1)
 	{
 		prompt = readline("minishell$ ");

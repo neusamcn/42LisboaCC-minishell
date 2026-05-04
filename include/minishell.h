@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/04 18:02:42 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 18:29:52 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 /* Our libs */
 # include "../libft/libft.h"
 # include "flair.h"
+# include "execution.h"
+# include "parsing.h"
 
 /* Standard libs */
 # include <errno.h>
