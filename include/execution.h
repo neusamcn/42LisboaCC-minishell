@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 16:57:38 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 18:21:58 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int 	in_redir(t_redirects *redir);
 void 	heredoc(t_redirects *redir);
 void 	append(t_redirects *redir);
 
-/*								SIGNALS.C 									*/
+/*								SIGNALs 									*/
 void	sigint_glob(int sig);
 int		get_signal_stat(void);
 void	set_signal_stat(int value);
@@ -150,7 +150,7 @@ int 	free_path(char **paths);
 void 	pipe_cl(t_cmd_line *pipeline);
 void	cleanup_xd_fds(t_cmd_line *start);
 
-/* 								BUILTINS 									*/
+/* 								BUILTINs 									*/
 int r_bltn(t_cmd_line *cmd_line, t_shelly *shelly);
 
 /* 									ECHO 									*/
@@ -170,7 +170,7 @@ void 	pexp_var(char *env_entry);
 void    pexp(t_shelly *shelly);
 char	*ft_free_strjoin(char *s1, char *s2);
 
-/* 								PWD.                                       */
+/* 								PWD                                       */
 int	mypwd(t_cmd_line *cmd, t_shelly *shelly);
 
 /*								UNSET										*/
