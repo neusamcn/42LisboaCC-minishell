@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redir_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 20:59:20 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 20:20:19 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected your path
 
 int which_redir_type(t_redirects *redir)
 {

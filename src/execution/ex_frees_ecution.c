@@ -6,11 +6,11 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 16:50:19 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 16:53:46 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h"
 
 int free_path(char **paths)
 {

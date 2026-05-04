@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 14:21:55 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/03 20:23:36 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 // TODO: use here or in parsing.h?
 typedef struct s_shelly
 {
-	char	**shelly_envp;
+	char	**envp;
 	int		*open_fd;
 	void	**malloc_ptrs;
 }	t_shelly;

@@ -8,9 +8,9 @@ void	exit_cleanup(int exit_status, t_shelly *minishell)
 	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
 	rl_clear_history();
 	i = 0;
-	while (minishell->shelly_envp[i])
-		free(minishell->shelly_envp[i++]);
-	free(minishell->shelly_envp);
+	while (minishell->envp[i])
+		free(minishell->envp[i++]);
+	free(minishell->envp);
 	// TODO: function to close all previously opened fd?
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);

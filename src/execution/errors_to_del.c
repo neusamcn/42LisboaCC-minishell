@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   errors_to_del.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 16:19:57 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/03 20:19:48 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h" // Milena, I corrected your path
 
 void	print_err_msg(char *my_msg)
 {
