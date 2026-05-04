@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 21:16:54 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 23:32:24 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,13 @@ typedef struct s_export
 	struct s_cmd_line   *expline;
 }   t_export;
 
+typedef struct s_cd_blt
+{
+	char	*path;
+	char	*old_pwd;
+	char	*new_pwd;
+}	t_cd;
+
 /* 									PATH.C 									*/
 char 	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly);
 char 	*paths_helper(t_cmd_line *cmd_line, char *path_var);
@@ -169,6 +176,5 @@ int	mysunset(t_cmd_line *unset, t_shelly *shelly);
 
 /*								CD										*/
 int	mycd(t_cmd_line *cd, t_shelly *shelly);
-int update_pwd(t_shelly *shelly);
 
 # endif

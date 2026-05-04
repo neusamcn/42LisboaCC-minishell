@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 21:17:18 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 23:35:21 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 // if av[1] == ".." == previous pwd or av[1] == "." ignoring signal ? retur to prompt 
 
-// the basic logic is 
-static int	mycd_errors(t_cmd_line *cd, t_shelly *shelly, char **path)
+// the basic logic is im checking the amount of rags, if it 1 arg that means that its only
+// "cd" bltn called, so its the same as call "cd HOMe" so im finding home path in an env
+// if args > 2 its an error and if arg 2 im giving it as a path and finding in pwd (old, new)
+//TODO: ADD CD - AND CD ~ AND ERRORS 
+static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 {
-	int     i;
-	int		found;
+	int	i;
+	int	found;
 
 	found = 0;
 	if (cd->cmds[1] == NULL)
@@ -28,7 +31,7 @@ static int	mycd_errors(t_cmd_line *cd, t_shelly *shelly, char **path)
 		{
 			if (ft_strncmp(shelly->envp[i], "HOME=", 5) == 0)
 			{
-				*path = shelly->envp[i] + 5;
+				vars->path = shelly->envp[i] + 5;
 				found = 1;
 				break ;
 			}
@@ -40,60 +43,63 @@ static int	mycd_errors(t_cmd_line *cd, t_shelly *shelly, char **path)
 	else if (cd->cmds[2] != NULL)
 		return (mndp_log_err("cd; too many arguments\n", cd->cmds[0]));
 	else
-		*path = cd->cmds[1];
+		vars->path = cd->cmds[1];
+	return (0);
+}
+
+static int	mycd_errors(char *path)
+{
+	if (errno == EACCES)
+		return (mndp_log_err("Permission denied\n", path));
+	else if (errno == ENOENT)
+		return (mndp_log_err("No such file or directory\n", path));
+	else if (errno == ENOTDIR)
+		return (mndp_log_err("Not a directory\n", path));
+	else if (errno == ELOOP)
+		return (mndp_log_err("Too many levels of symbolic links\n", path));
+	else if (errno == ENAMETOOLONG)
+		return (mndp_log_err("File name too long\n", path));
+	return (mndp_log_err("cd; no such file or directory\n", path));
+}
+
+static int	upd_pwd(t_shelly *shelly, t_cd *vars)
+{
+	t_export	ex;
+	int			i;
+
+	i = 0;
+	while (shelly->envp[i])
+	{
+		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == 0)
+		{
+			vars->old_pwd = shelly->envp[i] + 4;
+			break ;
+		}
+		i++;
+	}
+	ex.envp = shelly->envp;
+	ex.new_var = NULL;
+	ex.newenv = NULL;
+	shelly->envp = exp_minienv(&ex, "OLDPWD", vars->old_pwd, -1);
+	vars->new_pwd = getcwd(NULL, 0);
+	shelly->envp = exp_minienv(&ex, "PWD", vars->new_pwd, -1);
+	free(vars->new_pwd);
 	return (0);
 }
 
 int	mycd(t_cmd_line *cd, t_shelly *shelly)
 {
-	char    *path;
+	t_cd	vars;
 
-	path = NULL;
-	if (mycd_errors(cd, shelly, &path) != 0)
+	vars.path = NULL;
+	vars.old_pwd = NULL;
+	vars.new_pwd = NULL;
+	if (mycd_args(cd, shelly, &vars) != 0)
 		return (1);
-	if (chdir(path) != 0)
-		return (mndp_log_err("cd; no such file or directory\n", path));
-    update_pwd(shelly);
-    return (0);
-}
-
-/* char	*prev_pwd(char *pwd)
-{
-	int	i;
-
-	i = ft_strlen(pwd) - 1;
-	while (i > 0 && pwd[i] != '/')
-		i--;
-	pwd[i] = '\0';
-	return (pwd);
-} */
-
-int update_pwd(t_shelly *shelly)
-{
-    char *old_pwd;
-    char *new_pwd;
-    int i;
-    t_export ex;
-
-    i = 0;
-    old_pwd = NULL;
-    while (shelly->envp[i])
-    {
-        if (ft_strncmp(shelly->envp[i], "PWD=", 4) == 0)
-		{
-			old_pwd = shelly->envp[i] + 4;
-			break ;
-		}
-        i++;
-    }
-    ex.envp = shelly->envp;
-    ex.new_var = NULL;
-    ex.newenv = NULL;
-    shelly->envp = exp_minienv(&ex, "OLDPWD", old_pwd, -1);
-    new_pwd = getcwd(NULL, 0);
-    shelly->envp = exp_minienv(&ex, "PWD", new_pwd, -1);
-    free(new_pwd);
-    return (0);
+    if (chdir(vars.path) != 0)
+        return (mycd_errors(vars.path));
+	upd_pwd(shelly, &vars);
+	return (0);
 }
 
 
