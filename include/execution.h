@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 19:35:15 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 21:16:54 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,9 @@ int	mypwd(t_cmd_line *cmd, t_shelly *shelly);
 
 /*								UNSET										*/
 int	mysunset(t_cmd_line *unset, t_shelly *shelly);
+
+/*								CD										*/
+int	mycd(t_cmd_line *cd, t_shelly *shelly);
+int update_pwd(t_shelly *shelly);
 
 # endif

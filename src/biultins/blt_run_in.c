@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 21:00:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 17:03:31 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 21:11:41 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,7 @@ int r_bltn(t_cmd_line *cmd_line, t_shelly *shelly)
         return (mypwd(cmd_line, shelly));
     if (!ft_strcmp(cmd_line->cmds[0], UNSET))
         return (mysunset(cmd_line, shelly));
+    if (!ft_strcmp(cmd_line->cmds[0], CD))
+        return (mycd(cmd_line, shelly));
     return (1);
 }
