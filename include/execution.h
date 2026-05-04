@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 16:57:38 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/04 18:02:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,6 @@ typedef enum e_stdio
 	READ,
 	WRITE
 }   t_stdio;
-
-typedef enum e_types_of_redirections
-{
-	NONE, // 0
-	IN,  // < redir input to a cmd, taking input from a file
-	OUT, // > redir output to a file, and overwrites the file if it already exists
-	APPEND, // >> redir output top a file, append the output to the end of the file
-	HEREDOC, // <<
-}	t_redir_type;
 
 typedef enum e_builts
 {
