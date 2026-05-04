@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_frees_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 18:29:13 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/04 16:50:19 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ int free_path(char **paths)
     return (1);
 }
 
-void	close_fds(void)
-{
-	t_redirects redir;
-	
+void	close_fds(t_redirects redir)
+{	
 	if (redir.fd[0] != -1)
 		close(redir.fd[0]);
 	if (redir.fd[1] != -1)
