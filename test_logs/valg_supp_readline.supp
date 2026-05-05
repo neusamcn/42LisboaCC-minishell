@@ -1,0 +1,113 @@
+{
+   rl_malloc_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   obj:*/libtinfo.so*
+   fun:_nc_first_db
+   fun:_nc_read_entry2
+   obj:*/libtinfo.so*
+   fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:init
+   fun:main
+}
+
+{
+   rl_realloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:_nc_doalloc
+   fun:_nc_read_termtype
+   fun:_nc_read_file_entry
+   obj:*/libtinfo.so*
+   fun:_nc_read_entry2
+   obj:*/libtinfo.so*
+   fun:_nc_setupterm
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:rl_initialize
+   fun:readline
+   fun:init
+   fun:main
+}
+
+{
+   rl_libtinfo_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libtinfo.so*
+   ...
+   fun:readline
+   fun:init
+   fun:main
+}
+
+{
+   rl_libreadline_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libreadline.so*
+   ...
+   fun:readline
+   fun:init
+   fun:main
+}
+
+{
+  tinfo_read_termtype_calloc_reachable
+  Memcheck:Leak
+  match-leak-kinds: reachable
+  fun:calloc
+  fun:_nc_read_termtype
+  fun:_nc_read_file_entry
+  obj:*/libtinfo.so*
+  fun:_nc_read_entry2
+  obj:*/libtinfo.so*
+  fun:_nc_setupterm
+  fun:tgetent_sp
+  fun:_rl_init_terminal_io
+  fun:rl_initialize
+  fun:readline
+}
+
+{
+  tinfo_read_termtype_malloc_reachable
+  Memcheck:Leak
+  match-leak-kinds: reachable
+  fun:malloc
+  fun:_nc_read_termtype
+  fun:_nc_read_file_entry
+  obj:*/libtinfo.so*
+  fun:_nc_read_entry2
+  obj:*/libtinfo.so*
+  fun:_nc_setupterm
+  fun:tgetent_sp
+  fun:_rl_init_terminal_io
+  fun:rl_initialize
+  fun:readline
+}
+
+{
+  tinfo_read_termtype_large_reachable
+  Memcheck:Leak
+  match-leak-kinds: reachable
+  fun:malloc
+  fun:_nc_read_termtype
+  fun:_nc_read_file_entry
+  obj:*/libtinfo.so*
+  fun:_nc_read_entry2
+  obj:*/libtinfo.so*
+  fun:_nc_setupterm
+  fun:tgetent_sp
+  fun:_rl_init_terminal_io
+  fun:rl_initialize
+  fun:readline
+}
