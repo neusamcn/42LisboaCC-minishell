@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_frees_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 18:29:13 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/06 15:54:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int free_path(char **paths)
     while (paths[j])
         free(paths[j++]);
     free(paths);
-    return (1);
+    return (true);
 }
 
 void	close_fds(void)

@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:00:13 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 17:04:02 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 15:52:43 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ int	mypwd(t_cmd_line *cmd, t_shelly *shelly)
 		i++;
 	}
 	mndp_log_err("pwd: PWD not setted", cmd->cmds[0]);
-	return (1);
+	return (true);
 }

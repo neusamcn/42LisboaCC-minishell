@@ -121,7 +121,7 @@ void	exit_cleanup(int exit_status, t_shelly *minishell)
 {
 	int	i;
 
-	ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
+	//ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
 	clear_history();
 	i = 0;
 	if (minishell)

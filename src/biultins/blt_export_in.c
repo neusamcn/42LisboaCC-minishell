@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 17:03:09 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 15:53:05 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	myexport(t_cmd_line *exp, t_shelly *shelly)
 		}
 		i++;
 	}
-	return (0);
+	return (false);
 }
 
 int parse_exp_arg(char *arg)
@@ -59,10 +59,10 @@ int parse_exp_arg(char *arg)
 			return (-1);
 		}
 		if (c == '=')
-			return (0);
+			return (false);
 		j++;
 	}
-	return (1);
+	return (true);
 }
 
 char **exp_flag(t_export *exp)

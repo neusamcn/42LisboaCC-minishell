@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 16:19:57 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 15:53:56 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ int	mndp_log_err(char *msg, char *cmd)
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);
-    return (1);
+    return (true);
 }

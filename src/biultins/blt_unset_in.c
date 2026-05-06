@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 23:48:12 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 16:01:02 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ static void	rm(t_shelly *shelly, char *name)
 			pos++;
 		if (shelly->envp[env][pos] == '=' && !name[pos])
 		{
-			remove_var(shelly, env);
+			free(shelly->envp[env]);
+			while (shelly->envp[env])
+			{
+				shelly->envp[env] = shelly->envp[env + 1];
+				env++;
+			}
 			break ;
 		}
 		env++;
@@ -42,9 +47,9 @@ int	mysunset(t_cmd_line *unset, t_shelly *shelly)
 	while (unset->cmds[av])
 	{
 		if (!ft_strchr(unset->cmds[av], '='))
-			find_and_remove(shelly, unset->cmds[av]);
+			rm(shelly, unset->cmds[av]);
 		av++;
 	}
-	return (0);
+	return (false);
 }
 

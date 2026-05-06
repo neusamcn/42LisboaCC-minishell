@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:22 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 17:04:22 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 15:55:02 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 // untill a newline
 
 // getchar and putchar till receive a newline
+
 int myecho(t_cmd_line *cmd, t_shelly *shelly)
 {
 	int i;
@@ -41,5 +42,5 @@ int myecho(t_cmd_line *cmd, t_shelly *shelly)
 	}
 	if (newline)
 		p("\n");
-	return (0);
+	return (false);
 }

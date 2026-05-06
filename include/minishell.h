@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/04 19:37:46 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 15:45:47 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,26 @@ typedef enum e_types_of_redirections
 	APPEND, // >> redir output top a file, append the output to the end of the file
 	HEREDOC, // <<
 } t_redir_type;
+
+typedef struct s_redirections
+{
+	t_redir_type			type;
+	char					*filename;
+	char    				*delimiter;
+	int						fd[2];
+	int						xd_fd;
+	struct s_redirections	*next;
+}   t_redirects;
+
+typedef struct s_cmd_line
+{
+    char            	**cmds;
+	t_redirects     	redir;
+	int					pipefd[2];
+	int					prevfd;
+	struct s_export		*bltn_export;
+	struct s_cmd_line   *next;
+}   t_cmd_line;
 
 # include "execution.h"
 # include "parsing.h"

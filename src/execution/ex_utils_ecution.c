@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 17:02:15 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 15:54:21 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,6 @@ bool if_redir(t_cmd_line *s)
     }
     return (false);
 }
-
-/*
-bool if_redir(t_cmd_line *s)
-{
-	return (s->redir.type != NONE);
-}*/
 
 int do_redri(t_redirects *s)
 {

@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 23:32:24 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 15:45:26 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,28 +60,6 @@ typedef enum e_mode
 	CHILD, // fork + execve
 	MNDWAIT
 }	e_mode_for_sig;
-
-typedef struct s_redirections
-{
-	t_redir_type			type;
-	char					*filename;
-	char    				*delimiter;
-	int						fd[2];
-	int						xd_fd;
-	struct s_redirections	*next;
-}   t_redirects;
-
-typedef struct s_export 	t_export;
-
-typedef struct s_cmd_line
-{
-    char            	**cmds;
-	t_redirects     	redir;
-	int					pipefd[2];
-	int					prevfd;
-	struct s_export		*bltn_export;
-	struct s_cmd_line   *next;
-}   t_cmd_line;
 
 typedef struct s_export
 {
@@ -176,5 +154,8 @@ int	mysunset(t_cmd_line *unset, t_shelly *shelly);
 
 /*								CD										*/
 int	mycd(t_cmd_line *cd, t_shelly *shelly);
+
+/*								EXIT										*/
+int myexit(t_cmd_line *argv, t_shelly *shelly);
 
 # endif
