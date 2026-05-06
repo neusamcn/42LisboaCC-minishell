@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/25 22:52:09 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/06 22:20:27 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void	p_log_err(char *cmd, char *msg)
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);
 	ft_putchar_fd('\n', 2);
-	exit (1);
+	return (EXIT_FAILURE);
 }
 
 void	syntax_err_msg(char *err_token)
 {
 	// TODO: should it output to STDERR ? use print_err_msg?
-	ft_printf("-bash minishelly: syntax error near unexpected token `%s'\n",
+	ft_printf("-bash shelly: syntax error near unexpected token `%s'\n",
 		err_token);
 }

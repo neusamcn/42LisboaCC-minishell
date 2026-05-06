@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_utils_in.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/04/30 18:17:11 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/06 15:52:53 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ bool exp_argv(char c, int j)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
 		c == '_' || (j > 0 && c >= '0' && c <= '9') || c == '=')
-		return (1);
-	return (0);
+		return (true);
+	return (false);
 }
 
 void pexp_var(char *env_entry)
@@ -41,14 +41,14 @@ void pexp_var(char *env_entry)
 	}
 }
 
-void    pexp(t_minishell *shelly)
+void    pexp(t_shelly *shelly)
 {
 	int i;
 
 	i = 0;
-	while (shelly->minienvp[i])
+	while (shelly->envp[i])
 	{
-		pexp_var(shelly->minienvp[i]);
+		pexp_var(shelly->envp[i]);
 		i++;
 	}
 }

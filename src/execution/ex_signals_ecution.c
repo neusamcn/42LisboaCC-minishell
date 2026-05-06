@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 16:31:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 20:50:45 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/06 22:45:06 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,42 @@ int get_signal_stat(void)
     return g_signal_stat;
 }
 
-void set_signal_stat(int value)
+int status_check(int status)
 {
-    g_signal_stat = value;
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		status = 128 + WTERMSIG(status);
+	else if (WCOREDUMP(status))
+   		ft_putstr_fd("Quit (core dumped)\n", 2); 
+	return status;
 }
 
-void	set_sigaction(int signo, void (*handler)(int), int flags)
+void	set_signal_stat(int value)
 {
-	struct sigaction	sa;
+	g_signal_stat = value;
+}
 
-	sa.sa_handler = handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = flags;
-	if (sigaction(signo, &sa, NULL) == -1)
+void	sig_mode(int md)
+{
+	if (md == INTERACTIVE)
 	{
-		print_err_msg("sigaction failed");
-		exit_cleanup(EXIT_FAILURE, NULL);
+		signal(SIGINT, sigint_prompt_handler);
+		signal(SIGQUIT, SIG_IGN);
 	}
-}
-
-void	set_signals_interactive_parent(void)
-{
-	set_sigaction(SIGINT, sigint_prompt_handler, 0);
-	set_sigaction(SIGQUIT, SIG_IGN, 0);
+	else if (md == BLT_EXECUTING)
+	{
+		signal(SIGINT, sigint_glob);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (md == CHILD)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
+	else if (md == MNDWAIT)
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
 }

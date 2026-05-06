@@ -6,11 +6,14 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/05 14:11:56 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/06 22:44:59 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parsing.h"
+#include "../../include/minishell.h"
+
+//run oing google.com and then terminate w SIGINT to check the correct way 
+static int g_signal_stat = 0;
 
 // TODO: add *minishell to args?
 static void	set_sigaction(int signo, void (*handler)(int), int flags)
@@ -27,9 +30,10 @@ static void	set_sigaction(int signo, void (*handler)(int), int flags)
 	}
 }
 
-static void	sigint_prompt_handler(int signal)
+void	sigint_prompt_handler(int signal)
 {
 	(void)signal;
+	set_signal_stat(130);
 	ft_putendl_fd("", STDOUT_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -42,6 +46,7 @@ void	set_signals_interactive_parent(void)
 	set_sigaction(SIGQUIT, SIG_IGN, 0);
 }
 
+// TODO: delete function?
 void	set_signals_noninteractive(void)
 {
 	set_sigaction(SIGINT, SIG_DFL, 0);

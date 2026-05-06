@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/03 20:23:36 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/06 22:47:22 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ HEREDOC, // <<
 */
 typedef enum e_redir_type
 {
+	NONE,
 	IN,
 	OUT,
 	APPEND,
@@ -135,11 +136,6 @@ char		*put_prompt(t_shelly *shelly, char *prompt);
 t_shelly	*set_shellyenvp(char **envp);
 char		*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
 // void	read_eval_print_loop(char **envp); // currently static
-// void	non_interactive_mode(void); // currently static
-// void	set_sigaction(int signo, void (*handler)(int), int flags); // currently static
-// void	sigint_prompt_handler(int signal); // currently static
-void		set_signals_interactive_parent(void);
-void		set_signals_noninteractive(void);
 
 /* Tokenizing functions */
 t_token		*tokenize_input(char *input_str);

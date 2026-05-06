@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/03 20:23:36 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/06 22:49:05 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@
 # include "../libft/libft.h"
 # include "flair.h"
 
-/* Standard libs */
-# include <errno.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-/* Structs */
-// TODO: use here or in parsing.h?
 typedef struct s_shelly
 {
 	char	**envp;
@@ -31,12 +24,54 @@ typedef struct s_shelly
 	void	**malloc_ptrs;
 }	t_shelly;
 
+typedef enum e_types_of_redirections
+{
+	NONE, // 0
+	IN,  // < redir input to a cmd, taking input from a file
+	OUT, // > redir output to a file, and overwrites the file if it already exists
+	APPEND, // >> redir output top a file, append the output to the end of the file
+	HEREDOC, // <<
+} t_redir_type;
+
+typedef struct s_redirections
+{
+	t_redir_type			type;
+	char					*filename;
+	char    				*delimiter;
+	int						fd[2];
+	int						xd_fd;
+	struct s_redirections	*next;
+}   t_redirects;
+
+typedef struct s_cmd_line
+{
+    char            	**cmds;
+	t_redirects     	redir;
+	int					pipefd[2];
+	int					prevfd;
+	struct s_export		*bltn_export;
+	struct s_cmd_line   *next;
+}   t_cmd_line;
+
+# include "execution.h"
+# include "parsing.h"
+
+/* Standard libs */
+# include <errno.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+
 /* Error handling functions */
 void	print_err_msg(char *my_msg);
 void	p_log_err(char *cmd, char *msg);
-void	syntax_err_msg(char *err_token);
+
+/* Signal handling */
+void	set_signals_interactive_parent(void);
+void	set_signals_noninteractive(void); // TODO: remove?
+void	sigint_prompt_handler(int signal);
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
+
 
 #endif
