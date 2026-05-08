@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:45:26 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/08 13:26:48 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,6 @@ int 	which_redir_type(t_redirects *redir);
 int 	in_redir(t_redirects *redir);
 void 	heredoc(t_redirects *redir);
 void 	append(t_redirects *redir);
-
-/*								SIGNALs 									*/
-void	sigint_glob(int sig);
-int		get_signal_stat(void);
-void	set_signal_stat(int value);
-void 	sig_mode(int md);
-void	sigint_prompt_handler(int signal);
-void	set_signals_interactive_parent(void);
-void	set_sigaction(int signo, void (*handler)(int), int flags);
-int		status_check(int status);
-
-/* 								ERRORs 										*/
-void	p_log_err(char *msg, char *cmd);
-int		mndp_log_err(char *msg, char *cmd);
 
 /* 								FREEs 										*/
 void	close_fds(void);

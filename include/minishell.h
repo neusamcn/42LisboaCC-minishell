@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/06 15:45:47 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/08 13:27:28 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,21 @@ typedef struct s_cmd_line
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+/*								SIGNALs 									*/
+void	sigint_glob(int sig);
+int		get_signal_stat(void);
+void	set_signal_stat(int value);
+void 	sig_mode(int md);
+void	sigint_prompt_handler(int signal);
+void	set_signals_interactive_parent(void);
+void	set_sigaction(int signo, void (*handler)(int), int flags);
+int		status_check(int status);
+
+/* 								ERRORs 										*/
+void	print_err_msg(char *my_msg);
+int		mndp_log_err(char *msg, char *cmd);
+void	syntax_err_msg(char *err_token);
 
 /* Error handling functions */
 void	print_err_msg(char *my_msg);

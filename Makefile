@@ -7,13 +7,13 @@ SRC_DIR 		= src
 OBJ_DIR 		= obj
 
 PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c shellyenvp.c prompt.c)
-EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, errors_to_del.c ex_frees_ecution.c ex_path_ecution.c \
-					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
-					ex_signals2_ecution.c ex_utils_ecution.c execution.c)
+EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
+					ex_pipes_ecution.c ex_redir_ecution.c ex_utils_ecution.c execution.c)
 BUILTINS_SRCS 	= $(addprefix $(SRC_DIR)/biultins/, blt_echo_in.c blt_env_in.c blt_export_in.c \
 					blt_export_utils_in.c blt_run_in.c blt_pwd_in.c blt_unset_in.c blt_cd_in.c blt_exit_in.c)
+UTILS_SRCS 		= $(addprefix $(SRC_DIR)/utils/, err_handler.c signals.c signals2.c)
 
-SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS)
+SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS) $(UTILS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h execution.h)
