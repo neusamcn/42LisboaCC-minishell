@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path_ecution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 20:24:24 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/04 17:02:33 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h" // Milena, I corrected your path
+#include "execution.h"
 
 char *relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 {

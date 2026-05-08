@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 20:28:23 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/04 17:01:59 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h" // Milena, I corrected your path
+#include "execution.h"
 
 static pid_t	fork_pipeline(t_cmd_line *pipeline, t_shelly *shelly)
 {

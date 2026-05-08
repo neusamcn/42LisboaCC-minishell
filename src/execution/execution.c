@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 20:37:01 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/04 19:39:08 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h" // Milena, I corrected your path
+#include "execution.h"
 
 static void no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 {

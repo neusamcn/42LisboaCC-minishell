@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ex_signals2_ecution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:39:55 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 20:20:30 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/04/22 16:06:02 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h" // Milena, I corrected your path
+#include "execution.h"
 
 int status_check(int status)
 {

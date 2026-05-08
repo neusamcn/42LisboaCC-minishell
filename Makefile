@@ -6,24 +6,23 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c shellyenvp.c prompt.c signals.c)
-#					tokenize.c syntax_utils.c syntax_check.c)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c shellyenvp.c prompt.c)
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
-					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c ex_signals2_ecution.c \
-					ex_utils_ecution.c exec_utils.c execution.c)
-# 					errors_to_del.c parsing_to_delete.c # Milena, I did this to be able to compile for test
-# BUILTINS_SRCS
-ERRORS_SRCS		= $(addprefix $(SRC_DIR)/errors/, err_msg.c)
-SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(EXECUTION_SRCS) $(ERRORS_SRCS) # $(BUILTINS_SRCS)
+					ex_pipes_ecution.c ex_redir_ecution.c ex_utils_ecution.c execution.c)
+BUILTINS_SRCS 	= $(addprefix $(SRC_DIR)/biultins/, blt_echo_in.c blt_env_in.c blt_export_in.c \
+					blt_export_utils_in.c blt_run_in.c blt_pwd_in.c blt_unset_in.c blt_cd_in.c blt_exit_in.c)
+UTILS_SRCS 		= $(addprefix $(SRC_DIR)/utils/, err_handler.c signals.c signals2.c)
+
+SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS) $(UTILS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h execution.h)
 
 CC 				= cc
-CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
-CFLAGS 			= -Wall -Werror -Wextra
-LDFLAGS 		= -L$(LIBFT_DIR)
-LDLIBS 			= -lft -lreadline
+CFLAGS 			= -Wall -Werror -Wextra -Iinclude
+LDFLAGS 		= -L/opt/homebrew/opt/readline/lib
+CPPFLAGS 		= -I/opt/homebrew/opt/readline/include
+LDLIBS 			= -lreadline
 RM 				= rm -f
 
 TEST_DIR		= test_logs
@@ -48,24 +47,18 @@ PATH_COLOR      := $(ESC)[38;2;221;160;221m
 
 all: $(NAME)
 
-# TODO: can we hide this libft anouncement? 
-
 $(NAME): $(LIBFT_A) $(OBJS)
-	@$(CC) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
-	@printf "%b compiled.\n" "$(GREEN)$@$(COLOR_RESET)"
+	$(CC) $(OBJS) $(LIBFT_A) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(LIBFT_A):
-	@$(MAKE) -C $(LIBFT_DIR) $(notdir $@)
-	@printf "%b compiled.\n" "$(SUCCESS_BOLD)$@$(COLOR_RESET)"
+	@$(MAKE) -s -C $(LIBFT_DIR) $(notdir $@)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-	@printf "%b created.\n" "$(SUCCESS)$@$(COLOR_RESET)"
 
 $(TEST_DIR):
 	@mkdir -p $@
-	@printf "%b created.\n" "$(SUCCESS)$@$(COLOR_RESET)"
 
 clean:
 	@$(RM) $(OBJS)

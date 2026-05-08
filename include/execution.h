@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 21:17:08 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/08 13:26:48 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,13 @@
 # define FALSE 1
 # define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
 
-typedef struct s_shelly	t_shelly; // Milena, I updated s_minishell to s_shelly
+typedef struct s_shelly	t_shelly;
 
 typedef enum e_stdio
 {
 	READ,
 	WRITE
 }   t_stdio;
-
-typedef enum e_types_of_redirections
-{
-	NONE, // 0
-	IN,  // < redir input to a cmd, taking input from a file
-	OUT, // > redir output to a file, and overwrites the file if it already exists
-	APPEND, // >> redir output top a file, append the output to the end of the file
-	HEREDOC, // <<
-}	t_redir_type;
 
 typedef enum e_builts
 {
@@ -70,28 +61,6 @@ typedef enum e_mode
 	MNDWAIT
 }	e_mode_for_sig;
 
-typedef struct s_redirections
-{
-	t_redir_type			type;
-	char					*filename;
-	char    				*delimiter;
-	int						fd[2];
-	int						xd_fd;
-	struct s_redirections	*next;
-}   t_redirects;
-
-typedef struct s_export 	t_export;
-
-typedef struct s_cmd_line
-{
-    char            	**cmds;
-	t_redirects     	redir;
-	int					pipefd[2];
-	int					prevfd;
-	struct s_export		*bltn_export;
-	struct s_cmd_line   *next;
-}   t_cmd_line;
-
 typedef struct s_export
 {
     char    *arg;
@@ -101,6 +70,13 @@ typedef struct s_export
     char    **newenv;
 	struct s_cmd_line   *expline;
 }   t_export;
+
+typedef struct s_cd_blt
+{
+	char	*path;
+	char	*old_pwd;
+	char	*new_pwd;
+}	t_cd;
 
 /* 									PATH.C 									*/
 char 	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly);
@@ -130,27 +106,13 @@ int 	in_redir(t_redirects *redir);
 void 	heredoc(t_redirects *redir);
 void 	append(t_redirects *redir);
 
-/*								SIGNALS.C 									*/
-void	sigint_glob(int sig);
-int		get_signal_stat(void);
-void	set_signal_stat(int value);
-void 	sig_mode(int md);
-void	sigint_prompt_handler(int signal);
-void	set_signals_interactive_parent(void);
-void	set_sigaction(int signo, void (*handler)(int), int flags);
-int		status_check(int status);
-
-/* 								ERRORs 										*/
-void	p_log_err(char *msg, char *cmd);
-int		mndp_log_err(char *msg, char *cmd);
-
 /* 								FREEs 										*/
 void	close_fds(void);
 int 	free_path(char **paths);
 void 	pipe_cl(t_cmd_line *pipeline);
 void	cleanup_xd_fds(t_cmd_line *start);
 
-/* 								BUILTINS 									*/
+/* 								BUILTINs 									*/
 int r_bltn(t_cmd_line *cmd_line, t_shelly *shelly);
 
 /* 									ECHO 									*/
@@ -170,10 +132,16 @@ void 	pexp_var(char *env_entry);
 void    pexp(t_shelly *shelly);
 char	*ft_free_strjoin(char *s1, char *s2);
 
-/* 								PWD.                                       */
+/* 								PWD                                       */
 int	mypwd(t_cmd_line *cmd, t_shelly *shelly);
 
 /*								UNSET										*/
 int	mysunset(t_cmd_line *unset, t_shelly *shelly);
+
+/*								CD										*/
+int	mycd(t_cmd_line *cd, t_shelly *shelly);
+
+/*								EXIT										*/
+int myexit(t_cmd_line *argv, t_shelly *shelly);
 
 # endif

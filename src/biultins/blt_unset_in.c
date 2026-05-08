@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 15:29:40 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/06 16:01:02 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,42 @@
 
 // unset is a builtins that deletes a variable (any var, even the one, you set using an export)
 
-static void	remove_var(t_minishell *shelly, int i)
+static void	rm(t_shelly *shelly, char *name)
 {
-	int	mini_env;
+	int	env;
+	int	pos;
 
-	free(shelly->minienvp[i]);
-	mini_env = i;
-	while (shelly->minienvp[mini_env + 1])
+	env = 0;
+	while (shelly->envp[env])
 	{
-		shelly->minienvp[mini_env] = shelly->minienvp[mini_env + 1];
-		mini_env++;
+		pos = 0;
+		while (shelly->envp[env][pos] == name[pos] && name[pos])
+			pos++;
+		if (shelly->envp[env][pos] == '=' && !name[pos])
+		{
+			free(shelly->envp[env]);
+			while (shelly->envp[env])
+			{
+				shelly->envp[env] = shelly->envp[env + 1];
+				env++;
+			}
+			break ;
+		}
+		env++;
 	}
-	shelly->minienvp[mini_env] = NULL;
 }
 
-int	mysunset(t_cmd_line *unset, t_minishell *shelly)
+int	mysunset(t_cmd_line *unset, t_shelly *shelly)
 {
-	int		env;
-	int		pos;
-	int		av;
+	int	av;
 
 	av = 1;
 	while (unset->cmds[av])
 	{
 		if (!ft_strchr(unset->cmds[av], '='))
-		{
-			env = 0;
-			while (shelly->minienvp[env])
-			{
-				pos = 0;
-				while (shelly->minienvp[env][pos] == unset->cmds[av][pos]
-					&& unset->cmds[av][pos])
-					pos++;
-				if (shelly->minienvp[env][pos] == '='
-					&& !unset->cmds[av][pos])
-					return (remove_var(shelly, env), 0);
-				env++;
-			}
-		}
+			rm(shelly, unset->cmds[av]);
 		av++;
 	}
-	return (0);
+	return (false);
 }
 

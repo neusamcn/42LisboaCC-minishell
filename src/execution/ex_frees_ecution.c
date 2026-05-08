@@ -6,11 +6,11 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 16:53:46 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/08 13:29:43 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h"
+#include "execution.h"
 
 int free_path(char **paths)
 {
@@ -22,11 +22,13 @@ int free_path(char **paths)
     while (paths[j])
         free(paths[j++]);
     free(paths);
-    return (1);
+    return (true);
 }
 
-void	close_fds(t_redirects redir)
-{	
+void	close_fds(void)
+{
+	t_redirects redir;
+	
 	if (redir.fd[0] != -1)
 		close(redir.fd[0]);
 	if (redir.fd[1] != -1)
