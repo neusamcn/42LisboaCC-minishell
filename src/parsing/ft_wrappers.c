@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wrappers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 23:44:25 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/04 17:05:16 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/01 13:49:48 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/parsing.h"
+#include "../../include/parsing.h"
 
 char	*getcwd_protec(char *buf, size_t size, t_shelly *shelly)
 {
