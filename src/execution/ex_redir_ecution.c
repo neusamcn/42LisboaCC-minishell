@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 16:52:32 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 17:18:23 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int which_redir_type(t_cmd_line *cmd)
         else if (redir->type == IN)
         {
             if (in_redir(redir) != 0)
-                return (1);
+                return (true);
         }
         redir = redir->next;
     }
-    return (0);
+    return (false);
 }
 
 void append(t_redirects *redir)
@@ -71,7 +71,7 @@ int in_redir(t_redirects *redir)
 			close(redir->fd[0]);	
 		}
 	}
-	return (0);
+	return (false);
 }
 
 static void child_hd(t_redirects *redir, int pipefd[2])

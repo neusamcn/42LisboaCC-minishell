@@ -129,8 +129,8 @@ void	exit_cleanup(int exit_status, t_shelly *minishell)
 		while (minishell->envp[i])
 			free(minishell->envp[i++]);
 		free(minishell->envp);	
+		free(minishell);
 	}
-	free(minishell);
 	exit(exit_status);
 }
 
