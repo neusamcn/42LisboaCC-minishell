@@ -117,21 +117,25 @@ t_cmd_line *fake_parse(char *line, t_shelly *shelly)
 	return (head);
 }
 
-void	exit_cleanup(int exit_status, t_shelly *minishell)
+void    exit_cleanup(int exit_status, t_shelly *shelly)
 {
-	int	i;
+    int i;
 
-	//ft_putendl_fd("Exiting minishell...", STDOUT_FILENO);
-	clear_history();
-	i = 0;
-	if (minishell)
-	{
-		while (minishell->envp[i])
-			free(minishell->envp[i++]);
-		free(minishell->envp);	
-		free(minishell);
-	}
-	exit(exit_status);
+    clear_history();
+    if (shelly)
+    {
+        free_cmd_line(shelly->cur_cmd);
+        if (shelly->fds_saved[0] != -1)
+            close(shelly->fds_saved[0]);
+        if (shelly->fds_saved[1] != -1)
+            close(shelly->fds_saved[1]);
+        i = 0;
+        while (shelly->envp[i])
+            free(shelly->envp[i++]);
+        free(shelly->envp);
+        free(shelly);
+    }
+    exit(exit_status);
 }
 
 //changing envp(initializing shell's envp (copied))
@@ -177,40 +181,41 @@ static t_shelly	*shelly_init(char **envp)
 {
 	t_shelly	*shelly;
 
-	sig_mode(INTERACTIVE);
 	shelly = set_shellyenvp(envp);
 	if (!shelly)
 		exit(1);
 	return (shelly);
 }
 
-static bool	shelly_readline(char **prompt)
+//TODO: not working sh
+
+static bool     shelly_readline(char **prompt)
 {
-	*prompt = readline("minishell$ ");
-	if (!*prompt)
-	{
-		ft_putstr_fd("exit\n", 1);
-		return (false);
-	}
-	if (!**prompt)
-	{
-		free(*prompt);
-		*prompt = NULL;
-		return (false);
-	}
-	add_history(*prompt);
-	return (true);
+    *prompt = readline("minishell$ ");
+    if (!*prompt)
+        return (false);
+    if (!**prompt)
+    {
+        free(*prompt);
+        *prompt = NULL;
+        return (false);
+    }
+    add_history(*prompt);
+    return (true);
 }
+
 
 static void	shelly_exec(char **prompt, t_shelly *shelly)
 {
 	t_cmd_line	*cmd_line;
 
 	cmd_line = fake_parse(*prompt, shelly);
+	shelly->cur_cmd = cmd_line;
 	free(*prompt);
 	*prompt = NULL;
 	if (!cmd_line)
 		return ;
+	
 	exec_loop(cmd_line, shelly);
 	free_cmd_line(cmd_line);
 }
@@ -222,6 +227,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	sig_mode(INTERACTIVE);
 	shelly = shelly_init(envp);
 	while (1)
 	{

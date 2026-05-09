@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/09 16:05:38 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:18:08 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@
 # include "../libft/libft.h"
 # include "flair.h"
 
+typedef struct s_cmd_line t_cmd_line;
+
 typedef struct s_shelly
 {
-	char	**envp;
-	int		*open_fd;
-	void	**malloc_ptrs;
+	char		**envp;
+	t_cmd_line	*cur_cmd;
+	int			fds_saved[2];
+	int			*open_fd;
+	void		**malloc_ptrs;
 }	t_shelly;
 
 typedef enum e_types_of_redirections
