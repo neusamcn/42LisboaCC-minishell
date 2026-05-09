@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 17:05:25 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 19:57:33 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,17 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <sys/resource.h> // Milena, I included this so WCOREDUMP() can work
+# include <sys/resource.h>
 # include <sys/wait.h>
 
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"
-# define ECHO "echo" //done
+# define ECHO "echo" 
 # define EXIT "exit"
-# define PWD "pwd" // done
-# define ENV "env" //done
-# define EXPORT "export" //dome
-# define UNSET "unset" // done
-# define TRUE 0
-# define FALSE 1
+# define PWD "pwd" 
+# define ENV "env" 
+# define EXPORT "export"
+# define UNSET "unset" 
 # define HD "minishell: warning: here-document delimited by end-of-file (wanted '"
 
 typedef struct s_shelly	t_shelly;
@@ -63,11 +61,11 @@ typedef enum e_mode
 
 typedef struct s_export
 {
-    char    *arg;
-    int     flag;
-	char 	*new_var;
-	char 	**envp;
-    char    **newenv;
+    char    			*arg;
+    int     			flag;
+	char 				*new_var;
+	char 				**envp;
+    char    			**newenv;
 	struct s_cmd_line   *expline;
 }   t_export;
 
@@ -96,11 +94,9 @@ int		ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly);
 
 /* 								EXECUTION UTILS 							*/
 bool 	if_redir(t_cmd_line *s);
-//int		do_redri(t_redirects *s);
 char    *abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 char    *abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 void	store_fds(int read_save, int write_save);
-
 
 /* 								REDIRECTIONs 								*/
 int 	which_redir_type(t_cmd_line *cmd);

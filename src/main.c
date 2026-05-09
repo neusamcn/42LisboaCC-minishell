@@ -138,6 +138,60 @@ void    exit_cleanup(int exit_status, t_shelly *shelly)
     exit(exit_status);
 }
 
+static bool shelly_rl(char **prompt)
+{
+    *prompt = readline("minishell$ ");
+    if (!*prompt)
+        return (false);
+    if (!**prompt)
+    {
+        free(*prompt);
+        *prompt = NULL;
+        return (false);
+    }
+    add_history(*prompt);
+    return (true);
+}
+
+static void	shelly_exec(char **prompt, t_shelly *shelly)
+{
+	t_cmd_line	*cmd_line;
+
+	cmd_line = fake_parse(*prompt, shelly); //do w real parsing after
+	shelly->cur_cmd = cmd_line;
+	free(*prompt);
+	*prompt = NULL;
+	if (!cmd_line)
+		return ;
+	exec_loop(cmd_line, shelly);
+	free_cmd_line(cmd_line);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char		*prompt;
+	t_shelly	*shelly;
+
+	(void)ac;
+	(void)av;
+	sig_mode(INTERACTIVE);
+	shelly = set_shellyenvp(envp);
+	if (!shelly)
+		exit(1);
+	while (1)
+	{
+		if (!shelly_rl(&prompt))
+		{
+			if (!prompt)
+				exit_cleanup(get_signal_stat(), shelly);
+			continue ;
+		}
+		shelly_exec(&prompt, shelly);
+		sig_mode(INTERACTIVE);
+	}
+	return (0);
+}
+
 //changing envp(initializing shell's envp (copied))
 /* nt	main(int ac, char **av, char **envp)
 {
@@ -176,69 +230,3 @@ void    exit_cleanup(int exit_status, t_shelly *shelly)
 	}
 	return 0;
 } */
-
-static t_shelly	*shelly_init(char **envp)
-{
-	t_shelly	*shelly;
-
-	shelly = set_shellyenvp(envp);
-	if (!shelly)
-		exit(1);
-	return (shelly);
-}
-
-//TODO: not working sh
-
-static bool     shelly_readline(char **prompt)
-{
-    *prompt = readline("minishell$ ");
-    if (!*prompt)
-        return (false);
-    if (!**prompt)
-    {
-        free(*prompt);
-        *prompt = NULL;
-        return (false);
-    }
-    add_history(*prompt);
-    return (true);
-}
-
-
-static void	shelly_exec(char **prompt, t_shelly *shelly)
-{
-	t_cmd_line	*cmd_line;
-
-	cmd_line = fake_parse(*prompt, shelly);
-	shelly->cur_cmd = cmd_line;
-	free(*prompt);
-	*prompt = NULL;
-	if (!cmd_line)
-		return ;
-	
-	exec_loop(cmd_line, shelly);
-	free_cmd_line(cmd_line);
-}
-
-int	main(int ac, char **av, char **envp)
-{
-	char		*prompt;
-	t_shelly	*shelly;
-
-	(void)ac;
-	(void)av;
-	sig_mode(INTERACTIVE);
-	shelly = shelly_init(envp);
-	while (1)
-	{
-		if (!shelly_readline(&prompt))
-		{
-			if (!prompt)
-				exit_cleanup(get_signal_stat(), shelly);
-			continue ;
-		}
-		shelly_exec(&prompt, shelly);
-		sig_mode(INTERACTIVE);
-	}
-	return (0);
-}

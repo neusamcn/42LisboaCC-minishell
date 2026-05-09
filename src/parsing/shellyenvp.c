@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/09 17:00:10 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 20:00:22 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ static char	*eval_set_str_shellyenvp(char **envp, t_shelly *shelly, int i)
 		shelly->envp[i] = ft_strdup(envp[i]);
 	return (shelly->envp[i]);
 }
-
 
 // valgrind leaking so so i am going to change : (96 )
 static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
