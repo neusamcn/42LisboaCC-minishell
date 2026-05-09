@@ -135,25 +135,25 @@ void	exit_cleanup(int exit_status, t_shelly *minishell)
 }
 
 //changing envp(initializing shell's envp (copied))
-int	main(int ac, char **av, char **envp)
+/* nt	main(int ac, char **av, char **envp)
 {
 	char		*prompt;
 	t_cmd_line	*cmd_line;
-    t_shelly 	*shelly;
+	t_shelly 	*shelly;
 
 	(void)ac;
 	(void)av;
+	cmd_line = NULL;
 	sig_mode(INTERACTIVE);
 	if (!envp)
 		write(1, "envp is NULL!\n", 14);
-    shelly = set_shellyenvp(envp);
+	shelly = set_shellyenvp(envp);
 	while (1)
 	{
 		prompt = readline("minishell$ ");
 		if (!prompt)
 		{
 			ft_putstr_fd("exit\n", 1);
-			free_cmd_line(cmd_line);
 			exit_cleanup(get_signal_stat(), shelly);
 		}
 		if (*prompt)
@@ -166,10 +166,73 @@ int	main(int ac, char **av, char **envp)
 		}
 		exec_loop(cmd_line, shelly);
 		free_cmd_line(cmd_line);
+		cmd_line = NULL;
 		free(prompt);
 		sig_mode(INTERACTIVE);
 	}
 	return 0;
+} */
+
+static t_shelly	*shelly_init(char **envp)
+{
+	t_shelly	*shelly;
+
+	sig_mode(INTERACTIVE);
+	shelly = set_shellyenvp(envp);
+	if (!shelly)
+		exit(1);
+	return (shelly);
 }
 
+static bool	shelly_readline(char **prompt)
+{
+	*prompt = readline("minishell$ ");
+	if (!*prompt)
+	{
+		ft_putstr_fd("exit\n", 1);
+		return (false);
+	}
+	if (!**prompt)
+	{
+		free(*prompt);
+		*prompt = NULL;
+		return (false);
+	}
+	add_history(*prompt);
+	return (true);
+}
 
+static void	shelly_exec(char **prompt, t_shelly *shelly)
+{
+	t_cmd_line	*cmd_line;
+
+	cmd_line = fake_parse(*prompt, shelly);
+	free(*prompt);
+	*prompt = NULL;
+	if (!cmd_line)
+		return ;
+	exec_loop(cmd_line, shelly);
+	free_cmd_line(cmd_line);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char		*prompt;
+	t_shelly	*shelly;
+
+	(void)ac;
+	(void)av;
+	shelly = shelly_init(envp);
+	while (1)
+	{
+		if (!shelly_readline(&prompt))
+		{
+			if (!prompt)
+				exit_cleanup(get_signal_stat(), shelly);
+			continue ;
+		}
+		shelly_exec(&prompt, shelly);
+		sig_mode(INTERACTIVE);
+	}
+	return (0);
+}
