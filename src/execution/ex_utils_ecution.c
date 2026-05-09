@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_utils_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:54:21 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 15:54:50 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,12 @@ int do_redri(t_redirects *s)
     	close(s->xd_fd);
 	}
 	return (which_redir_type(s));
+}
+
+void	store_fds(int read_save, int write_save)
+{
+	dup2(read_save, 0);
+	dup2(write_save, 1);
+	close(read_save);
+	close(write_save);
 }

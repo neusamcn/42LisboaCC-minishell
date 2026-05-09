@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/08 13:24:39 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 14:57:51 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int	mndp_log_err(char *msg, char *cmd)
 void	syntax_err_msg(char *err_token)
 {
 	// TODO: should it output to STDERR ? use print_err_msg?
-	ft_printf("-bash shelly: syntax error near unexpected token `%s'\n",
+	p("-bash shelly: syntax error near unexpected token `%s'\n",
 		err_token);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 19:39:08 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 16:18:11 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,28 +69,28 @@ int lonely_blt(t_cmd_line *s, t_shelly *shelly)
     int read_save;
     int write_save;
 
-    (void)shelly->envp;
     read_save = dup(0);
     write_save = dup(1);
-    if (read_save == -1 || write_save == -1)
-        return (perror("dup"), 1);
+	if (read_save == -1 || write_save == -1)
+	{
+/*     	perror("dup");
+    	if (read_save != -1)
+        	close(read_save);
+    	if (write_save != -1)
+        	close(write_save); */
+		return (perror("dup"), 1);
+	}
     if (if_redir(s))
     {
         if (do_redri(&s->redir) != 0)
         {
-            dup2(read_save, 0);
-            dup2(write_save, 1);
-            close(read_save);
-            close(write_save);
+			store_fds(read_save, write_save);
             return (1);
         }
     }
     sig_mode(BLT_EXECUTING);
     r_bltn(s, shelly);
-    dup2(read_save, 0);
-    dup2(write_save, 1);
-    close(read_save);
-    close(write_save);
+	store_fds(read_save, write_save);
     set_signals_interactive_parent();
     return (get_signal_stat());
 }

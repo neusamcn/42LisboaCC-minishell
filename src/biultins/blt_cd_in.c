@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_in.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:55:28 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 15:01:54 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int	mycd(t_cmd_line *cd, t_shelly *shelly)
 	vars.new_pwd = NULL;
 	if (mycd_args(cd, shelly, &vars) != 0)
 		return (1);
-    if (chdir(vars.path) != 0)
-        return (mycd_errors(vars.path));
+	if (chdir(vars.path) != 0)
+		return (mycd_errors(vars.path));
 	upd_pwd(shelly, &vars);
 	return (false);
 }

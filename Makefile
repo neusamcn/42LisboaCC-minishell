@@ -73,19 +73,8 @@ fclean: clean
 
 re: fclean all
 
-test: re $(TEST_DIR)
-	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all -s \
-	--log-file=$(TEST_DIR)/valg_out.log ./$(NAME)
-	@echo "Valgrind run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_out.log$(COLOR_RESET)"
-
-vsupp: re $(TEST_DIR)
-	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all -s --suppressions=$(TEST_DIR)/valg_supp_readline.supp \
-	--log-file=$(TEST_DIR)/valg_supp_out.log ./$(NAME)
-	@echo "Valgrind run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_sup_out.log$(COLOR_RESET)"
-
-testset: re $(TEST_DIR)
-	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all --gen-suppressions=all --num-callers=30 \
-	./$(NAME) 2> $(TEST_DIR)/valgrind.raw
+val: $(TEST_DIR)
+	valgrind --suppressions=readline.supp --leak-check=full --track-fds=yes --show-leak-kinds=all --trace-children=yes ./${NAME}
 	@echo "Valgrind suppression run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_supression_out.log$(COLOR_RESET)"
 
 tclean:

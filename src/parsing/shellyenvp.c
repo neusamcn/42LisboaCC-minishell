@@ -3,25 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   shellyenvp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/03 20:23:36 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/09 15:44:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-// TODO: remove tester:
-static void	print_envp_vars(char **envp)
-{
-	int	i = 0;
-	while (envp[i])
-	{
-		ft_printf(MAGENTA"%d"COLOR_RESET": %s\n\n", i, envp[i]);
-		i++;
-	}
-}
 
 char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 {
@@ -93,6 +83,8 @@ static char	*eval_set_str_shellyenvp(char **envp, t_shelly *shelly, int i)
 	return (shelly->envp[i]);
 }
 
+
+// valgrind leaking so so i am going to change : (96 )
 static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 {
 	size_t		envp_sz;
@@ -100,8 +92,8 @@ static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 
 	envp_sz = 0;
 	while (envp[envp_sz++])
-		;
-	shelly->envp = malloc_protec(sizeof(char *) * envp_sz, shelly);
+		envp_sz++;
+	shelly->envp = malloc_protec(sizeof(char *) * (envp_sz + 1), shelly); 
 	i = 0;
 	while (envp[i])
 	{
@@ -113,7 +105,7 @@ static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 		}
 		i++;
 	}
-	shelly->envp[i] = NULL;
+	shelly->envp[i] = NULL; // because need +1 for the NULL
 	return (shelly);
 }
 
@@ -121,11 +113,9 @@ t_shelly	*set_shellyenvp(char **envp)
 {
 	t_shelly	*shelly;
 
-	print_envp_vars(envp); // TODO: delete tester
 	shelly = malloc_protec(sizeof(t_shelly), NULL);
 	if (!*envp)
 		return (set_minimal_shellyenvp(shelly));
 	shelly = copy_envp(envp, shelly);
-	print_envp_vars(shelly->envp); // TODO: delete tester
 	return (shelly);
 }
