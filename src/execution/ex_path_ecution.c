@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 17:02:33 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 16:43:45 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char *paths_helper(t_cmd_line *cmd_line, char *path_var)
     
 char *absolute_path(t_cmd_line *cmd_line)
 {
+    if (!cmd_line || !cmd_line->cmds || !cmd_line->cmds[0])
+        return (NULL);
     if (ft_strchr(cmd_line->cmds[0], '/'))
     {
         if (access(cmd_line->cmds[0], F_OK | X_OK) == 0)
