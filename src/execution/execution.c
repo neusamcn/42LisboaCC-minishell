@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 16:18:11 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/09 16:55:23 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int lonely_blt(t_cmd_line *s, t_shelly *shelly)
 	}
     if (if_redir(s))
     {
-        if (do_redri(&s->redir) != 0)
+        if (which_redir_type(s) != 0)
         {
 			store_fds(read_save, write_save);
             return (1);
@@ -117,7 +117,7 @@ int single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 	char *path;
 
 	sig_mode(CHILD);
-	if (if_redir(kid) && do_redri(&kid->redir) != 0)
+	if (which_redir_type(kid) && which_redir_type(kid) != 0)
 		exit(1);
 	path = abs_or_rel_p(kid, shelly);
 	if (!path)

@@ -6,28 +6,34 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/04/30 20:59:20 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 16:52:32 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "execution.h"
 
-int which_redir_type(t_redirects *redir)
+int which_redir_type(t_cmd_line *cmd)
 {
-	while (redir && redir->type != NONE)
-	{
+    t_redirects *redir;
+
+    redir = &cmd->redir;
+    while (redir && redir->type != NONE)
+    {
         if (redir->type == HEREDOC)
+        {
             dup2(redir->xd_fd, READ);
-		else if (redir->type == APPEND || redir->type == OUT)
-			append(redir);
-		else if (redir->type == IN)
-		{
-			if (in_redir(redir) != 0)
-        		return (1);
-		}
-		redir = redir->next;
-	}
-	return (0);
+            close(redir->xd_fd);
+        }
+        else if (redir->type == APPEND || redir->type == OUT)
+            append(redir);
+        else if (redir->type == IN)
+        {
+            if (in_redir(redir) != 0)
+                return (1);
+        }
+        redir = redir->next;
+    }
+    return (0);
 }
 
 void append(t_redirects *redir)

@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 17:01:59 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 16:55:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	child_ex_fds(t_cmd_line *kid)
 		close(kid->pipefd[0]);
 		close(kid->pipefd[1]);
 	}
-	if (if_redir(kid) && do_redri(&kid->redir) != 0)
+	if (which_redir_type(kid) != 0)
 		exit(1);
 }
 

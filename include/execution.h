@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 16:10:52 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/09 16:53:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,14 @@ int		ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly);
 
 /* 								EXECUTION UTILS 							*/
 bool 	if_redir(t_cmd_line *s);
-int		do_redri(t_redirects *s);
+//int		do_redri(t_redirects *s);
 char    *abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 char    *abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 void	store_fds(int read_save, int write_save);
 
 
 /* 								REDIRECTIONs 								*/
-int 	which_redir_type(t_redirects *redir);
+int 	which_redir_type(t_cmd_line *cmd);
 int 	in_redir(t_redirects *redir);
 void 	heredoc(t_redirects *redir);
 void 	append(t_redirects *redir);
