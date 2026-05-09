@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 17:04:00 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 17:11:15 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,14 @@ void    free_redirs(t_redirects *redir)
 
     if (!redir)
         return ;
+    if (redir->xd_fd >= 0)
+        close(redir->xd_fd);
     redir = redir->next;
     while (redir)
     {
         next = redir->next;
+        if (redir->xd_fd >= 0)
+            close(redir->xd_fd);
         free(redir);
         redir = next;
     }
@@ -67,12 +71,14 @@ void    free_cmd_line(t_cmd_line *cmd)
 {
     t_cmd_line  *next;
 
+    if (!cmd)
+        return ;
     while (cmd)
     {
         next = cmd->next;
         ft_free_split(cmd->cmds);
         free_redirs(&cmd->redir);
-        cmd = next;
         free(cmd);
+        cmd = next;
     }
 }
