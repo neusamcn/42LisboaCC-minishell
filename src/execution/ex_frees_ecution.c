@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ex_frees_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 16:10:32 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/09 17:04:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+void    ft_free_split(char **arr)
+{
+    int i;
+
+    if (!arr)
+        return ;
+    i = 0;
+    while (arr[i])
+        free(arr[i++]);
+    free(arr);
+}
+
+void    free_redirs(t_redirects *redir)
+{
+    t_redirects *next;
+
+    if (!redir)
+        return ;
+    redir = redir->next;
+    while (redir)
+    {
+        next = redir->next;
+        free(redir);
+        redir = next;
+    }
+}
 
 int free_path(char **paths)
 {
@@ -25,18 +52,6 @@ int free_path(char **paths)
     return (true);
 }
 
-void close_fds(t_redirects *redir)
-{
-    if (!redir)
-        return;
-
-    if (redir->fd[0] != -1)
-        close(redir->fd[0]);
-    if (redir->fd[1] != -1)
-        close(redir->fd[1]);
-}
-
-
 void pipe_cl(t_cmd_line *pipeline)
 {
     if (pipeline->prevfd != -1)
@@ -48,12 +63,16 @@ void pipe_cl(t_cmd_line *pipeline)
     }
 }
 
-void	cleanup_xd_fds(t_cmd_line *start)
+void    free_cmd_line(t_cmd_line *cmd)
 {
-	while (start)
-	{
-		if (start->redir.xd_fd >= 0)
-			close(start->redir.xd_fd);
-		start = start->next;
-	}
+    t_cmd_line  *next;
+
+    while (cmd)
+    {
+        next = cmd->next;
+        ft_free_split(cmd->cmds);
+        free_redirs(&cmd->redir);
+        cmd = next;
+        free(cmd);
+    }
 }

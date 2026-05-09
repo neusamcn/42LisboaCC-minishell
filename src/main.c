@@ -153,7 +153,8 @@ int	main(int ac, char **av, char **envp)
 		if (!prompt)
 		{
 			ft_putstr_fd("exit\n", 1);
-			exit(get_signal_stat());
+			free_cmd_line(cmd_line);
+			exit_cleanup(get_signal_stat(), shelly);
 		}
 		if (*prompt)
 			add_history(prompt);
@@ -164,6 +165,7 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		}
 		exec_loop(cmd_line, shelly);
+		free_cmd_line(cmd_line);
 		free(prompt);
 		sig_mode(INTERACTIVE);
 	}

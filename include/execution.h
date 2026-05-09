@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 16:53:00 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 17:05:25 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,9 @@ void	close_fds(t_redirects *redir);
 int 	free_path(char **paths);
 void 	pipe_cl(t_cmd_line *pipeline);
 void	cleanup_xd_fds(t_cmd_line *start);
+void    free_cmd_line(t_cmd_line *cmd);
+void    ft_free_split(char **arr);
+void    free_redirs(t_redirects *redir);
 
 /* 								BUILTINs 									*/
 int r_bltn(t_cmd_line *cmd_line, t_shelly *shelly);

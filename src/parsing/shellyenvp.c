@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shellyenvp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/09 15:44:14 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/09 17:00:10 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
 
 char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 {
@@ -91,7 +90,7 @@ static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 	size_t		i;
 
 	envp_sz = 0;
-	while (envp[envp_sz++])
+	while (envp[envp_sz])
 		envp_sz++;
 	shelly->envp = malloc_protec(sizeof(char *) * (envp_sz + 1), shelly); 
 	i = 0;
