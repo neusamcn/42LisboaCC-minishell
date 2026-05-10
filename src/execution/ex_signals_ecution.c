@@ -1,40 +1,40 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*	                                                                        */
 /*                                                        :::      ::::::::   */
 /*   ex_signals_ecution.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 16:31:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 22:45:06 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/10 15:37:56 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h" // Milena, I corrected your path
+#include "execution.h"
 
 //run oing google.com and then terminate w SIGINT to check the correct way 
-static int g_signal_stat = 0;
+static int	g_signal_stat = 0;
 
-void sigint_glob(int sig)
+void	sigint_glob(int sig)
 {
-    (void)sig;
-    g_signal_stat = 130;
+	(void)sig;
+	g_signal_stat = 130;
 }
 
-int get_signal_stat(void)
+int	get_signal_stat(void)
 {
-    return g_signal_stat;
+	return (g_signal_stat);
 }
 
-int status_check(int status)
+int	status_check(int status)
 {
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		status = 128 + WTERMSIG(status);
 	else if (WCOREDUMP(status))
-   		ft_putstr_fd("Quit (core dumped)\n", 2); 
-	return status;
+		ft_putstr_fd("Quit (core dumped)\n", 2);
+	return (status);
 }
 
 void	set_signal_stat(int value)
