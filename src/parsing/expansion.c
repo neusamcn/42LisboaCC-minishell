@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
+/*   Updated: 2026/05/09 20:11:07 by megi             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* 
@@ -39,3 +51,33 @@
         > del
         $var
 */
+
+
+/* $VAR → replace with env value
+$? → replace with last exit status
+~ → replace with HOME (optional/bonus)
+"$VAR" → expand inside double quotes
+'$VAR' → do NOT expand inside single quotes */
+
+/* "hello $USER world"
+         ↓
+scan char by char:
+  - regular char → copy as-is
+  - ' → copy everything until next ' literally
+  - " → copy until next " BUT expand $ inside
+  - $ → look ahead, grab var name, look up in envp, substitute */
+
+  char    *expand_token(char *word, t_shelly *shelly)
+{
+    // scan word char by char
+    // build result string
+    // when you hit $:
+    //   grab name (alphanumeric + _)
+    //   look up in shelly->envp
+    //   append value (or "" if not found)
+    // when you hit ':
+    //   copy everything until next ' literally (no expansion)
+    // when you hit ":
+    //   copy until next " but still expand $
+    // return result
+}

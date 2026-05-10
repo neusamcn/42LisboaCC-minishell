@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/09 20:00:22 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 20:15:29 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_shelly	*set_minimal_shellyenvp(t_shelly *shelly)
 	cwd = NULL;
 	getcwd_protec(cwd, PATH_MAX, shelly);
 	// TODO: if result is nil, cwd = "\"?
-	shelly->envp[1] = ft_strjoin("PWD=", cwd);
+	shelly->envp[1] = ft_strjoin("PWD=", cwd); //should we free cwd after? bc of the ft_strjoin
 	if (!(shelly->envp[1]))
 		exit_cleanup(EXIT_FAILURE, shelly);
 	shelly->envp[2] = ft_strdup("SHLVL=1");
@@ -89,9 +89,9 @@ static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 	size_t		i;
 
 	envp_sz = 0;
-	while (envp[envp_sz])
-		envp_sz++;
-	shelly->envp = malloc_protec(sizeof(char *) * (envp_sz + 1), shelly); 
+	while (envp[envp_sz++])
+		;
+	shelly->envp = malloc_protec(sizeof(char *) * (envp_sz + 1), shelly); // here +1 
 	i = 0;
 	while (envp[i])
 	{
@@ -103,7 +103,7 @@ static t_shelly	*copy_envp(char **envp, t_shelly *shelly)
 		}
 		i++;
 	}
-	shelly->envp[i] = NULL; // because need +1 for the NULL
+	shelly->envp[i] = NULL; //bc of this
 	return (shelly);
 }
 

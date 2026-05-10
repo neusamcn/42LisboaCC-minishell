@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:46:35 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 19:57:33 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 20:38:11 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <stdbool.h>
 # include <sys/resource.h>
 # include <sys/wait.h>
+#include <sys/stat.h>
 
 # define p(...) printf(__VA_ARGS__)
 # define CD "cd"

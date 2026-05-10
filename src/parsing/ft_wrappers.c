@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wrappers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 23:44:25 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/01 13:49:48 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/09 20:17:37 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	*getcwd_protec(char *buf, size_t size, t_shelly *shelly)
 {
+	// should allocate first? buf = getcwd(NULL, 0); and afterwards free because we are passing NULL as buf to getcwd
 	if (!getcwd(buf, size))
 	{
 		// TODO: do I actually need this print? does it have an errno?
