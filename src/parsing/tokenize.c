@@ -6,36 +6,159 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 21:02:43 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/28 20:57:07 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/11 00:13:53 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
- // Milena, it's not finished!!!!!
+// TODO: review and test file
 
-static t_token	*add_token_word(char *word, int word_len, t_token *tokens)
+// static t_token_type	tkn_sym_type(char *input_str)
+// {
+// 	if (input_str == ">>" || input_str == "<<"
+// 		|| input_str + 1 == ">" || input_str + 1 == "<")  // can I do this?
+// 		return (REDIR);
+// 	else if (input_str + 1 == "|")
+// 		return (CTRL_OP);
+// 	return (WORD);
+// }
+
+// static t_token_type	tkn_type_check(char *input_str)
+// {
+// 	// if (input_str == ">>" || input_str == "<<"
+// 	// 	|| input_str + 1 == ">" || input_str + 1 == "<")
+// 	// 	return (REDIR);
+// 	// else if (input_str + 1 == "|") // can I do this?
+// 	// 	return (CTRL_OP);
+// 	// return (WORD);
+// }
+
+static t_token	*new_tkn(t_token_type type, char *value)
 {
+	t_token	*token;
+
+	token = ft_calloc_protec(1, sizeof(t_token));
+	token->type = type;
+	token->value = value;
+	return (token);
+}
+
+static void	append_tkn(t_token **head, t_token *new_node)
+{
+	t_token	*last;
+
+	if (!*head)
+	{
+		*head = new_node;
+		return ;
+	}
+	last = *head;
+	while (last->next)
+		last = last->next;
+	last->next = new_node;
+	new_node->previous = last;
+}
+
+static t_token	*add_tkn_word(char *word, int word_len, t_token *tokens)
+{
+	t_token	*node;
+	char	*value;
+
+	value = ft_substr(word, 0, word_len);
+	if (!value)
+		return (tokens);
+	node = new_tkn(WORD, value);
+	if (ft_strchr(value, '\'') || ft_strchr(value, '"'))
+		node->quoted = 1;
+	append_tkn(&tokens, node);
+	return (tokens);
+}
+
+static int	scan_word_end(char *s, int i)
+{
+	char	quote;
+
+	quote = 0;
+	while (s[i])
+	{
+		if (!quote && ft_isspace(s[i] == true))
+			break ;
+		if (!quote && (s[i] == '>' || s[i] == '<' || s[i] == '|'))
+			break ;
+		if (!quote && (s[i] == '\'' || s[i] == '"'))
+			quote = s[i];
+		else if (quote && s[i] == quote)
+			quote = 0;
+		i++;
+	}
+	return (i);
+}
+
+static int	op_len(char *s)
+{
+	if ((s[0] == '<' && s[1] == '<') || (s[0] == '>' && s[1] == '>'))
+		return (2);
+	if (s[0] == '|')
+		return (1);
+	return (1);
+}
+
+static t_token	*add_tkn_op(char *input, t_token *tokens)
+{
+	t_token	*node;
+	int		len;
+
+	len = op_len(input);
+	node = ft_calloc_protec(1, sizeof(t_token));
+	if (input[0] == '|')
+		node->type = CTRL_OP;
+	else
+		node->type = REDIR;
+	if (len == 2 && input[0] == '<')
+		node->redir = HEREDOC;
+	else if (len == 2 && input[0] == '>')
+		node->redir = APPEND;
+	else if (input[0] == '<')
+		node->redir = IN;
+	else if (input[0] == '>')
+		node->redir = OUT;
+	else
+		node->ctrlop = PIPE;
+	node->value = ft_substr(input, 0, len);
+	append_tkn(&tokens, node);
 	return (tokens);
 }
 
 // TODO: if (str[i] != '`' && str[i]) // 96 ==> add?
 t_token	*tokenize_input(char *input_str)
 {
-	char	*syntax_err;
 	t_token	*tokens;
-	// int		i;
-	// int		quote_type;
-	// i = 0;
+	int		i;
+	int		start;
+	int		len;
+
 	tokens = NULL;
-	// TODO: validate input_str (& 2ndary prompt) + tokenize
-	syntax_err = validate_input(input_str);
-	if (syntax_err);
-		syntax_err_msg(syntax_err);
-	// if ((input_str[i - 1] == 124 && init_2nd_prompt == 3)
-	// 	|| quote_type == 1 || quote_type == 2)
-	// TODO: secondary prompt function
-	tokens = ft_calloc_protec(1, sizeof(t_token));
+	i = 0;
+	while (input_str[i])
+	{
+		while (input_str[i] && ft_isspace(input_str[i]) == true)
+			i++;
+		if (!input_str[i])
+			break ;
+		if (input_str[i] == '|' || input_str[i] == '>' || input_str[i] == '<')
+		{
+			tokens = add_tkn_op(input_str + i, tokens);
+			i += op_len(input_str + i);
+		}
+		else
+		{
+			start = i;
+			i = scan_word_end(input_str, i);
+			len = i - start;
+			tokens = add_tkn_word(input_str + start, len, tokens);
+		}
+	}
 	return (tokens);
 }
 

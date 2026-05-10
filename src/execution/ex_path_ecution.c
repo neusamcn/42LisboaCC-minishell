@@ -3,72 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path_ecution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/03 20:24:24 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/10 19:41:57 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h" // Milena, I corrected your path
+#include "execution.h"
 
-char *relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
+/*
+Searching if the cmd is an absolute or relative path or by using the PATH
+envp var. ( ls to /bin/ls )
+1. absolute path check:
+    If the cmd contains a '/',-> direct path.
+		1) access: if the file exists and is executable
+        2) stat: checks if it is a directory
+        3) if it is a directory → errno is set to EISDIR
+        4) if valid → a duplicated copy of the path is returned
+2. PATH search:
+    If the cmd is not an absolute path, the PATH envp var is searched.
+    The PATH string is split by ':' into directories.
+    Each directory is combined with the cmd name to form a candidate path (dir + "/" + cmd).
+    For each candidate:
+        1) access: checks if the file exists and is executable
+        2) if valid → the full path is returned immediately
+        3) otherwise it is freed and the next path is tested
+*/
+
+char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 {
-    int i;
-    char *abs_path;
-    
-    i = 0;
-    abs_path = absolute_path(cmd_line);
-    if (abs_path)
-        return abs_path;
-    while (shelly->envp[i])
-    {
-        if (ft_strncmp(shelly->envp[i], "PATH=", 5) == 0)
-            return paths_helper(cmd_line, shelly->envp[i] + 5);
-        i++;
-    }
-    return NULL;
+	int		i;
+	char	*path;
+
+	i = 0;
+	path = absolute_path(cmd_line);
+	if (path)
+		return (path);
+	while (shelly->envp[i])
+	{
+		if (ft_strncmp(shelly->envp[i], "PATH=", 5) == 0)
+			return (paths_helper(cmd_line, shelly->envp[i] + 5));
+		i++;
+	}
+	return (NULL);
 }
 
-char *paths_helper(t_cmd_line *cmd_line, char *path_var)
+char	*absolute_path(t_cmd_line *data)
 {
-    int j;
-    char *abs_path;
-    char *tmp;
-    char **paths;
+	struct		stat sb;
+	char		*path;
 
-    j = 0;
-    paths = ft_split(path_var, ':');
-    if (!paths)
-        return NULL;
-    while (paths[j])
-    {
-        tmp = ft_strjoin(paths[j], "/");
-        abs_path = ft_strjoin(tmp, cmd_line->cmds[0]);
-        free(tmp);
-        if ((access(abs_path, F_OK | X_OK) == 0))
-        {
-            free_path(paths);
-            return abs_path;
-        }
-        free(abs_path);
-        j++;
-    }
-    free_path(paths);
-    return NULL;
-    }
-    
-char *absolute_path(t_cmd_line *cmd_line)
+	if (!data || !data->cmds || !data->cmds[0])
+		return (NULL);
+	path = data->cmds[0];
+	if (!ft_strchr(path, '/'))
+		return (NULL);
+	if (access(path, F_OK | X_OK) == -1)
+		return (NULL);
+	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
+	{
+		errno = EISDIR;
+		return (NULL);
+	}
+	return (ft_strdup(path));
+}
+
+static char	*b_path(char *dir, char *cmd)
 {
-    if (ft_strchr(cmd_line->cmds[0], '/'))
-    {
-        if (access(cmd_line->cmds[0], F_OK | X_OK) == 0)
-            return ft_strdup(cmd_line->cmds[0]);
-        else
-        {
-            mndp_log_err("No such file or directory", cmd_line->cmds[0]);
-            return (NULL);
-        }
-    }
-    return NULL;
+	char	*path;
+
+	path = ft_strjoin(dir, "/");
+	if (!path)
+		return (NULL);
+	return (ft_strjoin_free(path, cmd));
+}
+
+char	*paths_helper(t_cmd_line *cmd_line, char *path_var)
+{
+	int		j;
+	char	*path;
+	char	**paths;
+
+	paths = ft_split(path_var, ':');
+	if (!paths)
+		return (NULL);
+	j = 0;
+	while (paths[j])
+	{
+		path = b_path(paths[j++], cmd_line->cmds[0]);
+		if (path && access(path, F_OK | X_OK) == 0)
+			return (free_path(paths), path);
+		free(path);
+	}
+	free_path(paths);
+	return (NULL);
 }

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   blt_unset_in.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 16:01:02 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 20:34:04 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
-// unset is a builtins that deletes a variable (any var, even the one, you set using an export)
+// unset is a builtins that deletes a variable (any var, even the one, you set 
+// using an export)
 
 static void	rm(t_shelly *shelly, char *name)
 {
@@ -39,17 +40,16 @@ static void	rm(t_shelly *shelly, char *name)
 	}
 }
 
-int	mysunset(t_cmd_line *unset, t_shelly *shelly)
+int	mysunset(t_cmd_line *un, t_shelly *shelly)
 {
 	int	av;
 
 	av = 1;
-	while (unset->cmds[av])
+	while (un->cmds[av])
 	{
-		if (!ft_strchr(unset->cmds[av], '='))
-			rm(shelly, unset->cmds[av]);
+		if (!ft_strchr(un->cmds[av], '='))
+			rm(shelly, un->cmds[av]);
 		av++;
 	}
 	return (false);
 }
-

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   blt_pwd_in.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:00:13 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:52:43 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 20:21:04 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
 // searching PWD in the env variables and print 
 // ft_strcmp(PWD=) 
@@ -23,10 +23,10 @@ int	mypwd(t_cmd_line *cmd, t_shelly *shelly)
 	i = 0;
 	while (shelly->envp[i])
 	{
-		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == 0)
+		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == false)
 		{
 			ft_putendl_fd(shelly->envp[i] + 4, STDOUT_FILENO);
-			return (0);
+			return (false);
 		}
 		i++;
 	}

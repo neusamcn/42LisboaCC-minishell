@@ -3,20 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_in.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:55:28 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 20:27:12 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
-// if av[1] == ".." == previous pwd or av[1] == "." ignoring signal ? retur to prompt 
+// if av[1] == ".." == previous pwd or av[1] == "." ignoring signal ? retur 
+// to prompt 
 
-/* the basic logic is im checking the amount of rags, if it 1 arg that means that its only
-"cd" bltn called, so its the same as call "cd HOMe" so im finding home path in an env
-if args > 2 its an error and if arg 2 im giving it as a path and finding in pwd (old, new) */
+/* the basic logic is im checking the amount of rags, if it 1 arg that means 
+that 
+its only
+"cd" bltn called, so its the same as call "cd HOMe" so im finding home path 
+in an 
+env
+if args > 2 its an error and if arg 2 im giving it as a path and finding in 
+pwd 
+(old, new)
+
+CD sjould run inside the parent proc. cuz changing dir inside a child process not affect the shell env
+
+mycd_args():
+    Check which path cd should use.
+    1) No argument:
+        cd
+        - searches HOME variable in envp
+        - uses HOME path as target directory
+        - if HOME is missing → prints:
+            "minishell: cd: HOME not set"
+    2) Too many arguments:
+        cd dir1 dir2
+        - prints:
+            "minishell: cd: too many arguments"
+    3) Normal path:
+        cd /tmp
+        - uses provided argument directly
+		
+mycd_errors():
+    Handles chdir() failures using errno
+    Possible errors:
+        - EACCES      → permission denied
+        - ENOENT      → no such file or directory
+        - ENOTDIR     → not a directory
+        - ELOOP       → too many symbolic links
+        - ENAMETOOLONG→ filename too long
+
+upd_pwd():
+    Updates shell environment variables after successful directory change
+    Steps:
+        1. searches current PWD value
+        2. stores it into OLDPWD
+        3. gets new current directory using getcwd()
+        4. updates PWD with new directory path
+        5. frees allocated
+*/
 
 static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 {
@@ -70,7 +114,7 @@ static int	upd_pwd(t_shelly *shelly, t_cd *vars)
 	i = 0;
 	while (shelly->envp[i])
 	{
-		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == 0)
+		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == false)
 		{
 			vars->old_pwd = shelly->envp[i] + 4;
 			break ;
@@ -94,10 +138,10 @@ int	mycd(t_cmd_line *cd, t_shelly *shelly)
 	vars.path = NULL;
 	vars.old_pwd = NULL;
 	vars.new_pwd = NULL;
-	if (mycd_args(cd, shelly, &vars) != 0)
-		return (1);
-    if (chdir(vars.path) != 0)
-        return (mycd_errors(vars.path));
+	if (mycd_args(cd, shelly, &vars) != false)
+		return (true);
+	if (chdir(vars.path) != false)
+		return (mycd_errors(vars.path));
 	upd_pwd(shelly, &vars);
 	return (false);
 }

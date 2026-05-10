@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/06 22:20:27 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/11 00:00:39 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_err_msg(char *my_msg)
 	ft_putendl_fd(strerror(errno), 2);
 }
 
-void	p_log_err(char *cmd, char *msg)
+int	mndp_log_err(char *msg, char *cmd)
 {
 	ft_putstr_fd(PALE_VIOLET_RED, 2);
 	ft_putstr_fd("minishell: ", 2);
@@ -29,7 +29,7 @@ void	p_log_err(char *cmd, char *msg)
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);
 	ft_putchar_fd('\n', 2);
-	return (EXIT_FAILURE);
+	return (true);
 }
 
 void	syntax_err_msg(char *err_token)

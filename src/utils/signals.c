@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/06 22:44:59 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/11 00:23:35 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 //run oing google.com and then terminate w SIGINT to check the correct way 
 static int g_signal_stat = 0;
+
+void	set_signal_stat(int value)
+{
+	g_signal_stat = value;
+}
 
 // TODO: add *minishell to args?
 static void	set_sigaction(int signo, void (*handler)(int), int flags)

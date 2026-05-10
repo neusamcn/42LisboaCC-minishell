@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   blt_echo_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:22 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:55:02 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 15:24:23 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
 //printing msges to stdout 
 // wildcart character * to output multiple files (ike cat hello*)
@@ -20,10 +20,10 @@
 
 // getchar and putchar till receive a newline
 
-int myecho(t_cmd_line *cmd, t_shelly *shelly)
+int	myecho(t_cmd_line *cmd, t_shelly *shelly)
 {
-	int i;
-	int newline;
+	int	i;
+	int	newline;
 
 	(void)shelly->envp;
 	i = 1;

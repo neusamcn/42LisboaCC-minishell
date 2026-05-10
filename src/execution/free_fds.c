@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   blt_env_in.c                                       :+:      :+:    :+:   */
+/*   free_fds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/24 18:08:07 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/10 20:28:11 by megiazar         ###   ########.fr       */
+/*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
+/*   Updated: 2026/05/10 15:51:45 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "minishell.h"
 
-int	myenv(t_cmd_line *cmd, t_shelly *shelly)
+void	close_fds(t_redirects *redir)
 {
-	size_t	i;
+	if (!redir)
+		return ;
+	if (redir->fd[0] != -1)
+		close(redir->fd[0]);
+	if (redir->fd[1] != -1)
+		close(redir->fd[1]);
+}
 
-	if (cmd->cmds[1])
+void	cleanup_xd_fds(t_cmd_line *start)
+{
+	while (start)
 	{
-		mndp_log_err("too many arguments", cmd->cmds[0]);
-		return (true);
+		if (start->redir.xd_fd >= 0)
+			close(start->redir.xd_fd);
+		start = start->next;
 	}
-	i = 0;
-	while (shelly->envp && shelly->envp[i])
-	{
-		if (ft_strchr(shelly->envp[i], '='))
-			ft_putendl_fd(shelly->envp[i], 1);
-		i++;
-	}
-	return (false);
 }
