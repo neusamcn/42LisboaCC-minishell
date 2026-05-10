@@ -1,16 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ex_signals2_ecution.c                              :+:      :+:    :+:   */
+/*   ex_signals_ecution.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/17 23:39:55 by megi              #+#    #+#             */
-/*   Updated: 2026/04/22 16:06:02 by megi             ###   ########.fr       */
+/*   Created: 2026/04/02 16:31:59 by megi              #+#    #+#             */
+/*   Updated: 2026/05/06 22:45:06 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h" // Milena, I corrected your path
+
+//run oing google.com and then terminate w SIGINT to check the correct way 
+static int g_signal_stat = 0;
+
+void sigint_glob(int sig)
+{
+    (void)sig;
+    g_signal_stat = 130;
+}
+
+int get_signal_stat(void)
+{
+    return g_signal_stat;
+}
 
 int status_check(int status)
 {
@@ -23,17 +37,12 @@ int status_check(int status)
 	return status;
 }
 
-void	sigint_prompt_handler(int signal)
+void	set_signal_stat(int value)
 {
-	(void)signal;
-   	set_signal_stat(130);
-	ft_putendl_fd("", WRITE);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	g_signal_stat = value;
 }
 
-void sig_mode(int md)
+void	sig_mode(int md)
 {
 	if (md == INTERACTIVE)
 	{

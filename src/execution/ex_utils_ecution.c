@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_utils_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:54:21 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 15:03:39 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 char    *abs_or_rel_p(t_cmd_line *c, t_shelly *shelly)
 {
-	char *p;
-	
-	p = c->cmds[0];
-	if (ft_strchr(p, '/'))
-		return (absolute_path(c));
-	return (relative_path(c, shelly));
+    char *p;
+    
+    if (!c || !c->cmds || !c->cmds[0])
+        return (NULL);
+    p = c->cmds[0];
+    if (ft_strchr(p, '/'))
+        return (absolute_path(c));
+    return (relative_path(c, shelly));
 }
 
 bool if_redir(t_cmd_line *s)
@@ -36,12 +38,10 @@ bool if_redir(t_cmd_line *s)
     return (false);
 }
 
-int do_redri(t_redirects *s)
+void	store_fds(int read_save, int write_save)
 {
-	if (s->type == HEREDOC)
-	{
-		dup2(s->xd_fd, READ);
-    	close(s->xd_fd);
-	}
-	return (which_redir_type(s));
+	dup2(read_save, 0);
+	dup2(write_save, 1);
+	close(read_save);
+	close(write_save);
 }

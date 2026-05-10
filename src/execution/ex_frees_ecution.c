@@ -6,11 +6,42 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/08 13:29:43 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 17:20:06 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+void    ft_free_split(char **arr)
+{
+    int i;
+
+    if (!arr)
+        return ;
+    i = 0;
+    while (arr[i])
+        free(arr[i++]);
+    free(arr);
+}
+
+void    free_redirs(t_redirects *redir)
+{
+    t_redirects *next;
+
+    if (!redir)
+        return ;
+    if (redir->xd_fd >= 0)
+        close(redir->xd_fd);
+    redir = redir->next;
+    while (redir)
+    {
+        next = redir->next;
+        if (redir->xd_fd >= 0)
+            close(redir->xd_fd);
+        free(redir);
+        redir = next;
+    }
+}
 
 int free_path(char **paths)
 {
@@ -25,16 +56,6 @@ int free_path(char **paths)
     return (true);
 }
 
-void	close_fds(void)
-{
-	t_redirects redir;
-	
-	if (redir.fd[0] != -1)
-		close(redir.fd[0]);
-	if (redir.fd[1] != -1)
-		close(redir.fd[1]);
-}
-
 void pipe_cl(t_cmd_line *pipeline)
 {
     if (pipeline->prevfd != -1)
@@ -46,12 +67,18 @@ void pipe_cl(t_cmd_line *pipeline)
     }
 }
 
-void	cleanup_xd_fds(t_cmd_line *start)
+void    free_cmd_line(t_cmd_line *cmd)
 {
-	while (start)
-	{
-		if (start->redir.xd_fd >= 0)
-			close(start->redir.xd_fd);
-		start = start->next;
-	}
+    t_cmd_line  *next;
+
+    if (!cmd)
+        return ;
+    while (cmd)
+    {
+        next = cmd->next;
+        ft_free_split(cmd->cmds);
+        free_redirs(&cmd->redir);
+        free(cmd);
+        cmd = next;
+    }
 }

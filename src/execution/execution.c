@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/04 19:39:08 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/09 17:17:17 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,28 +69,27 @@ int lonely_blt(t_cmd_line *s, t_shelly *shelly)
     int read_save;
     int write_save;
 
-    (void)shelly->envp;
     read_save = dup(0);
     write_save = dup(1);
     if (read_save == -1 || write_save == -1)
+    {
+        if (read_save != -1)
+            close(read_save);
+        if (write_save != -1)
+            close(write_save);
         return (perror("dup"), 1);
+    }
     if (if_redir(s))
     {
-        if (do_redri(&s->redir) != 0)
+        if (which_redir_type(s) != 0)
         {
-            dup2(read_save, 0);
-            dup2(write_save, 1);
-            close(read_save);
-            close(write_save);
+            store_fds(read_save, write_save);
             return (1);
         }
     }
     sig_mode(BLT_EXECUTING);
     r_bltn(s, shelly);
-    dup2(read_save, 0);
-    dup2(write_save, 1);
-    close(read_save);
-    close(write_save);
+    store_fds(read_save, write_save);
     set_signals_interactive_parent();
     return (get_signal_stat());
 }
@@ -114,19 +113,20 @@ int mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 
 int single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 {
-	char *path;
+    char *path;
 
-	sig_mode(CHILD);
-	if (if_redir(kid) && do_redri(&kid->redir) != 0)
-		exit(1);
-	path = abs_or_rel_p(kid, shelly);
-	if (!path)
-	{
-		mndp_log_err("commad not found\n", kid->cmds[0]);
-		exit (127);
-	}
-	execve(path, kid->cmds, shelly->envp);
-	free (path);
-	mndp_log_err("Execution failed!\n", kid->cmds[0]);
-	exit(127);
+    sig_mode(CHILD);
+    if (which_redir_type(kid) != 0)
+        exit(1);
+    path = abs_or_rel_p(kid, shelly);
+    if (!path)
+    {
+        if (kid->cmds && kid->cmds[0])
+            mndp_log_err("commad not found\n", kid->cmds[0]);
+        exit(127);
+    }
+    execve(path, kid->cmds, shelly->envp);
+    free(path);
+    mndp_log_err("Execution failed!\n", kid->cmds[0]);
+    exit(127);
 }
