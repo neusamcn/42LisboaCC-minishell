@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:28:56 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:29:18 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	myexit(t_cmd_line *argv, t_shelly *shelly)
 	}
 	if (argv->cmds[2] != NULL)
 	{
-		mndp_log_err("bash: exit: too many arguments\n", argv->cmds[0]);
+		mndp_log_err("bash: exit: too many arguments\n", argv->cmds[1]);
 		return (1);
 	}
 	if (exit_valid_var(argv) == 1)

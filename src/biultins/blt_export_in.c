@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:36:39 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:31:30 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	parse_exp_arg(char *arg)
 		c = arg[j];
 		if (!exp_argv(c, j))
 		{
-			mndp_log_err("export: not valid in this context\n", arg);
+			mndp_log_err("not valid in this context\n", arg);
 			return (-1);
 		}
 		if (c == '=')
@@ -119,7 +119,10 @@ char	**exp_minienv(t_export *mini, char *key, char *value, int i)
 	}
 	mini->newenv = malloc(sizeof(char *) * (i + 2));
 	if (!mini->newenv)
+	{
+		print_err_msg("export: malloc failed!");
 		return (free(mini->new_var), mini->envp);
+	}
 	mini->newenv[i] = mini->new_var;
 	mini->newenv[i + 1] = NULL;
 	while (i--)

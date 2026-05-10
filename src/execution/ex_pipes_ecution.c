@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 19:37:13 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:10:17 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 	child_ex_fds(kid);
 	if (!kid->cmds || !kid->cmds[0])
 		exit(0);
-	if (are_you_builtin(kid) == 0)
+	if (are_you_builtin(kid) == false)
 	{
 		r_bltn(kid, shelly);
 		exit(get_signal_stat());

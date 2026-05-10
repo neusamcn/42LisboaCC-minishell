@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 21:00:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:35:19 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:20:39 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ int	r_bltn(t_cmd_line *cmd_line, t_shelly *shelly)
 		return (myexport(cmd_line, shelly));
 	if (!ft_strcmp(cmd_line->cmds[0], UNSET))
 		return (mysunset(cmd_line, shelly));
-	return (true);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 18:08:07 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/10 15:25:07 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:28:11 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	myenv(t_cmd_line *cmd, t_shelly *shelly)
 
 	if (cmd->cmds[1])
 	{
-		ft_putstr_fd("env: too many arguments\n", 2);
+		mndp_log_err("too many arguments", cmd->cmds[0]);
 		return (true);
 	}
 	i = 0;

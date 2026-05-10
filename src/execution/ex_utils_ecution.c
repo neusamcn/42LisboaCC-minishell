@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:52:00 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:17:42 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,19 @@ bool	if_redir(t_cmd_line *s)
 {
 	t_redirects	*tmp;
 
-	tmp = &s->redir;
-	while (tmp)
+	while (&s->redir)
 	{
-		if (tmp->type != NONE)
+		if (&s->redir->type != NONE)
 			return (true);
-		tmp = tmp->next;
+		&s->redir = &s->redir->next;
 	}
 	return (false);
 }
 
 void	store_fds(int read_save, int write_save)
 {
-	dup2(read_save, 0);
-	dup2(write_save, 1);
+	dup2(read_save, STDIN_FILENO);
+	dup2(write_save, STDOUT_FILENO);
 	close(read_save);
 	close(write_save);
 }

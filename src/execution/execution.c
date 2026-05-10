@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 19:56:19 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:20:16 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 		save_out = dup(1);
 		if (save_out == -1)
 			return ;
-		redir = &cmds->redir;
-		while (redir && redir->type != NONE)
+		//redir = &cmds->redir;
+		while (&cmds->redir && &cmds->redir->type != NONE)
 		{
-			if (redir->type == OUT || redir->type == APPEND)
-				append(redir);
-			else if (redir->type == IN)
-				in_redir(redir);
-			redir = redir->next;
+			if (&cmds->redir->type == OUT || &cmds->redir->type == APPEND)
+				append(&cmds->redir);
+			else if (&cmds->redir->type == IN)
+				in_redir(&cmds->redir);
+			&cmds->redir = &cmds->redir->next;
 		}
-		dup2(save_out, 1);
+		dup2(save_out, STDOUT_FILENO);
 		close(save_out);
 	}
 }
@@ -71,15 +71,15 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 	t_cmd_line	*tmp;
 	t_redirects	*redir;
 
-	tmp = cmds;
+	tmp = cmds; // TODO: HUH> 
 	while (tmp)
 	{
-		redir = &tmp->redir;
-		while (redir && redir->type != NONE)
+		//redir = &tmp->redir;
+		while (&tmp->redir && &tmp->redir->type != NONE)
 		{
-			if (redir->type == HEREDOC)
-				heredoc(redir);
-			redir = redir->next;
+			if (&tmp->redir->type == HEREDOC)
+				heredoc(&tmp->redir);
+			&tmp->redir = &tmp->redir->next;
 		}
 		tmp = tmp->next;
 	}
@@ -98,8 +98,8 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 	int	read_save;
 	int	write_save;
 
-	read_save = dup(0);
-	write_save = dup(1);
+	read_save = dup(STDIN_FILENO);
+	write_save = dup(STDOUT_FILENO);
 	if (read_save == -1 || write_save == -1)
 	{
 		if (read_save != -1)
@@ -108,10 +108,10 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 			close(write_save);
 		return (perror("dup"), 1);
 	}
-	if (if_redir(s) && which_redir_type(s) != 0)
+	if (if_redir(s) && which_redir_type(s) != false)
 	{
 		store_fds(read_save, write_save);
-		return (1);
+		return (true);
 	}
 	sig_mode(BLT_EXECUTING);
 	r_bltn(s, shelly);
@@ -129,7 +129,7 @@ int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 	only_child = fork();
 	if (only_child == -1)
 		return (perror("fork"), 1);
-	if (only_child == 0)
+	if (only_child == false)
 		single_child_ex(s_cmd, shelly);
 	sig_mode(MNDWAIT);
 	waitpid(only_child, &status, 0);
@@ -142,7 +142,7 @@ int	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 	char	*path;
 
 	sig_mode(CHILD);
-	if (which_redir_type(kid) != 0)
+	if (which_redir_type(kid) != false)
 		exit(1);
 	path = abs_or_rel_p(kid, shelly);
 	if (!path)

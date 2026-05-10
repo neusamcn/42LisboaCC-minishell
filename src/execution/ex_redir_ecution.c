@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 19:46:43 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:17:07 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,22 @@ int	which_redir_type(t_cmd_line *cmd)
 {
 	t_redirects	*redir;
 
-	redir = &cmd->redir;
-	while (redir && redir->type != NONE)
+	//redir = &cmd->&cmd->redir;
+	while (&cmd->redir && &cmd->redir->type != NONE)
 	{
-		if (redir->type == HEREDOC)
+		if (&cmd->redir->type == HEREDOC)
 		{
-			dup2(redir->xd_fd, READ);
-			close(redir->xd_fd);
+			dup2(&cmd->redir->xd_fd, STDIN_FILENO);
+			close(&cmd->redir->xd_fd);
 		}
-		else if (redir->type == APPEND || redir->type == OUT)
-			append(redir);
-		else if (redir->type == IN)
+		else if (&cmd->redir->type == APPEND || &cmd->redir->type == OUT)
+			append(&cmd->redir);
+		else if (&cmd->redir->type == IN)
 		{
-			if (in_redir(redir) != 0)
+			if (in_redir(&cmd->redir(&cmd->redir) == true))
 				return (true);
 		}
-		redir = redir->next;
+		&cmd->redir = &cmd->redir->next;
 	}
 	return (false);
 }
@@ -76,7 +76,7 @@ void	append(t_redirects *redir)
 		perror(redir->filename);
 		return ;
 	}
-	dup2(redir->fd[1], 1);
+	dup2(redir->fd[1], STDOUT_FILENO);
 	close(redir->fd[1]);
 }
 
@@ -84,15 +84,15 @@ int	in_redir(t_redirects *redir)
 {
 	if (redir->type == IN)
 	{
-		if (access(redir->filename, F_OK) != 0)
+		if (access(redir->filename, F_OK) == true)
 		{
 			mndp_log_err("No such file or directory\n", redir->filename);
-			return (1);
+			return (true);
 		}
 		redir->fd[0] = open(redir->filename, O_RDONLY);
 		if (redir->fd[0] != -1)
 		{
-			dup2(redir->fd[0], READ);
+			dup2(redir->fd[0], STDIN_FILENO);
 			close(redir->fd[0]);
 		}
 	}
@@ -114,7 +114,7 @@ static void	child_hd(t_redirects *redir, int pipefd[2])
 			ft_putstr_fd("')\n", 2);
 			break ;
 		}
-		if (ft_strcmp(msg, redir->delimiter) == TRUE)
+		if (ft_strcmp(msg, redir->delimiter) == true)
 		{
 			free(msg);
 			break ;

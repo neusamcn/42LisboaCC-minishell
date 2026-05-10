@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:30:04 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:34:04 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ static void	rm(t_shelly *shelly, char *name)
 	}
 }
 
-int	mysunset(t_cmd_line *unset, t_shelly *shelly)
+int	mysunset(t_cmd_line *un, t_shelly *shelly)
 {
 	int	av;
 
 	av = 1;
-	while (unset->cmds[av])
+	while (un->cmds[av])
 	{
-		if (!ft_strchr(unset->cmds[av], '='))
-			rm(shelly, unset->cmds[av]);
+		if (!ft_strchr(un->cmds[av], '='))
+			rm(shelly, un->cmds[av]);
 		av++;
 	}
 	return (false);
