@@ -6,13 +6,48 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:41:42 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:35:13 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static pid_t	fork_pipeline(t_cmd_line *pipeline, t_shelly *shelly)
+/*
+This file turns a cmd line by parser into running process connected by PIPES
+split cmds into processes: ls -> grep -> wc -l; fork a process for EACH cmd;
+connect io's: strdout of one process(command) ro stdin of next one;
+replace process memory with execve()
+*/
+
+/*Walking thru cmd1->cmd2->cmd3 and create, coutn, remeber the last PID for 
+each cmd.Then calling fork_pipeline create a continuos loop, next pipe and waits 
+in a PARENT PROCESS. 
+*/
+int	ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly)
+{
+	t_cmd_line	*start;
+	pid_t		last_st;
+	int			status;
+	int			cmd_num;
+
+	start = pipeline;
+	pipeline->prevfd = -1;
+	last_st = 0;
+	cmd_num = 0;
+	while (pipeline)
+	{
+		last_st = fork_pipeline(pipeline, shelly);
+		if (last_st == -1)
+			break ; // or return 1? 
+		cmd_num++;
+		pipeline = pipeline->next;
+	}
+	cleanup_xd_fds(start);
+	status = mndwait(last_st, cmd_num);
+	return (set_signal_stat(status), 1);
+}
+
+static pid_t	fork_pl(t_cmd_line *pipeline, t_shelly *shelly)
 {
 	pid_t	pid;
 
@@ -28,30 +63,6 @@ static pid_t	fork_pipeline(t_cmd_line *pipeline, t_shelly *shelly)
 	return (pid);
 }
 
-int	ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly)
-{
-	pid_t		last_st;
-	int			status;
-	int			cmd_num;
-	t_cmd_line	*start;
-
-	start = pipeline;
-	pipeline->prevfd = -1;
-	last_st = 0;
-	cmd_num = 0;
-	while (pipeline)
-	{
-		last_st = fork_pipeline(pipeline, shelly);
-		if (last_st == -1)
-			return (1);
-		cmd_num++;
-		pipeline = pipeline->next;
-	}
-	cleanup_xd_fds(start);
-	status = mndwait(last_st, cmd_num);
-	return (set_signal_stat(status), 1);
-}
-
 int	mndwait(pid_t last_p, int cmd_nmb)
 {
 	pid_t	pid;
@@ -62,6 +73,8 @@ int	mndwait(pid_t last_p, int cmd_nmb)
 	while (cmd_nmb > 0)
 	{
 		pid = waitpid(-1, &status, 0);
+		if (pid == -1)
+			break ; // or return (1)? 
 		if (pid == last_p)
 			last_stat = status;
 		cmd_nmb--;
@@ -69,6 +82,7 @@ int	mndwait(pid_t last_p, int cmd_nmb)
 	return (status_check(last_stat));
 }
 
+// Basically stdin-prev pipe & stdout-next pipe -> pipeline becomes a chain
 void	child_ex_fds(t_cmd_line *kid)
 {
 	if (kid->prevfd != -1)
@@ -101,8 +115,7 @@ void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 	if (!path)
 	{
 		if (kid->cmds && kid->cmds[0])
-			mndp_log_err("command not found\n", kid->cmds[0]);
-		exit(127);
+			exit(mndp_exec_error(kid->cmds[0]));
 	}
 	execve(path, kid->cmds, shelly->envp);
 	if (kid->cmds && kid->cmds[0])

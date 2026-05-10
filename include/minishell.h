@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/10 16:03:57 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 17:59:00 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int		status_check(int status);
 
 /* 								ERRORs 										*/
 void	print_err_msg(char *my_msg);
+int		mndp_exec_error(char *cmd);
 int		mndp_log_err(char *msg, char *cmd);
 void	syntax_err_msg(char *err_token);
 

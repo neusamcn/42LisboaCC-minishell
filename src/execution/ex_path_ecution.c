@@ -6,27 +6,14 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:48:42 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:13:11 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static void	cmd_not_found(char *cmd, char *err)
-{
-	char	*msg;
-	char	*tmp;
-
-	tmp = ft_strjoin("minishell: ", cmd);
-	if (!tmp)
-		return ;
-	msg = ft_strjoin(tmp, err);
-	free(tmp);
-	if (!msg)
-		return ;
-	ft_putstr_fd(msg, 2);
-	free(msg);
-}
+/*Checking if the user pass an absolute path, like <bin/whatever> 
+and return it immediately. Only treating str with '/' as paths*/
 
 char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 {
@@ -48,31 +35,22 @@ char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 
 char	*absolute_path(t_cmd_line *data)
 {
-	struct stat	sb;
+	struct		stat sb;
+	char		*path;
 
 	if (!data || !data->cmds || !data->cmds[0])
 		return (NULL);
-	if (!ft_strchr(data->cmds[0], '/'))
+	path = data->cmds[0];
+	if (!ft_strchr(path, '/'))
 		return (NULL);
-	if (stat(data->cmds[0], &sb) == -1)
+	if (access(path, F_OK | X_OK) == -1)
+		return (NULL);
+	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
-		if (errno == EACCES)
-			cmd_not_found(data->cmds[0], ": Permission denied\n");
-		else
-			cmd_not_found(data->cmds[0], ": No such file or directory\n");
+		errno = EISDIR;
 		return (NULL);
 	}
-	if (S_ISDIR(sb.st_mode))
-	{
-		cmd_not_found(data->cmds[0], ": Is a directory\n");
-		return (NULL);
-	}
-	if (access(data->cmds[0], X_OK) == -1)
-	{
-		cmd_not_found(data->cmds[0], ": Permission denied\n");
-		return (NULL);
-	}
-	return (ft_strdup(data->cmds[0]));
+	return (ft_strdup(path));
 }
 
 static char	*b_path(char *dir, char *cmd)
@@ -91,10 +69,6 @@ char	*paths_helper(t_cmd_line *cmd_line, char *path_var)
 	char	*path;
 	char	**paths;
 
-	if (ft_strcmp(cmd_line->cmds[0], ".") == 0
-		|| ft_strcmp(cmd_line->cmds[0], "..") == 0)
-		return (cmd_not_found(cmd_line->cmds[0],
-				": command not found\n"), NULL);
 	paths = ft_split(path_var, ':');
 	if (!paths)
 		return (NULL);

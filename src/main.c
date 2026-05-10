@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 15:11:17 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/10 15:11:19 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 17:33:48 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,12 +150,22 @@ void    exit_cleanup(int exit_status, t_shelly *shelly)
     exit(exit_status);
 }
 
+static int press_eof(char *prompt)
+{
+    return (prompt == NULL);
+}
+
+static int press_enter(char *prompt)
+{
+    return (prompt && prompt[0] == '\0');
+}
+
 static bool shelly_rl(char **prompt)
 {
     *prompt = readline("minishell$ ");
-    if (!*prompt)
+    if (press_eof(*prompt))
         return (false);
-    if (!**prompt)
+    if (press_enter(!**prompt))
     {
         free(*prompt);
         *prompt = NULL;
@@ -164,12 +174,18 @@ static bool shelly_rl(char **prompt)
     add_history(*prompt);
     return (true);
 }
+/*
+The main execution+parsing logic is here. Saving current command for the signal handling,
+cleanup, hd and tracjing active pipeline to go thru the linked listed structure.
+If parsing will fail (!cmd_line), ex: ||| -> returns NULL.
+At the end: freeing argv arr + redir + linked nodes.
+*/
 
 static void	shelly_exec(char **prompt, t_shelly *shelly)
 {
 	t_cmd_line	*cmd_line;
 
-	cmd_line = fake_parse(*prompt, shelly); //do w real parsing after
+	cmd_line = fake_parse(*prompt, shelly); //TODO: w real parsing after
 	shelly->cur_cmd = cmd_line;
 	free(*prompt);
 	*prompt = NULL;
@@ -178,6 +194,8 @@ static void	shelly_exec(char **prompt, t_shelly *shelly)
 	exec_loop(cmd_line, shelly);
 	free_cmd_line(cmd_line);
 }
+
+/*Signal Reset at the end: after child process finished, we should restore shell dignall behavior*/
 
 int	main(int ac, char **av, char **envp)
 {
