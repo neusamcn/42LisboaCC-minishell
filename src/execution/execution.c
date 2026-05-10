@@ -6,11 +6,40 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:51:29 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 19:56:19 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+/*
+    1) cmds without exec (only redirections)
+    2) single command execution (bltb or external)
+    3) pipeline execution (multiple cmd)
+We are basically deciding which path to follow depending on the cmd list
+
+exec_loop():
+    It first processes all HD before execution starts, ensuring that
+    all input redirections (<<) are prepared.
+    Selects execution mode:
+        - no command → only redirections
+        - single blt → executed directly in parent
+        - single external → forked execution
+        - multiple cmds → pipeline exec
+
+no_cmds_execution():
+    Only provides redirections:
+        - stdout is tmp duplicated && saved && apply redirs
+		
+single_child_ex():
+    Exec a single external cmd inside a child process
+        1. switch signal mode to CHILD (default UNIX behavior)
+        2. apply redir (<, >, >>, <<)
+        3. resolve command path (absolute or PATH search)
+        4. if command not found → print error and exit 127
+        5. execute program using execve()
+        6. if execve fails → print error and exit 127
+*/
 
 static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 {

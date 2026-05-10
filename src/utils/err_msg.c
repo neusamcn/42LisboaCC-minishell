@@ -6,11 +6,11 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/10 18:03:19 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:50:30 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 /*System Errors. Usjng for: malloc, open, pipe, dup2, fork*/
 void	print_err_msg(char *my_msg)
@@ -34,6 +34,7 @@ int	mndp_exec_error(char *cmd)
 		mndp_log_err(strerror(errno), cmd);
 	return (127);
 }
+
 /*Syntax err, custom messages, bltns*/
 int	mndp_log_err(char *msg, char *cmd)
 {

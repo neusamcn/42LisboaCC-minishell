@@ -6,11 +6,36 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 18:02:09 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 19:46:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+/*
+Input/output redirections && HD for a single cmd in a pipeline
+Redirections modify how a cmd reads input and writes output by changing
+its file descriptors before execution.
+A cmd may have:
+		NONE, // 0
+		IN,  // < redir input to a cmd, taking input from a file
+		OUT, // > redir output to a file, and overwrites the file if it already exists
+		APPEND, // >> redir output top a file, append the output to the end of the file
+		HEREDOC, // <<
+They are applied BEFORE execve in child process.
+
+HEREDOC processes;
+    Baby:
+        - Reads user input line by line using rl
+        - Stops when delimiter is found
+        - Writes input into pipe write-end
+        - If EOF is reached -> warning message
+    Mom and dad:
+        - Waits for child proc. to finish
+        - Restores signal mode
+        - Duplicates pipe read-end into redirection storage (xd_fd)
+        - This fd will later be used as stdin during execution
+*/
 
 int	which_redir_type(t_cmd_line *cmd)
 {

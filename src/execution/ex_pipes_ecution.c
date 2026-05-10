@@ -6,23 +6,37 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 18:35:13 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 19:37:13 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
 /*
-This file turns a cmd line by parser into running process connected by PIPES
-split cmds into processes: ls -> grep -> wc -l; fork a process for EACH cmd;
-connect io's: strdout of one process(command) ro stdin of next one;
-replace process memory with execve()
+This file executes a parsed cmd line (ls | grep a | wc -l) by turning it 
+into a pipeline of processes. We are using a linked list (cmd1 → cmd2 → cmd3) 
+&& executeed processes where each connected thru a pipe w next one
+Every command becomes an independent process created with fork().
+These processes are connected so that the stdout of one process becomes the 
+stdin of the next one, allowing data to flow through the pipeline.
+
+The execution starts by going through the list of cmds:
+1) checking if there is a next command -> creates a pipe
+2) fork && split execution into parent and child processes
+3) child process: execut single cmd :
+	1. sets up a fd: stdin is connected to the previous pipe (if it exists), and stdout is connected to the next pipe (if it exists)
+	2. hande <, >, >>, + bltn cmds
+	3. resolved the cmd path (absolute/relative) by searching the PATH env var
+	4. if everything is VALID -> execve() -> replacing the process image
+	5. if fail: error printed, child exists with status 127
+4) parent processes: loop thru the cmd list :
+	1. close unused pipe ends && keep track of process IDs
+	2. store the PID of the last cmd (cmd->NULL), because its exist stat defines the final pipeline status, as required by shell behavior 
+	3. once all proc. created, parent waits for ALL child proc. && collect the exit status of each proc.
+	4. checks if the final status = last command of the pipeline
+5) final exit stat is now stored globally
 */
 
-/*Walking thru cmd1->cmd2->cmd3 and create, coutn, remeber the last PID for 
-each cmd.Then calling fork_pipeline create a continuos loop, next pipe and waits 
-in a PARENT PROCESS. 
-*/
 int	ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly)
 {
 	t_cmd_line	*start;
@@ -82,7 +96,6 @@ int	mndwait(pid_t last_p, int cmd_nmb)
 	return (status_check(last_stat));
 }
 
-// Basically stdin-prev pipe & stdout-next pipe -> pipeline becomes a chain
 void	child_ex_fds(t_cmd_line *kid)
 {
 	if (kid->prevfd != -1)

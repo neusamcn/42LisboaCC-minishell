@@ -6,14 +6,30 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 18:13:11 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 19:41:57 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-/*Checking if the user pass an absolute path, like <bin/whatever> 
-and return it immediately. Only treating str with '/' as paths*/
+/*
+Searching if the cmd is an absolute or relative path or by using the PATH
+envp var. ( ls to /bin/ls )
+1. absolute path check:
+    If the cmd contains a '/',-> direct path.
+		1) access: if the file exists and is executable
+        2) stat: checks if it is a directory
+        3) if it is a directory → errno is set to EISDIR
+        4) if valid → a duplicated copy of the path is returned
+2. PATH search:
+    If the cmd is not an absolute path, the PATH envp var is searched.
+    The PATH string is split by ':' into directories.
+    Each directory is combined with the cmd name to form a candidate path (dir + "/" + cmd).
+    For each candidate:
+        1) access: checks if the file exists and is executable
+        2) if valid → the full path is returned immediately
+        3) otherwise it is freed and the next path is tested
+*/
 
 char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 {

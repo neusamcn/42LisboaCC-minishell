@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/10 17:59:00 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:44:37 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_cmd_line
     char            	**cmds;
 	t_redirects     	redir;
 	int					pipefd[2];
-	int					prevfd;
+	int					prevfd; // CHECK (?)
 	struct s_export		*bltn_export;
 	struct s_cmd_line   *next;
 }   t_cmd_line;
