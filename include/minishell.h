@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/09 19:18:08 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 16:03:57 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ typedef struct s_shelly
 	void		**malloc_ptrs;
 }	t_shelly;
 
-typedef enum e_types_of_redirections
+typedef enum e_redir_type
 {
 	NONE, // 0
 	IN,  // < redir input to a cmd, taking input from a file
 	OUT, // > redir output to a file, and overwrites the file if it already exists
 	APPEND, // >> redir output top a file, append the output to the end of the file
 	HEREDOC, // <<
-} t_redir_type;
+}	t_redir_type;
 
 typedef struct s_redirections
 {

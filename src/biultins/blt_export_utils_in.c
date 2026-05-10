@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_utils_in.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/06 15:52:53 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 15:36:25 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
-bool exp_argv(char c, int j)
+bool	exp_argv(char c, int j)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-		c == '_' || (j > 0 && c >= '0' && c <= '9') || c == '=')
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+		|| c == '_' || (j > 0 && c >= '0' && c <= '9') || c == '=')
 		return (true);
 	return (false);
 }
 
-void pexp_var(char *env_entry)
+void	pexp_var(char *env_entry)
 {
-	char    *eq;
+	char	*eq;
 
 	eq = ft_strchr(env_entry, '=');
 	if (eq)
@@ -41,9 +41,9 @@ void pexp_var(char *env_entry)
 	}
 }
 
-void    pexp(t_shelly *shelly)
+void	pexp(t_shelly *shelly)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (shelly->envp[i])
@@ -61,4 +61,3 @@ char	*ft_free_strjoin(char *s1, char *s2)
 	free(s1);
 	return (res);
 }
-

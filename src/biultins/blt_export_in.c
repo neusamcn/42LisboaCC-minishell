@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 15:53:05 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 15:36:39 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
 // if no args then PRITN env (instead of returning it)
 // checking if the character is valid
@@ -44,10 +44,10 @@ int	myexport(t_cmd_line *exp, t_shelly *shelly)
 	return (false);
 }
 
-int parse_exp_arg(char *arg)
+int	parse_exp_arg(char *arg)
 {
-	int j;
-	char c;
+	int		j;
+	char	c;
 
 	j = 0;
 	while (arg[j])
@@ -65,12 +65,12 @@ int parse_exp_arg(char *arg)
 	return (true);
 }
 
-char **exp_flag(t_export *exp)
+char	**exp_flag(t_export *exp)
 {
-	char **split;
-	int i;
+	char	**split;
+	int		i;
 
-    i = 0;
+	i = 0;
 	if (exp->flag == 0)
 	{
 		split = ft_split(exp->arg, '=');
@@ -87,15 +87,15 @@ char **exp_flag(t_export *exp)
 	return (exp->envp);
 }
 
-char **exp_var(t_export *mini, char *key)
+char	**exp_var(t_export *mini, char *key)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (mini->envp[i])
 	{
-		if (ft_strncmp(mini->envp[i], key, ft_strlen(key)) == 0 && 
-			mini->envp[i][ft_strlen(key)] == '=')
+		if (ft_strncmp(mini->envp[i], key, ft_strlen(key)) == 0
+			&& mini->envp[i][ft_strlen(key)] == '=')
 			return (mini->envp);
 		i++;
 	}
@@ -109,8 +109,8 @@ char	**exp_minienv(t_export *mini, char *key, char *value, int i)
 		mini->new_var = ft_free_strjoin(mini->new_var, value);
 	while (mini->envp[++i])
 	{
-		if (ft_strncmp(mini->envp[i], key, ft_strlen(key)) == 0 && 
-			mini->envp[i][ft_strlen(key)] == '=')
+		if (ft_strncmp(mini->envp[i], key, ft_strlen(key)) == 0
+			&& mini->envp[i][ft_strlen(key)] == '=')
 		{
 			free(mini->envp[i]);
 			mini->envp[i] = mini->new_var;

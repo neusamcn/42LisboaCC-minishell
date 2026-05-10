@@ -3,20 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_in.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 15:01:54 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/10 15:35:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
-// if av[1] == ".." == previous pwd or av[1] == "." ignoring signal ? retur to prompt 
+// if av[1] == ".." == previous pwd or av[1] == "." ignoring signal ? retur 
+// to prompt 
 
-/* the basic logic is im checking the amount of rags, if it 1 arg that means that its only
-"cd" bltn called, so its the same as call "cd HOMe" so im finding home path in an env
-if args > 2 its an error and if arg 2 im giving it as a path and finding in pwd (old, new) */
+/* the basic logic is im checking the amount of rags, if it 1 arg that means 
+that 
+its only
+"cd" bltn called, so its the same as call "cd HOMe" so im finding home path 
+in an 
+env
+if args > 2 its an error and if arg 2 im giving it as a path and finding in 
+pwd 
+(old, new) */
 
 static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 {

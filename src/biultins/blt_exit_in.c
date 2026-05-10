@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/06 16:13:02 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/10 15:28:56 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "execution.h"
+#include "execution.h"
 
 // i need to check if the str have only numbers
 /*  exit abc      # err - its not a number
@@ -27,7 +27,7 @@ exit 1 2     an err "too many arguments" */
 
 // the formula for the negatibe number will be ((n % 256) + 256) % 256
 
-static int exit_valid_var(t_cmd_line *arg_line)
+static int	exit_valid_var(t_cmd_line *arg_line)
 {
 	int	i;
 
@@ -44,30 +44,28 @@ static int exit_valid_var(t_cmd_line *arg_line)
 	return (arg_line->cmds[1][i] == '\0');
 }
 
-int myexit(t_cmd_line *argv, t_shelly *shelly)
+int	myexit(t_cmd_line *argv, t_shelly *shelly)
 {
-    sig_mode(INTERACTIVE);
-    if (argv->cmds[1] == NULL)
-    {
-        ft_putstr_fd("exit\n", 1);
-        exit_cleanup(get_signal_stat(), shelly);
-    }
-    if (argv->cmds[2] != NULL)
-    {
-        mndp_log_err("bash: exit: too many arguments\n", argv->cmds[0]);
-        return (1);
-    }
-    if (exit_valid_var(argv) == 1)
-    {
-        ft_putstr_fd("exit\n", 1);
-        exit_cleanup(ft_atoi(argv->cmds[1]) % 256, shelly);
-    }
-    else
-    {
-        mndp_log_err("bash: exit %s: needed a numeric argument\n", argv->cmds[1]);
-        return (2);
-    }
+	sig_mode(INTERACTIVE);
+	if (argv->cmds[1] == NULL)
+	{
+		ft_putstr_fd("exit\n", 1);
+		exit_cleanup(get_signal_stat(), shelly);
+	}
+	if (argv->cmds[2] != NULL)
+	{
+		mndp_log_err("bash: exit: too many arguments\n", argv->cmds[0]);
+		return (1);
+	}
+	if (exit_valid_var(argv) == 1)
+	{
+		ft_putstr_fd("exit\n", 1);
+		exit_cleanup(ft_atoi(argv->cmds[1]) % 256, shelly);
+	}
+	else
+	{
+		mndp_log_err("bash: exit %s: needed a numeric arg\n", argv->cmds[1]);
+		return (2);
+	}
 	return (false);
 }
-
-
