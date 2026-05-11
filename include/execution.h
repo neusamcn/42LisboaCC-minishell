@@ -28,7 +28,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 
-# define P PRINTF
+# define P printf
 # define CD "cd"
 # define ECHO "echo" 
 # define EXIT "exit"
@@ -37,8 +37,6 @@
 # define EXPORT "export"
 # define UNSET "unset" 
 # define HD "mini: warning: here-document delimited by end-of-file (wanted '"
-
-typedef struct s_shelly	t_shelly;
 
 typedef enum e_builts
 {
@@ -93,7 +91,7 @@ char	*abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 void	store_fds(int read_save, int write_save);
 
 /*									REDIRECTIONs					*/
-int		which_redir_type(t_cmd_line *cmd);
+bool	which_redir_type(t_cmd_line *cmd);
 int		in_redir(t_redirects *redir);
 void	heredoc(t_redirects *redir);
 void	append(t_redirects *redir);

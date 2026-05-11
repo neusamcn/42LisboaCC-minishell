@@ -6,7 +6,7 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c shellyenvp.c prompt.c)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c shellyenvp.c prompt.c syntax_check.c syntax_utils.c tokenize.c)
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c ex_signals_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_utils_ecution.c execution.c free_fds.c)
 BUILTINS_SRCS 	= $(addprefix $(SRC_DIR)/biultins/, blt_echo_in.c blt_env_in.c blt_export_in.c \

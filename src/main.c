@@ -6,12 +6,13 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 15:11:17 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/10 17:33:48 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:23:07 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
+/*
 static int ft_arrlen(char **arr)
 {
 	int i;
@@ -128,6 +129,7 @@ t_cmd_line *fake_parse(char *line, t_shelly *shelly)
 	free(tokens);
 	return (head);
 }
+*/
 
 void    exit_cleanup(int exit_status, t_shelly *shelly)
 {

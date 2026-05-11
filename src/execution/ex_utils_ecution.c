@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:17:42 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:52:58 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,18 @@ char	*abs_or_rel_p(t_cmd_line *c, t_shelly *shelly)
 
 bool	if_redir(t_cmd_line *s)
 {
-	t_redirects	*tmp;
+    t_redirects	*tmp;
 
-	while (&s->redir)
-	{
-		if (&s->redir->type != NONE)
-			return (true);
-		&s->redir = &s->redir->next;
-	}
-	return (false);
+    if (!s || !s->redir)
+        return (false);
+    tmp = s->redir;
+    while (tmp)
+    {
+        if (tmp->type != NONE)
+            return (true);
+        tmp = tmp->next;
+    }
+    return (false);
 }
 
 void	store_fds(int read_save, int write_save)
