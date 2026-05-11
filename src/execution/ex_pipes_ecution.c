@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:10:17 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 17:04:01 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,44 +37,44 @@ The execution starts by going through the list of cmds:
 5) final exit stat is now stored globally
 */
 
-int	ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly)
-{
-	t_cmd_line	*start;
-	pid_t		last_st;
-	int			status;
-	int			cmd_num;
-
-	start = pipeline;
-	pipeline->prevfd = -1;
-	last_st = 0;
-	cmd_num = 0;
-	while (pipeline)
-	{
-		last_st = fork_pipeline(pipeline, shelly);
-		if (last_st == -1)
-			break ; // or return 1? 
-		cmd_num++;
-		pipeline = pipeline->next;
-	}
-	cleanup_xd_fds(start);
-	status = mndwait(last_st, cmd_num);
-	return (set_signal_stat(status), 1);
-}
-
-static pid_t	fork_pl(t_cmd_line *pipeline, t_shelly *shelly)
+static pid_t	fork_pl(t_cmd_line *pl, t_shelly *shelly)
 {
 	pid_t	pid;
 
-	if (pipeline->next)
-		pipe(pipeline->pipefd);
+	if (pl->next)
+		pipe(pl->pipefd);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
 	if (pid == 0)
-		child_ex(0, pipeline, shelly);
-	pipe_cl(pipeline);
+		child_ex(0, pl, shelly);
+	pipe_cl(pl);
 	sig_mode(MNDWAIT);
 	return (pid);
+}
+
+int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
+{
+	int			status;
+	int			cmd_num;
+	pid_t		last_st;
+	t_cmd_line	*start;
+
+	start = pl;
+	pl->prevfd = -1;
+	last_st = 0;
+	cmd_num = 0;
+	while (pl)
+	{
+		last_st = fork_pl(pl, shelly);
+		if (last_st == -1)
+			break ; // or return 1? 
+		cmd_num++;
+		pl = pl->next;
+	}
+	cleanup_xd_fds(start);
+	status = mndwait(last_st, cmd_num);
+	return (set_signal_stat(status), 1);
 }
 
 int	mndwait(pid_t last_p, int cmd_nmb)

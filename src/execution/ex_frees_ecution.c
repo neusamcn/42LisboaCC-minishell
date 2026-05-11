@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:47:34 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 16:59:25 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	free_cmd_line(t_cmd_line *cmd)
 	{
 		next = cmd->next;
 		ft_free_split(cmd->cmds);
-		free_redirs(&cmd->redir);
+		free_redirs(cmd->redir);
 		free(cmd);
 		cmd = next;
 	}

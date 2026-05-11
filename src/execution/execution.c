@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:20:16 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:12:32 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ single_child_ex():
 
 static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 {
-	t_redirects	*redir;
 	int			save_out;
 
 	(void)shelly->envp;
@@ -53,13 +52,13 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 		if (save_out == -1)
 			return ;
 		//redir = &cmds->redir;
-		while (&cmds->redir && &cmds->redir->type != NONE)
+		while (cmds->redir && cmds->redir->type != NONE)
 		{
-			if (&cmds->redir->type == OUT || &cmds->redir->type == APPEND)
-				append(&cmds->redir);
-			else if (&cmds->redir->type == IN)
-				in_redir(&cmds->redir);
-			&cmds->redir = &cmds->redir->next;
+			if (cmds->redir->type == OUT || cmds->redir->type == APPEND)
+				append(cmds->redir);
+			else if (cmds->redir->type == IN)
+				in_redir(cmds->redir);
+			cmds->redir = cmds->redir->next;
 		}
 		dup2(save_out, STDOUT_FILENO);
 		close(save_out);
@@ -69,17 +68,17 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	t_cmd_line	*tmp;
-	t_redirects	*redir;
+	//t_redirects	*redir;
 
 	tmp = cmds; // TODO: HUH> 
 	while (tmp)
 	{
 		//redir = &tmp->redir;
-		while (&tmp->redir && &tmp->redir->type != NONE)
+		while (tmp->redir && tmp->redir->type != NONE)
 		{
-			if (&tmp->redir->type == HEREDOC)
-				heredoc(&tmp->redir);
-			&tmp->redir = &tmp->redir->next;
+			if (tmp->redir->type == HEREDOC)
+				heredoc(tmp->redir);
+			tmp->redir = tmp->redir->next;
 		}
 		tmp = tmp->next;
 	}

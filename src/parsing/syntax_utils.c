@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 21:21:12 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/26 18:02:26 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/11 16:58:09 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
-int	ft_isspace(int c)
-{
-	// TODO: consider less space types?
-	if ((c >= '\t' && c <= '\r') || c == ' ')
-		return (1);
-	return (0);
-}
 
 char	quote_check(char *str)
 {
@@ -33,5 +25,5 @@ char	quote_check(char *str)
 				return (str[i]);
 		}
 	}
-	return (NULL);
+	return (0);
 }

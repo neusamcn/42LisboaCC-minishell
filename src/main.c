@@ -6,12 +6,13 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 15:11:17 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/11 12:23:07 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 19:09:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "parsing.h"
+#include "execution.h"
 #include "minishell.h"
-
 /*
 static int ft_arrlen(char **arr)
 {
@@ -135,6 +136,7 @@ void    exit_cleanup(int exit_status, t_shelly *shelly)
 {
     int i;
 
+	printf("sup\n");
     clear_history();
     if (shelly)
     {
@@ -162,19 +164,19 @@ static int press_enter(char *prompt)
     return (prompt && prompt[0] == '\0');
 }
 
-static bool shelly_rl(char **prompt)
+static int shelly_rl(char **prompt)
 {
     *prompt = readline("minishell$ ");
     if (press_eof(*prompt))
-        return (false);
-    if (press_enter(!**prompt))
+        return (1);
+    if (press_enter(*prompt))
     {
         free(*prompt);
         *prompt = NULL;
-        return (false);
+        return (2);
     }
     add_history(*prompt);
-    return (true);
+    return (0);
 }
 /*
 The main execution+parsing logic is here. Saving current command for the signal handling,
@@ -186,8 +188,11 @@ At the end: freeing argv arr + redir + linked nodes.
 static void	shelly_exec(char **prompt, t_shelly *shelly)
 {
 	t_cmd_line	*cmd_line;
+	t_token 	*tok;
 
-	cmd_line = fake_parse(*prompt, shelly); //TODO: w real parsing after
+	tok = tokenize_input(*prompt);
+	//cmd_line = parse_tokens(tokens); //TODO: w real parsing after
+	cmd_line = NULL; // for now
 	shelly->cur_cmd = cmd_line;
 	free(*prompt);
 	*prompt = NULL;
@@ -203,6 +208,7 @@ int	main(int ac, char **av, char **envp)
 {
 	char		*prompt;
 	t_shelly	*shelly;
+	int			condition;
 
 	(void)ac;
 	(void)av;
@@ -212,14 +218,16 @@ int	main(int ac, char **av, char **envp)
 		exit(1);
 	while (1)
 	{
-		if (!shelly_rl(&prompt))
-		{
-			if (!prompt)
-				exit_cleanup(get_signal_stat(), shelly);
+		condition = shelly_rl(&prompt);
+		if (condition == 1)
+			exit_cleanup(get_signal_stat(), shelly);
+		else if (condition == 2)
 			continue ;
+		else if (condition == 0)
+		{
+			shelly_exec(&prompt, shelly);
+			sig_mode(INTERACTIVE);
 		}
-		shelly_exec(&prompt, shelly);
-		sig_mode(INTERACTIVE);
 	}
 	return (0);
 }

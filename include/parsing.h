@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/04 19:40:27 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/11 00:21:45 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,24 @@
 # define PARSING_H
 
 /* Our libs */
+// TODO: review due to headers' circularity
 # include "minishell.h"
 
 // TODO: review std libs that should be general =>> minishell.h
 /* Standard libs */
-# include <sys/wait.h>
-# include <signal.h>
-/* // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
-# include <linux/limits.h> */
+// TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
+# include <linux/limits.h>
 
 /* Structs */
 // TODO: create separate header?
+// TODO: use here or in minishell.h?
+// typedef struct s_shelly
+// {
+// 	char	**envp;
+// 	int		*open_fd;
+// 	void	*malloc_ptrs;
+// }	t_shelly;
+
 // TODO: use here or in execution.h?
 typedef enum e_token_type
 {
@@ -47,6 +54,22 @@ typedef enum e_ctrlop_type
 	PIPE
 }	t_ctrlop_type;
 
+// TODO: keep here or in execution.h ?
+/*
+IN, // < redir input to a cmd, taking input from a file
+OUT, // > redir output to a file, and overwrites the file if it already exists
+APPEND, // >> redir output top a file, append the output to the end of the file
+HEREDOC, // <<
+*/
+// typedef enum e_redir_type
+// {
+// 	NONE,
+// 	IN,
+// 	OUT,
+// 	APPEND,
+// 	HEREDOC
+// }	t_redir_type;
+
 typedef enum e_word_type
 {
 	CMD,
@@ -66,11 +89,30 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-// TODO: use here or in execution.h ? Milena check struct_notes.md
+// TODO: use here or in execution.h ? Milena check struct_notes.md pls
 // one redirection node. This represents one redirection attached to a command (like < infile, >> out, << EOF).
+// typedef struct s_redir
+// {
+// 	t_redir_type	type; // IN (<), OUT (>), APPEND (>>), HEREDOC (<<)
+// 	char			*filename; // Target file for <, >, >>. Usually NULL for heredoc.
+// 	int				io; // fd being redirected (destination/source side), e.g.: default: 0 for input redirs, 1 for output redirs
+// 	int				fd; // Runtime opened FD (result of open() or heredoc pipe read-end). Best practice: initialize to -1, set when opened, close during cleanup after dup2() / on error paths
+// 	char			*delimiter; // Used only for heredoc (<<), e.g. EOF in cat << EOF. Usually NULL for non-heredoc.
+// 	struct s_redir	*next; // Linked list of redirections in lexical order.
+// }	t_redir;
 
 // TODO: use here or in execution.h ? Milena check struct_notes.md pls
 // one command in a pipeline. This represents a single simple command, with args + its redirections.
+
+typedef struct s_cmd
+{
+	char			**argv; // Command + arguments array for execution: argv[0] command name (ls, echo, etc.); argv[n] args; NULL-terminated for execve()
+	t_redirects		*redirs; // Head of that command’s redirection list (t_redir nodes).
+	int				in_fd; // Final input FD chosen for this command at execution time. Typical defaults: STDIN_FILENO unless changed by pipe/redirection
+	int				out_fd; // Final output FD chosen for this command at execution time. Typical defaults: STDOUT_FILENO unless changed by pipe/redirection
+	struct s_cmd	*next; // Next command in pipeline (|). So a pipeline is a linked list of t_cmd.
+}	t_cmd;
+
 // TODO: use here or in execution.h ?
 // typedef struct s_pipe
 // {
@@ -78,6 +120,7 @@ typedef struct s_token
 // 	t_redir			redir;
 // 	struct s_pipe	*next;
 // }	t_pipe;
+
 
 // TODO: review functions that should be general =>> minishell.h & =/= files
 /* Wrapper functions - maybe Protected std functions? */
@@ -88,12 +131,17 @@ void		*ft_calloc_protec(size_t nmemb, size_t size);
 /* Parsing functions */
 t_shelly	*init(char **envp);
 char		*put_prompt(t_shelly *shelly, char *prompt);
+char		*put_extra_prompt(t_shelly *shelly, char *prev_input);
 t_shelly	*set_shellyenvp(char **envp);
 char		*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
-// void	read_eval_print_loop(char **shelly_envp); // currently static
-// void	non_interactive_mode(void); // currently static
-// void	set_sigaction(int signo, void (*handler)(int), int flags); // currently static
-// void	sigint_prompt_handler(int signal); // currently static
-void		set_signals_interactive_parent(void);
+// void	read_eval_print_loop(char **envp); // currently static
+
+/* Tokenizing functions */
+t_token		*tokenize_input(char *input_str);
+// char	*validate_complete_input(char *input_str, t_shelly *shelly); // currently static
+bool		ft_isspace(int c);
+// char		quote_check(char *input_str); // currently static
+char		*syntax_check(char *input_str);
+
 
 #endif

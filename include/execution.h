@@ -28,7 +28,6 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 
-# define P printf
 # define CD "cd"
 # define ECHO "echo" 
 # define EXIT "exit"
@@ -92,9 +91,9 @@ void	store_fds(int read_save, int write_save);
 
 /*									REDIRECTIONs					*/
 bool	which_redir_type(t_cmd_line *cmd);
-int		in_redir(t_redirects *redir);
+bool	in_redir(t_redirects *redir);
 void	heredoc(t_redirects *redir);
-void	append(t_redirects *redir);
+bool	append(t_redirects *redir);
 
 /*									FREEs							*/
 void	close_fds(t_redirects *redir);
@@ -104,6 +103,7 @@ void	cleanup_xd_fds(t_cmd_line *start);
 void	free_cmd_line(t_cmd_line *cmd);
 void	ft_free_split(char **arr);
 void	free_redirs(t_redirects *redir);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 /*									BUILTINs						*/
 int		r_bltn(t_cmd_line *cmd_line, t_shelly *shelly);

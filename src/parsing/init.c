@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/10 23:49:29 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/11 16:43:07 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,23 @@ static void	read_eval_print_loop(t_shelly *shelly)
 	}
 }
 
+/*
 static void	non_interactive_mode(t_shelly *shelly)
 {
 	char	*line;
-
-	set_signals_noninteractive();
+	
+	//set_signals_noninteractive(); TODO: delete this (?)
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
-			break ;
+		break ;
 		// TODO: tokenize + parse + execute here
 		(void)shelly;
 		free(line);
 	}
 }
+*/
 
 t_shelly	*init(char **envp)
 {
@@ -106,7 +108,8 @@ t_shelly	*init(char **envp)
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		read_eval_print_loop(shelly);
 	else
-		non_interactive_mode(shelly);
+		;
+		//non_interactive_mode(shelly); TODO: delete this (?)
 		// TODO: does this mode not need shelly_envp?
 		// Read line from stdin
 		// Parse + execute

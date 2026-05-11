@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:22 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:24:23 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:16:22 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int	myecho(t_cmd_line *cmd, t_shelly *shelly)
 	}
 	while (cmd->cmds[i])
 	{
-		p("%s", cmd->cmds[i]);
+		printf("%s", cmd->cmds[i]);
 		if (cmd->cmds[i + 1])
-			p(" ");
+			printf(" ");
 		i++;
 	}
 	if (newline)
-		p("\n");
+		printf("\n");
 	return (false);
 }

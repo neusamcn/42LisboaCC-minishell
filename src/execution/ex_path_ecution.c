@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 19:41:57 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 13:22:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 
 char	*absolute_path(t_cmd_line *data)
 {
-	struct		stat sb;
 	char		*path;
+	struct		stat sb;
 
 	if (!data || !data->cmds || !data->cmds[0])
 		return (NULL);

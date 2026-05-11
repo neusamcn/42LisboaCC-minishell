@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/11 13:19:34 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 13:21:47 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,9 @@ static void	child_hd(t_redirects *redir, int pipefd[2])
 
 void	heredoc(t_redirects *redir)
 {
-	int		pipefd[2];
 	pid_t	pid;
 	int		status;
+	int		pipefd[2];
 
 	if (pipe(pipefd) == -1)
 		return ;

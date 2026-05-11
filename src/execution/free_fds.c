@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 15:51:45 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:14:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,17 @@ void	cleanup_xd_fds(t_cmd_line *start)
 {
 	while (start)
 	{
-		if (start->redir.xd_fd >= 0)
-			close(start->redir.xd_fd);
+		if (start->redir->xd_fd >= 0)
+			close(start->redir->xd_fd);
 		start = start->next;
 	}
+}
+
+char *ft_strjoin_free(char *s1, char *s2)
+{
+    char *res;
+
+    res = ft_strjoin(s1, s2);
+    free(s1);
+    return res;
 }

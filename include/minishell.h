@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/11 12:42:08 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:16:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ typedef struct s_redirections
 	t_redir_type			type;
 	char					*filename;
 	char    				*delimiter;
-	int						fd[2];
-	int						xd_fd;
+	int						fd[2]; // put this ones as -1
+	int						xd_fd; // put this ones as -1
 	struct s_redirections	*next;
 }   t_redirects;
 
@@ -62,6 +62,7 @@ typedef struct s_shelly
 {
 	char		**envp;
 	t_cmd_line	*cur_cmd;
+	int			fds_saved[2]; // put this ones as -1
 	int			*open_fd; // Neusa, i am not using it, should delete?
 	void		**malloc_ptrs;
 }	t_shelly;
@@ -73,7 +74,7 @@ void	set_signal_stat(int value);
 void 	sig_mode(int md);
 void	sigint_prompt_handler(int signal);
 void	set_signals_interactive_parent(void);
-void	set_sigaction(int signo, void (*handler)(int), int flags);
+//void	set_sigaction(int signo, void (*handler)(int), int flags);
 int		status_check(int status);
 
 /* Error handling functions */
