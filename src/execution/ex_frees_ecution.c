@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_frees_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/11 16:59:25 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/12 11:37:06 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,6 @@ void	ft_free_split(char **arr)
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
-}
-
-void	free_redirs(t_redirects *redir)
-{
-	t_redirects	*next;
-
-	if (!redir)
-		return ;
-	if (redir->xd_fd >= 0)
-		close(redir->xd_fd);
-	redir = redir->next;
-	while (redir)
-	{
-		next = redir->next;
-		if (redir->xd_fd >= 0)
-			close(redir->xd_fd);
-		free(redir);
-		redir = next;
-	}
 }
 
 int	free_path(char **paths)
@@ -82,3 +63,4 @@ void	free_cmd_line(t_cmd_line *cmd)
 		cmd = next;
 	}
 }
+

@@ -123,7 +123,6 @@ char	**exp_var(t_export *mini, char *key);
 char	**exp_minienv(t_export *mini, char *key, char *value, int i);
 void	pexp_var(char *env_entry);
 void	pexp(t_shelly *shelly);
-char	*ft_free_strjoin(char *s1, char *s2);
 
 /*									PWD								*/
 int		mypwd(t_cmd_line *cmd, t_shelly *shelly);

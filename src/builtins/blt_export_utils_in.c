@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/10 20:32:25 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 19:18:48 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,3 @@ void	pexp(t_shelly *shelly)
 	}
 }
 
-char	*ft_free_strjoin(char *s1, char *s2)
-{
-	char	*res;
-
-	res = ft_strjoin(s1, s2);
-	if (!res)
-		print_err_msg("malloc failed");
-	free(s1);
-	return (res);
-}

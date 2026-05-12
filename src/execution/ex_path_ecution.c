@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/11 13:22:14 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 19:53:33 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ envp var. ( ls to /bin/ls )
 2. PATH search:
     If the cmd is not an absolute path, the PATH envp var is searched.
     The PATH string is split by ':' into directories.
-    Each directory is combined with the cmd name to form a candidate path (dir + "/" + cmd).
+    Each directory is combined with the cmd name to form a candidate path 
+	(dir + "/" + cmd).
     For each candidate:
         1) access: checks if the file exists and is executable
         2) if valid → the full path is returned immediately
@@ -51,8 +52,8 @@ char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 
 char	*absolute_path(t_cmd_line *data)
 {
-	char		*path;
-	struct		stat sb;
+	char	*path;
+	struct stat	sb;
 
 	if (!data || !data->cmds || !data->cmds[0])
 		return (NULL);

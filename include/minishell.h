@@ -1,5 +1,5 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*										                                                        */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -32,9 +32,9 @@ typedef struct s_fds t_fds;
 typedef enum e_redir_type
 {
 	NONE, // 0
-	IN,  // < redir input to a cmd, taking input from a file
-	OUT, // > redir output to a file, and overwrites the file if it already exists
-	APPEND, // >> redir output top a file, append the output to the end of the file
+	IN,  // < input to a cmd, taking input from a file
+	OUT, // > output to a file, and overwr the file if it already exists
+	APPEND, // >> output top a file, append the outp to the eof
 	HEREDOC, // <<
 }	t_redir_type;
 
@@ -42,7 +42,7 @@ typedef struct s_redirections
 {
 	t_redir_type			type;
 	char					*filename;
-	char    				*delimiter;
+	char					*delimiter;
 	int						fd[2]; // put this ones as -1
 	int						xd_fd; // put this ones as -1
 	struct s_redirections	*next;
@@ -50,8 +50,8 @@ typedef struct s_redirections
 
 typedef struct s_cmd_line
 {
-    char            	**cmds;
-	t_redirects     	*redir;
+	char				**cmds;
+	t_redirects		 	*redir;
 	int					pipefd[2];
 	int					prevfd; // CHECK (?)
 	struct s_export		*bltn_export;

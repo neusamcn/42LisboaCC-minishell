@@ -3,180 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 15:11:17 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/11 19:09:14 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/12 12:01:05 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "execution.h"
 #include "minishell.h"
-/*
-static int ft_arrlen(char **arr)
+
+void	exit_cleanup(int exit_status, t_shelly *shelly)
 {
-	int i;
+	int	i;
 
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
-static char *expand_var(char *token, t_shelly *shelly)
-{
-	char	*key;
-	char	*value;
-	int		i;
-
-	if (token[0] != '$')
-		return (ft_strdup(token));
-	key = token + 1;
-	if (!*key)
-		return (ft_strdup("$"));
-	i = 0;
-	while (shelly->envp[i])
+	write(1, "exit\n", 5);
+	clear_history();
+	if (shelly)
 	{
-		if (ft_strncmp(shelly->envp[i], key, ft_strlen(key)) == 0
-			&& shelly->envp[i][ft_strlen(key)] == '=')
-		{
-			value = ft_strchr(shelly->envp[i], '=') + 1;
-			return (ft_strdup(value));
-		}
-		i++;
+		free_cmd_line(shelly->cur_cmd);
+		if (shelly->fds_saved[0] != -1)
+			close(shelly->fds_saved[0]);
+		if (shelly->fds_saved[1] != -1)
+			close(shelly->fds_saved[1]);
+		i = 0;
+		while (shelly->envp[i])
+			free(shelly->envp[i++]);
+		free(shelly->envp);
+		free(shelly);
 	}
-	return (ft_strdup(""));
+	exit(exit_status);
 }
 
-static void add_redir(t_cmd_line *current, t_redir_type type, char *filename, char *delimiter)
+static int	press_eof(char *prompt)
 {
-	t_redirects *new;
-	t_redirects *tmp;
+	return (prompt == NULL);
+}
 
-	if (current->redir.type == NONE)
+static int	press_enter(char *prompt)
+{
+	return (prompt && prompt[0] == '\0');
+}
+
+static int	shelly_rl(char **prompt)
+{
+	*prompt = readline("minishell$ ");
+	if (press_eof(*prompt))
+		return (1);
+	if (press_enter(*prompt))
 	{
-		current->redir.type = type;
-		current->redir.filename = filename;
-		current->redir.delimiter = delimiter;
-		current->redir.xd_fd = -1;
-		return ;
+		free(*prompt);
+		*prompt = NULL;
+		return (2);
 	}
-	new = malloc(sizeof(t_redirects));
-	ft_memset(new, 0, sizeof(t_redirects));
-	new->xd_fd = -1;
-	new->type = type;
-	new->filename = filename;
-	new->delimiter = delimiter;
-	new->next = NULL;
-	tmp = &current->redir;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-}
-
-static t_cmd_line	*new_node(int token_count)
-{
-	t_cmd_line	*node;
-
-	node = malloc(sizeof(t_cmd_line));
-	ft_memset(node, 0, sizeof(t_cmd_line));
-	node->redir.xd_fd = -1;
-	node->redir.type = NONE;
-	node->prevfd = -1;
-	node->cmds = malloc(sizeof(char *) * (token_count + 1));
-	return (node);
-}
-
-t_cmd_line *fake_parse(char *line, t_shelly *shelly)
-{
-	char        **tokens;
-	t_cmd_line  *head;
-	t_cmd_line  *current;
-	int         i;
-	int         cmd_i;
-	int         token_count;
-
-	tokens = ft_split(line, ' ');
-	if (!tokens)
-		return (NULL);
-	token_count = ft_arrlen(tokens);
-	head = new_node(token_count);
-	current = head;
-	cmd_i = 0;
-	i = 0;
-	while (tokens[i])
-	{
-		if (ft_strcmp(tokens[i], "|") == 0)
-		{
-			current->cmds[cmd_i] = NULL;
-			current->next = new_node(token_count);
-			current = current->next;
-			cmd_i = 0;
-		}
-		else if (ft_strcmp(tokens[i], ">") == 0 && tokens[i + 1])
-			add_redir(current, OUT, tokens[++i], NULL);
-		else if (ft_strcmp(tokens[i], ">>") == 0 && tokens[i + 1])
-			add_redir(current, APPEND, tokens[++i], NULL);
-		else if (ft_strcmp(tokens[i], "<") == 0 && tokens[i + 1])
-			add_redir(current, IN, tokens[++i], NULL);
-		else if (ft_strcmp(tokens[i], "<<") == 0 && tokens[i + 1])
-			add_redir(current, HEREDOC, NULL, tokens[++i]);
-		else
-			current->cmds[cmd_i++] = expand_var(tokens[i], shelly);
-		i++;
-	}
-	current->cmds[cmd_i] = NULL;
-	free(tokens);
-	return (head);
-}
-*/
-
-void    exit_cleanup(int exit_status, t_shelly *shelly)
-{
-    int i;
-
-	printf("sup\n");
-    clear_history();
-    if (shelly)
-    {
-        free_cmd_line(shelly->cur_cmd);
-        if (shelly->fds_saved[0] != -1)
-            close(shelly->fds_saved[0]);
-        if (shelly->fds_saved[1] != -1)
-            close(shelly->fds_saved[1]);
-        i = 0;
-        while (shelly->envp[i])
-            free(shelly->envp[i++]);
-        free(shelly->envp);
-        free(shelly);
-    }
-    exit(exit_status);
-}
-
-static int press_eof(char *prompt)
-{
-    return (prompt == NULL);
-}
-
-static int press_enter(char *prompt)
-{
-    return (prompt && prompt[0] == '\0');
-}
-
-static int shelly_rl(char **prompt)
-{
-    *prompt = readline("minishell$ ");
-    if (press_eof(*prompt))
-        return (1);
-    if (press_enter(*prompt))
-    {
-        free(*prompt);
-        *prompt = NULL;
-        return (2);
-    }
-    add_history(*prompt);
-    return (0);
+	add_history(*prompt);
+	return (0);
 }
 /*
 The main execution+parsing logic is here. Saving current command for the signal handling,
@@ -191,7 +73,7 @@ static void	shelly_exec(char **prompt, t_shelly *shelly)
 	t_token 	*tok;
 
 	tok = tokenize_input(*prompt);
-	//cmd_line = parse_tokens(tokens); //TODO: w real parsing after
+	//printf("%s\n", tok->value);
 	cmd_line = NULL; // for now
 	shelly->cur_cmd = cmd_line;
 	free(*prompt);
@@ -203,7 +85,6 @@ static void	shelly_exec(char **prompt, t_shelly *shelly)
 }
 
 /*Signal Reset at the end: after child process finished, we should restore shell dignall behavior*/
-
 int	main(int ac, char **av, char **envp)
 {
 	char		*prompt;
@@ -215,7 +96,7 @@ int	main(int ac, char **av, char **envp)
 	sig_mode(INTERACTIVE);
 	shelly = set_shellyenvp(envp);
 	if (!shelly)
-		exit(1);
+		exit (1);
 	while (1)
 	{
 		condition = shelly_rl(&prompt);

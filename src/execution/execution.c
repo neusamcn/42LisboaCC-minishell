@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/11 18:12:32 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 19:19:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,10 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	t_cmd_line	*tmp;
-	//t_redirects	*redir;
 
 	tmp = cmds; // TODO: HUH> 
 	while (tmp)
 	{
-		//redir = &tmp->redir;
 		while (tmp->redir && tmp->redir->type != NONE)
 		{
 			if (tmp->redir->type == HEREDOC)
@@ -105,7 +103,7 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 			close(read_save);
 		if (write_save != -1)
 			close(write_save);
-		return (perror("dup"), 1);
+		return (perror("dup"), STDOUT_FILENO);
 	}
 	if (if_redir(s) && which_redir_type(s) != false)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:31:30 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/12 11:29:02 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	**exp_minienv(t_export *mini, char *key, char *value, int i)
 {
 	mini->new_var = ft_strjoin(key, "=");
 	if (value)
-		mini->new_var = ft_free_strjoin(mini->new_var, value);
+		mini->new_var = ft_strjoin_free(mini->new_var, value);
 	while (mini->envp[++i])
 	{
 		if (ft_strncmp(mini->envp[i], key, ft_strlen(key)) == 0
