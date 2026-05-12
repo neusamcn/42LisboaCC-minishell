@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/11 00:21:45 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/12 16:27:50 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
+
+
+#define SINGLE_Q   '\''
+#define TAKEN_Q    '"'
 
 /* Our libs */
 // TODO: review due to headers' circularity
@@ -20,7 +24,7 @@
 // TODO: review std libs that should be general =>> minishell.h
 /* Standard libs */
 // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
-# include <linux/limits.h>
+//# include <linux/limits.h>
 
 /* Structs */
 // TODO: create separate header?
@@ -76,6 +80,13 @@ typedef enum e_word_type
 	QMARK1,
 	QMARK2
 }	t_word_type;
+
+typedef enum e_qstat
+{
+	OUTSIDE_OF_QUOTES,
+	INSIDE_SINGLE_QUOTES,
+	INSIDE_TAKEN_QUOTES
+}	t_qstat;
 
 typedef struct s_token
 {
