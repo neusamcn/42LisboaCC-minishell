@@ -6,16 +6,15 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/12 16:27:50 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/12 19:46:45 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-
-#define SINGLE_Q   '\''
-#define TAKEN_Q    '"'
+#define Q_MARK1	'\''
+#define Q_MARK2	'"'
 
 /* Our libs */
 // TODO: review due to headers' circularity
@@ -90,6 +89,7 @@ typedef enum e_qstat
 
 typedef struct s_token
 {
+	t_word_type		word_type;
 	t_token_type	type;
 	t_ctrlop_type	ctrlop; // Valid only if type == CTRL_OP
 	t_redir_type	redir; // Valid only if type == REDIR

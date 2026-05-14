@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/12 19:03:14 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/12 19:47:27 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,12 @@ typedef struct e_expand
 }	t_expand;
 
 //void    not_to_be(t_qstat *state, int *i, char *word, char **result)
+//adding char by char
 
-//adding char by char 
 void	not_to_be(t_expand *ex)
 {
+	char++;
+	strwor[i] = '\0';
 	
 	ex->strwor = expand_dollar_sign(ex->strwor, shelly); // malloc here huuuhhuhsdinkmldz,
 	while (ex->stror[ex->i] && ex->strwor)
@@ -115,6 +117,13 @@ void	not_to_be(t_expand *ex)
 	}
 	return (ex->strwor);
 }
+
+/* '$USER' -> $USER
+"'"'$USER'"'" -> 'megiazavr' */
+
+
+// tokens: value->word
+// quotes: have QMARK1, QMARK2
 
 char	*to_be_or_not_to_be(t_expand *ex, t_shelly *shelly)
 {
@@ -159,7 +168,6 @@ char	*to_be_or_not_to_be(t_expand *ex, t_shelly *shelly)
 	else
         not_to_be();
 }
-		
 			
 void    to_be(t_qstat *state, int *i, char *word, char **result, t_shelly *shelly) // ← shelly параметр
 {
@@ -180,7 +188,7 @@ void    to_be(t_qstat *state, int *i, char *word, char **result, t_shelly *shell
 			break ; 
 	}
 	return (w);
-}	
+}
 		/* 
 		char    *to_be_or_not_to_be(char *word, t_shelly *shelly)
 		{
@@ -217,7 +225,6 @@ void    to_be(t_qstat *state, int *i, char *word, char **result, t_shelly *shell
 } */
 /* word[i] = '\'' ;
 word[i] = SINGLE_Q ; */
-
 
 /* bool not_to_be()
 {

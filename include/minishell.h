@@ -25,10 +25,6 @@
 # include <sys/wait.h>
 # include <signal.h>
 
-typedef struct s_export t_export;
-
-typedef struct s_fds t_fds;
-
 typedef enum e_redir_type
 {
 	NONE, // 0
@@ -43,8 +39,8 @@ typedef struct s_redirections
 	t_redir_type			type;
 	char					*filename;
 	char					*delimiter;
-	int						fd[2]; // put this ones as -1
-	int						xd_fd; // put this ones as -1
+	int						fd[2]; 
+	int						xd_fd;
 	struct s_redirections	*next;
 }   t_redirects;
 

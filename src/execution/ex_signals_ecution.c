@@ -90,22 +90,22 @@ void	set_signal_stat(int value)
 
 void	sig_mode(int md)
 {
-	if (md == INTERACTIVE)
+	if (md == INTERACTIVE) // shell waiting for a command
 	{
 		signal(SIGINT, sigint_prompt_handler);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (md == BLT_EXECUTING)
+	else if (md == BLT_EXECUTING) // we are doing a bltn is a parent process
 	{
 		signal(SIGINT, sigint_glob);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (md == CHILD)
+	else if (md == CHILD) // when we are entering child process
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 	}
-	else if (md == MNDWAIT)
+	else if (md == MNDWAIT) // when a parent waits dor a ch process
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);

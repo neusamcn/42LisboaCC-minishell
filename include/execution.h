@@ -72,6 +72,7 @@ typedef struct s_cd_blt
 char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly);
 char	*paths_helper(t_cmd_line *cmd_line, char *path_var);
 char	*absolute_path(t_cmd_line *cmd_line);
+int		are_you_builtin(t_cmd_line *cmd_line);
 
 /*								EXECUTION.C							*/
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly);

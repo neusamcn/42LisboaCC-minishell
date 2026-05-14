@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 15:11:17 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/12 12:01:05 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/12 20:08:41 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exit_cleanup(int exit_status, t_shelly *shelly)
 	int	i;
 
 	write(1, "exit\n", 5);
-	clear_history();
+	rl_clear_history();
 	if (shelly)
 	{
 		free_cmd_line(shelly->cur_cmd);
@@ -48,7 +48,7 @@ static int	press_enter(char *prompt)
 
 static int	shelly_rl(char **prompt)
 {
-	*prompt = readline("minishell$ ");
+	*prompt = rl_readline("minishell$ ");
 	if (press_eof(*prompt))
 		return (1);
 	if (press_enter(*prompt))
@@ -73,10 +73,10 @@ static void	shelly_exec(char **prompt, t_shelly *shelly)
 	t_token 	*tok;
 
 	tok = tokenize_input(*prompt);
-	//printf("%s\n", tok->value);
+	printf("%s\n", tok->value);
 	cmd_line = NULL; // for now
 	shelly->cur_cmd = cmd_line;
-	free(*prompt);
+	free(*prompt); //CHECK IF MISSING
 	*prompt = NULL;
 	if (!cmd_line)
 		return ;
@@ -102,7 +102,7 @@ int	main(int ac, char **av, char **envp)
 		condition = shelly_rl(&prompt);
 		if (condition == 1)
 			exit_cleanup(get_signal_stat(), shelly);
-		else if (condition == 2)
+		else if (condition == 2) 
 			continue ;
 		else if (condition == 0)
 		{
