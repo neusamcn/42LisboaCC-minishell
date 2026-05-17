@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/16 21:59:14 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/17 18:01:51 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,28 +130,32 @@ typedef struct s_cmd
 
 // TODO: review functions that should be general =>> minishell.h & =/= files
 /* Wrapper functions - maybe Protected std functions? */
-char		*getcwd_protec(char *buf, size_t size, t_shelly *shelly);
-void		*malloc_protec(size_t size, t_shelly *shelly);
-void		*ft_calloc_protec(size_t nmemb, size_t size);
+char			*getcwd_protec(char *buf, size_t size, t_shelly *shelly);
+void			*malloc_protec(size_t size, t_shelly *shelly);
+void			*ft_calloc_protec(size_t nmemb, size_t size);
 
 /* Parsing functions */
-t_shelly	*init(char **envp);
-char		*put_prompt(t_shelly *shelly, char *prompt);
-char		*put_extra_prompt(t_shelly *shelly, char *prev_input);
-t_shelly	*set_shellyenvp(char **envp);
-char		*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
+t_shelly		*init(char **envp);
+char			*put_prompt(t_shelly *shelly, char *prompt);
+char			*put_extra_prompt(t_shelly *shelly, char *prev_input);
+t_shelly		*set_shellyenvp(char **envp);
+char			*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
 // void	read_eval_print_loop(char **envp); // currently static
 
 /* Main tokenizing functions */
-t_token		*tokenize_input(char *input_str);
-// char		*validate_complete_input(char *input_str, t_shelly *shelly); // currently static
-// char		quote_check(char *input_str); // currently static
-char		*syntax_check(char *input_str);
+t_token			*tokenize_input(char *input_str);
+// char			*validate_complete_input(char *input_str, t_shelly *shelly); // currently static
+// char			quote_check(char *input_str); // currently static
+char			*syntax_check(char *input_str);
 
 /* Tokenizing utils */
-t_token		*new_tkn(t_token_type type, char *value);
-void		append_tkn(t_token **head, t_token *new_node);
-int			scan_word_end(char *s, int i);
-int			op_len(char *s);
+t_token			*new_tkn(t_token_type type, char *value);
+void			append_tkn(t_token **head, t_token *new_node);
+int				scan_word_end(char *s, int i);
+int				op_len(char *s);
+
+bool			char_is_op(char c);
+t_syntax_err	syntax_err_redir(char *input_str, int i);
+t_syntax_err	syntax_err_pipe(char *input_str, int i);
 
 #endif
