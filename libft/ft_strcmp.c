@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:10:09 by megi              #+#    #+#             */
-/*   Updated: 2026/04/29 19:10:12 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/16 16:58:28 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-    size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])

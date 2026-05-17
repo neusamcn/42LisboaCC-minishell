@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/11 00:23:49 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/16 17:01:48 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdbool.h>
 # include <sys/wait.h>
 # include <signal.h>
 
@@ -80,7 +79,6 @@ void	set_signal_stat(int value);
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
-// int		ft_strcmp(const char *s1, const char *s2); // TODO: should be here or in libft?
 
 
 #endif

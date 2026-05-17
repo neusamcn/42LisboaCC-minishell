@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 00:04:41 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/10 23:45:20 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/17 11:45:03 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,5 @@ char	*put_extra_prompt(t_shelly *shelly, char *prev_input)
 	}
 	return (extra_input);
 }
+
+// TODO: add ~ if @ $HOME

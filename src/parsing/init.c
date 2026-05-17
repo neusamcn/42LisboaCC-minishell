@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/10 23:49:29 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/17 12:34:23 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static char	*validate_complete_input(char *input_str, t_shelly *shelly)
 	char	*full_input;
 
 	syntax_err = syntax_check(input_str);
-	while (ft_strcmp(syntax_err, "'") == 0 || ft_strcmp(syntax_err, "\"") == 0
-		|| ft_strcmp(syntax_err, "incomplete") == 0)
+	while (syntax_err && (!(ft_strcmp(syntax_err, "incomplete"))
+			|| !(ft_strcmp(syntax_err, "'")) || !(ft_strcmp(syntax_err, "\""))))
 	{
 		extra_input = put_extra_prompt(shelly, input_str);
 		full_input = input_strs_join(input_str, extra_input);
@@ -91,7 +91,7 @@ static void	non_interactive_mode(t_shelly *shelly)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		// TODO: tokenize + parse + execute here
+		// TODO: tokenize + expand + execute here
 		(void)shelly;
 		free(line);
 	}

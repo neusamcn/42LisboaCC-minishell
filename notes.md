@@ -496,3 +496,86 @@ If useful, I can also provide:
 ---
 
 
+I'll explain bash redirections and the syntax errors they can trigger, then provide a comprehensive summary table based on the code and bash behavior. 
+
+Read [](file:///mnt/c/Users/neusa/Desktop/42%20Lisboa/minishell/src/parsing/syntax_check.c#1-1), lines 1 to 150
+
+Read [](file:///mnt/c/Users/neusa/Desktop/42%20Lisboa/minishell/include/parsing.h#1-1), lines 1 to 100
+
+## Bash Redirections Explained
+
+**Redirections** are operators that change where a command reads input from or writes output to. In bash, there are four main types:
+
+| Operator | Name | Function |
+|----------|------|----------|
+| `<` | Input redirect | Read input from a file instead of stdin |
+| `>` | Output redirect | Write output to a file, overwriting if exists |
+| `>>` | Append | Write output to a file, appending to the end |
+| `<<` | Heredoc | Read input from an inline string/delimiter |
+
+### How Redirections Work
+```bash
+command < input.txt      # stdin from file
+command > output.txt     # stdout to file
+command >> output.txt    # stdout appended to file
+command << EOF           # stdin from text block until EOF
+```
+
+---
+
+## Syntax Error Types for Redirections
+
+### Summary Table
+
+| Error Type | Pattern | Why It's Invalid | Bash Error |
+|-----------|---------|------------------|-----------|
+| **Missing filename** | `>` or `<` at EOL | Redirection needs a target | `syntax error near unexpected token 'newline'` |
+| **Pipe after redir** | `> file \|` | Can't pipe into a redirection | `syntax error near unexpected token '\|'` |
+| **Double operator mismatch** | `<>` | Mixing < and > in wrong order | `syntax error near unexpected token '>'` |
+| **Invalid combo** | `<>` (together) | Not a valid bash operator | `syntax error near unexpected token 'newline'` |
+| **Empty input** | Empty line or only spaces | No command to redirect | `syntax error near unexpected token 'newline'` |
+| **Pipe at start** | `\| command` | Pipe needs left-side command | `syntax error near unexpected token '\|'` |
+| **Double pipe** | `command \|\| other` | Invalid operator | `syntax error near unexpected token '\|'` |
+| **Trailing redirection** | `command >` | File missing after `>` | `syntax error near unexpected token 'newline'` |
+| **Unterminated quote in file** | `> "file` | Quote not closed | `syntax error near unexpected token 'newline'` |
+
+---
+
+## What Your Code Currently Checks
+
+In syntax_check.c, the `syntax_err_redir()` function validates:
+
+1. **Lines 36-49**: After detecting `<` or `>`
+   - Checks for double operators (`<<`, `>>`)
+   - Detects invalid `<>` combination
+   - Skips whitespace and ensures a filename follows
+   - Returns error if EOL (`\0`) or pipe (`|`) follows
+   - Returns error if another redirection operator immediately follows
+
+2. **Lines 51-80**: The `syntax_err_pipe_redir()` function loops through the entire string:
+   - Validates pipes: `|` can't be doubled or at EOL
+   - Delegates redirection checks to `syntax_err_redir()`
+
+---
+
+## Key Points for Your Implementation
+
+**Cases Your Code Handles:**
+- ✅ Missing filename after `>` or `<`
+- ✅ Double pipes (`||`)
+- ✅ Consecutive redirection operators
+- ✅ Invalid `<>` combination
+- ✅ Pipe after redirection
+
+**Cases You May Need to Consider:**
+- Unclosed quotes in filenames (handled by `quote_check()`)
+- File descriptors like `2>` or `1<` (not shown in current code)
+- `&>` and `>&` (bash-specific redirects)
+- Spaces before/after operators (your code handles this)
+
+Your syntax_check.c implementation is solid for the basic 42 minishell requirements!
+
+---
+---
+
+

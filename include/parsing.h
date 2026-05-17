@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/11 00:21:45 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/16 21:59:14 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@
 // 	int		*open_fd;
 // 	void	*malloc_ptrs;
 // }	t_shelly;
+
+typedef struct s_syntax_err
+{
+	char	*err_str;
+	int		i;
+}	t_syntax_err;
 
 // TODO: use here or in execution.h?
 typedef enum e_token_type
@@ -85,7 +91,7 @@ typedef struct s_token
 	int				index;
 	char			*value; // For TK_WORD, filename, delimiter, etc.
 	int				quoted; // 1 if token had quotes TODO: optional but useful?
-	struct s_token	*previous; // TODO: review if necessary?	
+	struct s_token	*previous; // TODO: review if necessary?
 	struct s_token	*next;
 }	t_token;
 
@@ -136,12 +142,16 @@ t_shelly	*set_shellyenvp(char **envp);
 char		*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
 // void	read_eval_print_loop(char **envp); // currently static
 
-/* Tokenizing functions */
+/* Main tokenizing functions */
 t_token		*tokenize_input(char *input_str);
-// char	*validate_complete_input(char *input_str, t_shelly *shelly); // currently static
-bool		ft_isspace(int c);
+// char		*validate_complete_input(char *input_str, t_shelly *shelly); // currently static
 // char		quote_check(char *input_str); // currently static
 char		*syntax_check(char *input_str);
 
+/* Tokenizing utils */
+t_token		*new_tkn(t_token_type type, char *value);
+void		append_tkn(t_token **head, t_token *new_node);
+int			scan_word_end(char *s, int i);
+int			op_len(char *s);
 
 #endif

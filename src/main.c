@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/03 20:26:04 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/11 21:21:04 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	exit_cleanup(int exit_status, t_shelly *shelly)
 	while (shelly->envp[i])
 		free(shelly->envp[i++]);
 	free(shelly->envp);
+	free(shelly);
 	exit(exit_status);
 }
 

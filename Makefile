@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/11 00:21:03 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/05/16 16:57:47 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC_DIR 		= src
 OBJ_DIR 		= obj
 
 PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c prompt.c shellyenvp.c \
-					syntax_check.c tokenize.c)
+					syntax_check.c tokenize.c tokenize_utils.c)
 # EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
 					ex_utils_ecution.c exec_utils.c execution.c free_fds.c)
