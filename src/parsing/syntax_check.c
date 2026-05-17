@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 17:45:10 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/17 12:22:35 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/17 14:07:54 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	quote_check(char *input_str)
 	return (open_qmark);
 }
 
-t_syntax_err	syntax_err_redir_afterspace(char *input_str, int i)
+static t_syntax_err	syntax_err_redir_afterspace(char *input_str, int i)
 {
 	t_syntax_err	syntax_check;
 
@@ -45,6 +45,7 @@ t_syntax_err	syntax_err_redir_afterspace(char *input_str, int i)
 	{
 		if (input_str[i] != 0 && input_str[i] == input_str[i + 1])
 		{
+			syntax_check.i++;
 			if (input_str[i] == '>')
 			{
 				syntax_check.err_str = ">>";
@@ -64,7 +65,7 @@ t_syntax_err	syntax_err_redir_afterspace(char *input_str, int i)
 	return (syntax_check);
 }
 
-t_syntax_err	syntax_err_redir(char *input_str, int i)
+static t_syntax_err	syntax_err_redir(char *input_str, int i)
 {
 	t_syntax_err	syntax_check;
 
@@ -88,7 +89,7 @@ t_syntax_err	syntax_err_redir(char *input_str, int i)
 	return (syntax_check);
 }
 
-t_syntax_err	syntax_err_pipe(char *input_str, int i)
+static t_syntax_err	syntax_err_pipe(char *input_str, int i)
 {
 	t_syntax_err	syntax_check;
 
@@ -109,11 +110,22 @@ static char	*syntax_err_pipe_redir(char *input_str)
 {
 	int				i;
 	t_syntax_err	syntax_check;
+	char			qmark;
 
 	i = 0;
 	while (input_str && input_str[i])
 	{
-		if (input_str[i] == '|')
+		if (input_str[i] == '\'' || input_str[i] == '"')
+		{
+			qmark = input_str[i];
+			i++;
+			while (input_str[i] && input_str[i] != qmark)
+				i++;
+			if (input_str[i] == qmark)
+				i++;
+			continue ;
+		}
+		else if (input_str[i] && input_str[i] == '|')
 		{
 			syntax_check = syntax_err_pipe(input_str, i);
 			if (syntax_check.err_str)
@@ -121,15 +133,12 @@ static char	*syntax_err_pipe_redir(char *input_str)
 			i = syntax_check.i;
 			continue ;
 		}
-		else if (input_str[i] == '>' || input_str[i] == '<')
+		else if (input_str[i] && (input_str[i] == '>' || input_str[i] == '<'))
 		{
 			syntax_check = syntax_err_redir(input_str, i);
 			if (syntax_check.err_str)
 				return (syntax_check.err_str);
 			i = syntax_check.i;
-			i++;
-			if (input_str[i + 1] && input_str[i + 1] == input_str[i])
-				i++;
 			continue ;
 		}
 		else
