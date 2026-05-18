@@ -70,6 +70,7 @@ void	set_signal_stat(int value);
 void 	sig_mode(int md);
 void	sigint_prompt_handler(int signal);
 void	set_signals_interactive_parent(void);
+void	set_signals_noninteractive(void);
 //void	set_sigaction(int signo, void (*handler)(int), int flags);
 int		status_check(int status);
 

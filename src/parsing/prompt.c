@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 00:04:41 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/10 23:45:20 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 03:07:15 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ char	*put_prompt(t_shelly *shelly, char *prompt)
 
 	getcwd_protec(cwd, PATH_MAX, shelly);
 	user = find_var_shellyenvp(shelly, "USER");
-	full_prompt = build_pretty_prompt(user, prompt, cwd);
+	if (ft_strcmp(cwd, find_var_shellyenvp(shelly, "HOME")))
+		full_prompt = build_pretty_prompt(user, prompt, cwd);
+	else
+		full_prompt = build_pretty_prompt(user, prompt, "~");
 	input = readline(full_prompt);
 	free(full_prompt);
 	return (input);
@@ -66,3 +69,5 @@ char	*put_extra_prompt(t_shelly *shelly, char *prev_input)
 	}
 	return (extra_input);
 }
+
+// TODO: add ~ if @ $HOME

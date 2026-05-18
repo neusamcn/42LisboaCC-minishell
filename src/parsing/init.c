@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/11 16:43:07 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/17 12:34:23 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static char	*validate_complete_input(char *input_str, t_shelly *shelly)
 	char	*full_input;
 
 	syntax_err = syntax_check(input_str);
-	while (ft_strcmp(syntax_err, "'") == 0 || ft_strcmp(syntax_err, "\"") == 0
-		|| ft_strcmp(syntax_err, "incomplete") == 0)
+	while (syntax_err && (!(ft_strcmp(syntax_err, "incomplete"))
+			|| !(ft_strcmp(syntax_err, "'")) || !(ft_strcmp(syntax_err, "\""))))
 	{
 		extra_input = put_extra_prompt(shelly, input_str);
 		full_input = input_strs_join(input_str, extra_input);
@@ -81,23 +81,21 @@ static void	read_eval_print_loop(t_shelly *shelly)
 	}
 }
 
-/*
 static void	non_interactive_mode(t_shelly *shelly)
 {
 	char	*line;
-	
-	//set_signals_noninteractive(); TODO: delete this (?)
+
+	set_signals_noninteractive();
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
-		break ;
-		// TODO: tokenize + parse + execute here
+			break ;
+		// TODO: tokenize + expand + execute here
 		(void)shelly;
 		free(line);
 	}
 }
-*/
 
 t_shelly	*init(char **envp)
 {
@@ -108,8 +106,7 @@ t_shelly	*init(char **envp)
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		read_eval_print_loop(shelly);
 	else
-		;
-		//non_interactive_mode(shelly); TODO: delete this (?)
+		non_interactive_mode(shelly);
 		// TODO: does this mode not need shelly_envp?
 		// Read line from stdin
 		// Parse + execute

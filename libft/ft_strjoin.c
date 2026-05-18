@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:20:34 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/12 11:51:53 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:39:51 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str[index] = '\0';
 	return (str);
 }
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*res;
-
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	return res;
-}
-
 /*
 int	main(void)
 {

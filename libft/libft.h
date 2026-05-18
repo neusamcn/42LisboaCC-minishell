@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:19:10 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/12 11:38:30 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/16 17:00:47 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <limits.h>
 # include <sys/resource.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
 /* ft_printf() only */
 # include <stdarg.h>
@@ -64,6 +65,7 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
+bool	ft_isspace(int c);
 int		ft_toupper(int c);
 int		ft_tolower(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -72,7 +74,6 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_atoi(const char *nptr);
 int		ft_lstsize(t_list *lst);
 
-char	*ft_strjoin_free(char *s1, char *s2);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
