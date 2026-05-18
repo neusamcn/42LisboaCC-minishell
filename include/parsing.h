@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/17 18:01:51 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 18:11:49 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_token
 	t_token_type	type;
 	t_ctrlop_type	ctrlop; // Valid only if type == CTRL_OP
 	t_redir_type	redir; // Valid only if type == REDIR
+	t_word_type		word;
 	int				index;
 	char			*value; // For TK_WORD, filename, delimiter, etc.
 	int				quoted; // 1 if token had quotes TODO: optional but useful?

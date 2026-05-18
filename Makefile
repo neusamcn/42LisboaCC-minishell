@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/17 18:02:58 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/05/18 18:21:45 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c prompt.c sh
 # EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
 					ex_utils_ecution.c exec_utils.c execution.c free_fds.c)
-# BUILTINS_SRCS = $(addprefix $(SRC_DIR)/biultins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
+# BUILTINS_SRCS = $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
 					blt_export_in.c blt_export_utils_in.c blt_pwd_in.c blt_run_in.c blt_unset_in.c)
 UTILS_SRCS		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)
 SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(UTILS_SRCS) # $(EXECUTION_SRCS) $(BUILTINS_SRCS)

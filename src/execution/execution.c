@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:20:16 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:59:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ single_child_ex():
 
 static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 {
-	t_redirects	*redir;
 	int			save_out;
 
 	(void)shelly->envp;
@@ -53,13 +52,13 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 		if (save_out == -1)
 			return ;
 		//redir = &cmds->redir;
-		while (&cmds->redir && &cmds->redir->type != NONE)
+		while (cmds->redir && cmds->redir->type != NONE)
 		{
-			if (&cmds->redir->type == OUT || &cmds->redir->type == APPEND)
-				append(&cmds->redir);
-			else if (&cmds->redir->type == IN)
-				in_redir(&cmds->redir);
-			&cmds->redir = &cmds->redir->next;
+			if (cmds->redir->type == OUT || cmds->redir->type == APPEND)
+				append(cmds->redir);
+			else if (cmds->redir->type == IN)
+				in_redir(cmds->redir);
+			cmds->redir = cmds->redir->next;
 		}
 		dup2(save_out, STDOUT_FILENO);
 		close(save_out);
@@ -69,17 +68,15 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	t_cmd_line	*tmp;
-	t_redirects	*redir;
 
 	tmp = cmds; // TODO: HUH> 
 	while (tmp)
 	{
-		//redir = &tmp->redir;
-		while (&tmp->redir && &tmp->redir->type != NONE)
+		while (tmp->redir && tmp->redir->type != NONE)
 		{
-			if (&tmp->redir->type == HEREDOC)
-				heredoc(&tmp->redir);
-			&tmp->redir = &tmp->redir->next;
+			if (tmp->redir->type == HEREDOC)
+				heredoc(tmp->redir);
+			tmp->redir = tmp->redir->next;
 		}
 		tmp = tmp->next;
 	}
@@ -106,7 +103,7 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 			close(read_save);
 		if (write_save != -1)
 			close(write_save);
-		return (perror("dup"), 1);
+		return (perror("dup"), STDOUT_FILENO);
 	}
 	if (if_redir(s) && which_redir_type(s) != false)
 	{
@@ -116,7 +113,7 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 	sig_mode(BLT_EXECUTING);
 	r_bltn(s, shelly);
 	store_fds(read_save, write_save);
-	set_signals_interactive_parent();
+	sig_mode(INTERACTIVE);
 	return (get_signal_stat());
 }
 
@@ -133,7 +130,7 @@ int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 		single_child_ex(s_cmd, shelly);
 	sig_mode(MNDWAIT);
 	waitpid(only_child, &status, 0);
-	set_signals_interactive_parent();
+	sig_mode(INTERACTIVE);
 	return (status_check(status));
 }
 

@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/16 17:01:48 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:50:50 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@
 
 
 /* Structs & Enums */
+typedef enum e_mode
+{
+	INTERACTIVE, // prompt
+	BLT_EXECUTING, // no fork, no rl
+	CHILD, // fork + execve
+	MNDWAIT
+}	t_mode_for_sig;
+
 typedef struct s_shelly
 {
 	char	**envp;
@@ -72,10 +80,12 @@ int		mndp_log_err(char *msg, char *cmd);
 void	syntax_err_msg(char *err_token);
 
 /* Signal handling */
-void	set_signals_interactive_parent(void);
-void	set_signals_noninteractive(void); // TODO: remove?
-void	sigint_prompt_handler(int signal);
+void	sig_mode(int md);
+// void	set_signals_interactive_parent(void); // TODO: remove?
+// void	set_signals_noninteractive(void); // TODO: remove?
+// void	sigint_prompt_handler(int signal); // currently static
 void	set_signal_stat(int value);
+// void	sigint_glob(int sig); // currently static
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);

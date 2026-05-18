@@ -61,12 +61,6 @@ sig_mode(md):
 //run oing google.com and then terminate w SIGINT to check the correct way 
 static int	g_signal_stat = 0;
 
-void	sigint_glob(int sig)
-{
-	(void)sig;
-	g_signal_stat = 130;
-}
-
 int	get_signal_stat(void)
 {
 	return (g_signal_stat);
@@ -81,28 +75,4 @@ int	status_check(int status)
 	else if (WCOREDUMP(status))
 		ft_putstr_fd("Quit (core dumped)\n", 2);
 	return (status);
-}
-
-void	sig_mode(int md)
-{
-	if (md == INTERACTIVE)
-	{
-		signal(SIGINT, sigint_prompt_handler);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (md == BLT_EXECUTING)
-	{
-		signal(SIGINT, sigint_glob);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (md == CHILD)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
-	else if (md == MNDWAIT)
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	}
 }

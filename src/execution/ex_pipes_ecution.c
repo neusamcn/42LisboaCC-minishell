@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:10:17 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 19:53:49 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,57 +24,60 @@ The execution starts by going through the list of cmds:
 1) checking if there is a next command -> creates a pipe
 2) fork && split execution into parent and child processes
 3) child process: execut single cmd :
-	1. sets up a fd: stdin is connected to the previous pipe (if it exists), and stdout is connected to the next pipe (if it exists)
+	1. sets up a fd: stdin is connected to the previous pipe (if it exists), 
+	and stdout is connected to the next pipe (if it exists)
 	2. hande <, >, >>, + bltn cmds
 	3. resolved the cmd path (absolute/relative) by searching the PATH env var
 	4. if everything is VALID -> execve() -> replacing the process image
 	5. if fail: error printed, child exists with status 127
 4) parent processes: loop thru the cmd list :
 	1. close unused pipe ends && keep track of process IDs
-	2. store the PID of the last cmd (cmd->NULL), because its exist stat defines the final pipeline status, as required by shell behavior 
-	3. once all proc. created, parent waits for ALL child proc. && collect the exit status of each proc.
+	2. store the PID of the last cmd (cmd->NULL), because its exist stat defines 
+	the final pipeline status, as required by shell behavior 
+	3. once all proc. created, parent waits for ALL child proc. && collect the
+	exit status of each proc.
 	4. checks if the final status = last command of the pipeline
 5) final exit stat is now stored globally
 */
 
-int	ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly)
-{
-	t_cmd_line	*start;
-	pid_t		last_st;
-	int			status;
-	int			cmd_num;
-
-	start = pipeline;
-	pipeline->prevfd = -1;
-	last_st = 0;
-	cmd_num = 0;
-	while (pipeline)
-	{
-		last_st = fork_pipeline(pipeline, shelly);
-		if (last_st == -1)
-			break ; // or return 1? 
-		cmd_num++;
-		pipeline = pipeline->next;
-	}
-	cleanup_xd_fds(start);
-	status = mndwait(last_st, cmd_num);
-	return (set_signal_stat(status), 1);
-}
-
-static pid_t	fork_pl(t_cmd_line *pipeline, t_shelly *shelly)
+static pid_t	fork_pl(t_cmd_line *pl, t_shelly *shelly)
 {
 	pid_t	pid;
 
-	if (pipeline->next)
-		pipe(pipeline->pipefd);
+	if (pl->next)
+		pipe(pl->pipefd);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
 	if (pid == 0)
-		child_ex(0, pipeline, shelly);
-	pipe_cl(pipeline);
+		child_ex(0, pl, shelly);
+	pipe_cl(pl);
 	sig_mode(MNDWAIT);
 	return (pid);
+}
+
+int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
+{
+	int			status;
+	int			cmd_num;
+	pid_t		last_st;
+	t_cmd_line	*start;
+
+	start = pl;
+	pl->prevfd = -1;
+	last_st = 0;
+	cmd_num = 0;
+	while (pl)
+	{
+		last_st = fork_pl(pl, shelly);
+		if (last_st == -1)
+			break ; // or return 1? 
+		cmd_num++;
+		pl = pl->next;
+	}
+	cleanup_xd_fds(start);
+	status = mndwait(last_st, cmd_num);
+	return (set_signal_stat(status), 1);
 }
 
 int	mndwait(pid_t last_p, int cmd_nmb)

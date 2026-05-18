@@ -28,7 +28,6 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 
-# define P PRINTF
 # define CD "cd"
 # define ECHO "echo" 
 # define EXIT "exit"
@@ -38,21 +37,11 @@
 # define UNSET "unset" 
 # define HD "mini: warning: here-document delimited by end-of-file (wanted '"
 
-typedef struct s_shelly	t_shelly;
-
 typedef enum e_builts
 {
 	BUILTINS,
 	EXTRENAL
 }	t_builtins_check;
-
-typedef enum e_mode
-{
-	INTERACTIVE, // prompt
-	BLT_EXECUTING, // no fork, no rl
-	CHILD, // fork + execve
-	MNDWAIT
-}	t_mode_for_sig;
 
 typedef struct s_export
 {
@@ -75,6 +64,7 @@ typedef struct s_cd_blt
 char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly);
 char	*paths_helper(t_cmd_line *cmd_line, char *path_var);
 char	*absolute_path(t_cmd_line *cmd_line);
+int		are_you_builtin(t_cmd_line *cmd_line);
 
 /*								EXECUTION.C							*/
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly);
@@ -93,10 +83,10 @@ char	*abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 void	store_fds(int read_save, int write_save);
 
 /*									REDIRECTIONs					*/
-int		which_redir_type(t_cmd_line *cmd);
-int		in_redir(t_redirects *redir);
+bool	which_redir_type(t_cmd_line *cmd);
+bool	in_redir(t_redirects *redir);
 void	heredoc(t_redirects *redir);
-void	append(t_redirects *redir);
+bool	append(t_redirects *redir);
 
 /*									FREEs							*/
 void	close_fds(t_redirects *redir);
@@ -106,6 +96,7 @@ void	cleanup_xd_fds(t_cmd_line *start);
 void	free_cmd_line(t_cmd_line *cmd);
 void	ft_free_split(char **arr);
 void	free_redirs(t_redirects *redir);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 /*									BUILTINs						*/
 int		r_bltn(t_cmd_line *cmd_line, t_shelly *shelly);
@@ -125,7 +116,6 @@ char	**exp_var(t_export *mini, char *key);
 char	**exp_minienv(t_export *mini, char *key, char *value, int i);
 void	pexp_var(char *env_entry);
 void	pexp(t_shelly *shelly);
-char	*ft_free_strjoin(char *s1, char *s2);
 
 /*									PWD								*/
 int		mypwd(t_cmd_line *cmd, t_shelly *shelly);

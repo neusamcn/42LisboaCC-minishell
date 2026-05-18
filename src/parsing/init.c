@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/17 12:34:23 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:37:29 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static void	read_eval_print_loop(t_shelly *shelly)
 	t_token	*tokens;
 	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
 
-	set_signals_interactive_parent();
+	// set_signals_interactive_parent();
+	sig_mode(INTERACTIVE);
 	while (1)
 	{
 		input_str = put_prompt(shelly, "shelly");
@@ -85,7 +86,8 @@ static void	non_interactive_mode(t_shelly *shelly)
 {
 	char	*line;
 
-	set_signals_noninteractive();
+	// set_signals_noninteractive();
+	sig_mode(CHILD);
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
