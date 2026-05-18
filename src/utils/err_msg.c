@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   err_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/11 00:00:39 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:50:30 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
+/*System Errors. Usjng for: malloc, open, pipe, dup2, fork*/
 void	print_err_msg(char *my_msg)
 {
 	ft_putstr_fd(PALE_VIOLET_RED, 2);
@@ -20,6 +21,21 @@ void	print_err_msg(char *my_msg)
 	ft_putendl_fd(strerror(errno), 2);
 }
 
+/* User Command Errors. Useful for cmn not found, permissions, syntax errors */
+int	mndp_exec_error(char *cmd)
+{
+	if (errno == EACCES)
+		mndp_log_err("Permission denied", cmd);
+	else if (errno == ENOENT)
+		mndp_log_err("No such file or directory", cmd);
+	else if (errno == EISDIR)
+		mndp_log_err("Is a directory", cmd);
+	else
+		mndp_log_err(strerror(errno), cmd);
+	return (127);
+}
+
+/*Syntax err, custom messages, bltns*/
 int	mndp_log_err(char *msg, char *cmd)
 {
 	ft_putstr_fd(PALE_VIOLET_RED, 2);
