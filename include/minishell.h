@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 20:20:56 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:24:29 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	sig_mode(int md);
 // void	sigint_prompt_handler(int signal); // currently static
 void	set_signal_stat(int value);
 // void	sigint_glob(int sig); // currently static
+// int	get_signal_stat(void); // TODO: here or in execution.h?
+// int	status_check(int status); // TODO: here or in execution.h?
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
