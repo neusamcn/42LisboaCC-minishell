@@ -83,11 +83,6 @@ int	status_check(int status)
 	return (status);
 }
 
-void	set_signal_stat(int value)
-{
-	g_signal_stat = value;
-}
-
 void	sig_mode(int md)
 {
 	if (md == INTERACTIVE) // shell waiting for a command

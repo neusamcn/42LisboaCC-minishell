@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/18 16:59:43 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:32:53 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,18 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 	t_cmd_line	*tmp;
 
 	tmp = cmds; // TODO: HUH> 
+	printf("DEBUG CMD LINE:\n");
+
+	while (cmds)
+	{
+    	printf("cmd[0]=%s | argc=%d\n",
+        cmds->cmds ? cmds->cmds[0] : "NULL",
+        cmds->cmds ? (int)(sizeof(cmds->cmds)) : -1);
+    	cmds = cmds->next;
+	}
 	while (tmp)
 	{
+		//printf("ENTER EXEC_LOOP\n");
 		while (tmp->redir && tmp->redir->type != NONE)
 		{
 			if (tmp->redir->type == HEREDOC)

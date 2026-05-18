@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 18:40:57 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:05:50 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,92 +14,6 @@
 #include "execution.h"
 #include "../include/parsing.h"
 #include "minishell.h"
-
-static t_cmd_line *new_cmd(void)
-{
-	t_cmd_line *cmd = ft_calloc_protec(1, sizeof(t_cmd_line));
-	cmd->cmds = NULL;
-	cmd->redir = NULL;
-	cmd->next = NULL;
-	return cmd;
-}
-
-static void	add_arg(t_cmd_line *cmd, char *word)
-{
-	int i = 0;
-	int len = 0;
-	char **new;
-
-	if (!cmd->cmds)
-	{
-		cmd->cmds = malloc(sizeof(char *) * 2);
-		cmd->cmds[0] = ft_strdup(word);
-		cmd->cmds[1] = NULL;
-		return;
-	}
-
-	while (cmd->cmds[len])
-		len++;
-
-	new = malloc(sizeof(char *) * (len + 2));
-	while (i < len)
-	{
-		new[i] = cmd->cmds[i];
-		i++;
-	}
-	new[i++] = ft_strdup(word);
-	new[i] = NULL;
-
-	free(cmd->cmds);
-	cmd->cmds = new;
-}
-
-static void	add_redir(t_cmd_line *cmd, t_token *t, t_token **tokens)
-{
-	t_redirects *r = ft_calloc_protec(1, sizeof(t_redirects));
-
-	r->type = t->redir;
-
-	*tokens = (*tokens)->next;
-
-	if (*tokens && (*tokens)->type == WORD)
-	{
-		if (r->type == HEREDOC)
-			r->delimiter = ft_strdup((*tokens)->value);
-		else
-			r->filename = ft_strdup((*tokens)->value);
-	}
-
-	r->next = cmd->redir;
-	cmd->redir = r;
-}
-
-t_cmd_line *parse_tokens(t_token *tokens)
-{
-	t_cmd_line *head = new_cmd();
-	t_cmd_line *cur = head;
-
-	while (tokens)
-	{
-		if (tokens->type == WORD)
-		{
-			add_arg(cur, tokens->value);
-		}
-		else if (tokens->type == REDIR)
-		{
-			add_redir(cur, tokens, &tokens);
-		}
-		else if (tokens->type == CTRL_OP && tokens->ctrlop == PIPE)
-		{
-			cur->next = new_cmd();
-			cur = cur->next;
-		}
-
-		tokens = tokens->next;
-	}
-
-	return head;
-}
 
 void	exit_cleanup(int exit_status, t_shelly *shelly)
 {

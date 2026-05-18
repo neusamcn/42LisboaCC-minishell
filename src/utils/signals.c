@@ -6,11 +6,11 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 15:57:41 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:03:18 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "execution.h"
 
 //run oing google.com and then terminate w SIGINT to check the correct way 
 static int g_signal_stat = 0;
