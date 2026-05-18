@@ -85,22 +85,22 @@ int	status_check(int status)
 
 void	sig_mode(int md)
 {
-	if (md == INTERACTIVE) // shell waiting for a command
+	if (md == INTERACTIVE)
 	{
 		signal(SIGINT, sigint_prompt_handler);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (md == BLT_EXECUTING) // we are doing a bltn is a parent process
+	else if (md == BLT_EXECUTING)
 	{
 		signal(SIGINT, sigint_glob);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (md == CHILD) // when we are entering child process
+	else if (md == CHILD)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 	}
-	else if (md == MNDWAIT) // when a parent waits dor a ch process
+	else if (md == MNDWAIT)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);

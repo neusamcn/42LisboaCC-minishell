@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 19:03:18 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/11 00:23:35 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/minishell.h"
 
 //run oing google.com and then terminate w SIGINT to check the correct way 
 static int g_signal_stat = 0;
