@@ -59,7 +59,6 @@ typedef struct s_shelly
 	char		**envp;
 	t_cmd_line	*cur_cmd;
 	int			fds_saved[2]; // put this ones as -1
-	int			*open_fd; // Neusa, i am not using it, should delete?
 	void		**malloc_ptrs;
 }	t_shelly;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/17 18:01:51 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 18:38:45 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,8 @@ int				op_len(char *s);
 bool			char_is_op(char c);
 t_syntax_err	syntax_err_redir(char *input_str, int i);
 t_syntax_err	syntax_err_pipe(char *input_str, int i);
+
+//TODO: delete later
+t_cmd_line *parse_tokens(t_token *tokens);
 
 #endif
