@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 18:11:49 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:39:39 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PARSING_H
 
 /* Our libs */
-// TODO: review due to headers' circularity
 # include "minishell.h"
 
 // TODO: review std libs that should be general =>> minishell.h
@@ -88,9 +87,9 @@ typedef struct s_token
 	t_token_type	type;
 	t_ctrlop_type	ctrlop; // Valid only if type == CTRL_OP
 	t_redir_type	redir; // Valid only if type == REDIR
-	t_word_type		word;
+	t_word_type		word; // valid only if type == WORD
 	int				index;
-	char			*value; // For TK_WORD, filename, delimiter, etc.
+	char			*value; // For WORD, filename, delimiter, etc.
 	int				quoted; // 1 if token had quotes TODO: optional but useful?
 	struct s_token	*previous; // TODO: review if necessary?
 	struct s_token	*next;

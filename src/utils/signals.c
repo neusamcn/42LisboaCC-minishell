@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 19:43:41 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 21:14:45 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,18 @@ static void	sigint_prompt_handler(int signal)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
+/* 
+Note about signal handlers and async-safety:
+sigint_prompt_handler calls rl_* and ft_putendl_fd.
+Those are not strictly async-signal-safe;
+many shells do similar things to integrate with readline,
+but the safe alternative is:
+in the handler only set a sig_atomic_t flag,
+and let the main loop check that flag and call
+rl_on_new_line / rl_replace_line / printing from normal code path.
+If you see strange crashes, switch to flag-based approach.
+*/
 
 // // TODO: replace with sig_mode()?
 // void	set_signals_interactive_parent(void)

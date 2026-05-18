@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 20:24:29 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 20:33:09 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_cmd_line
 }	t_cmd_line;
 
 
-/* Error handling functions */
+/* Error handling */
 void	print_err_msg(char *my_msg);
 int		mndp_exec_error(char *cmd);
 int		mndp_log_err(char *msg, char *cmd);
