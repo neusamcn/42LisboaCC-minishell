@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/17 12:34:23 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:35:31 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+#include "execution.h"
 
 static char	*input_strs_join(char *input_str, char *extra_input)
 {
@@ -73,7 +74,8 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
-				(void)tokens;
+				exec_loop(tokens, shelly);
+				free(input_str);
 				// TODO: tokenize + parse + execute here
 			}
 		}
@@ -83,6 +85,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 
 static void	non_interactive_mode(t_shelly *shelly)
 {
+	t_token	*tokens;
 	char	*line;
 
 	set_signals_noninteractive();
@@ -91,6 +94,8 @@ static void	non_interactive_mode(t_shelly *shelly)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
+		tokens = tokenize_input(line);
+		exec_loop(tokens, shelly);
 		// TODO: tokenize + expand + execute here
 		(void)shelly;
 		free(line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/12 19:47:27 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/18 16:56:09 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void	not_to_be(t_expand *ex)
 
 /* '$USER' -> $USER
 "'"'$USER'"'" -> 'megiazavr' */
-
 
 // tokens: value->word
 // quotes: have QMARK1, QMARK2

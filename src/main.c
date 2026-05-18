@@ -6,11 +6,11 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 15:54:58 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:20:38 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../include/minishell.h"
+//#include "../include/minishell.h"
 #include "../include/parsing.h"
 
 void	exit_cleanup(int exit_status, t_shelly *shelly)

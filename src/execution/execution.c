@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/11 19:19:26 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:59:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 	sig_mode(BLT_EXECUTING);
 	r_bltn(s, shelly);
 	store_fds(read_save, write_save);
-	set_signals_interactive_parent();
+	sig_mode(INTERACTIVE);
 	return (get_signal_stat());
 }
 
@@ -130,7 +130,7 @@ int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 		single_child_ex(s_cmd, shelly);
 	sig_mode(MNDWAIT);
 	waitpid(only_child, &status, 0);
-	set_signals_interactive_parent();
+	sig_mode(INTERACTIVE);
 	return (status_check(status));
 }
 
