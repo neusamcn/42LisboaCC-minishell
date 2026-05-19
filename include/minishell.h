@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 20:33:09 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 14:33:08 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_redirections
 typedef struct s_cmd_line
 {
 	char				**cmds;
-	t_redirects			redir;
+	t_redirects			*redir;
 	int					pipefd[2];
 	int					prevfd; // CHECK (?)
 	struct s_export		*bltn_export;
