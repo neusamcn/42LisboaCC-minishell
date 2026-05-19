@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 15:10:51 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:34:10 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/execution.h"
 #include "../../include/parsing.h"
-#include "execution.h"
 
 static t_cmd_line *new_cmd(void)
 {

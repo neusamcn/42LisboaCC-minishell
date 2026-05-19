@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 15:03:12 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:36:19 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
-#include "parsing.h"
+#include "../../include/execution.h"
+#include "../../include/parsing.h"
+
 /*
 This file executes a parsed cmd line (ls | grep a | wc -l) by turning it 
 into a pipeline of processes. We are using a linked list (cmd1 → cmd2 → cmd3) 

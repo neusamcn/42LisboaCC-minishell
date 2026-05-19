@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 15:07:26 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:26:17 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 // TODO: review std libs that should be general =>> minishell.h
 /* Standard libs */
 // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
-# include <linux/limits.h>
+// # include <linux/limits.h>
 
 /* Structs */
 // TODO: create separate header?

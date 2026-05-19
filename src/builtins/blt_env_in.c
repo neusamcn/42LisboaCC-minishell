@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_env_in.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 18:08:07 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/10 20:28:11 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:36:53 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h"
+
 
 int	myenv(t_cmd_line *cmd, t_shelly *shelly)
 {

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+         #
+#    By: megi <megi@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/18 18:44:59 by megiazar         ###   ########.fr        #
+#    Updated: 2026/05/19 18:32:48 by megi             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,14 @@ OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h execution.h)
 
 CC 				= cc
-CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
-CFLAGS 			= -Wall -Werror -Wextra
+# CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
+# CFLAGS 		= -Wall -Werror -Wextra
 LDFLAGS 		= -L$(LIBFT_DIR)
 LDLIBS 			= -lft -lreadline
 RM 				= rm -f
+
+CPPFLAGS += -I/opt/homebrew/opt/readline/include
+LDFLAGS  += -L/opt/homebrew/opt/readline/lib
 
 TEST_DIR		= test_logs
 ESC             := $(shell printf '\033')

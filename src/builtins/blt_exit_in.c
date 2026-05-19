@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:29:18 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:36:56 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h"
+
 
 // i need to check if the str have only numbers
 /*  exit abc      # err - its not a number

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 15:06:39 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:38:13 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../include/minishell.h"
+#include "../include/minishell.h"
 #include "../include/parsing.h"
 
 void	exit_cleanup(int exit_status, t_shelly *shelly)
@@ -18,7 +18,7 @@ void	exit_cleanup(int exit_status, t_shelly *shelly)
 	int	i;
 
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	rl_clear_history();
+	clear_history();
 	i = 0;
 	if (shelly)
 	{

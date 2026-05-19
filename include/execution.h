@@ -27,6 +27,7 @@
 # include <sys/resource.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <string.h>
 
 # define CD "cd"
 # define ECHO "echo" 
