@@ -43,14 +43,6 @@ typedef enum e_builts
 	EXTRENAL
 }	t_builtins_check;
 
-typedef enum e_mode
-{
-	INTERACTIVE, // prompt
-	BLT_EXECUTING, // no fork, no rl
-	CHILD, // fork + execve
-	MNDWAIT
-}	t_mode_for_sig;
-
 typedef struct s_export
 {
 	char				*arg;
@@ -136,5 +128,8 @@ int		mycd(t_cmd_line *cd, t_shelly *shelly);
 
 /*								EXIT								*/
 int		myexit(t_cmd_line *argv, t_shelly *shelly);
+
+int		get_signal_stat(void);
+int		status_check(int status);
 
 #endif

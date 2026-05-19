@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 21:14:45 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 14:52:54 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 //run oing google.com and then terminate w SIGINT to check the correct way 
-static int g_signal_stat = 0;
+volatile sig_atomic_t	g_signal_stat;
 
 static void	sigint_glob(int sig)
 {

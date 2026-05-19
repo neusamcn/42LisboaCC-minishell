@@ -6,12 +6,12 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 14:31:40 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:10:51 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
+#include "execution.h"
 
 static t_cmd_line *new_cmd(void)
 {
@@ -161,9 +161,9 @@ static void	read_eval_print_loop(t_shelly *shelly)
 {
 	char	*input_str;
 	t_token	*tokens;
+	t_cmd_line *cmds;
 	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
 
-	// set_signals_interactive_parent();
 	sig_mode(INTERACTIVE);
 	while (1)
 	{
@@ -177,8 +177,8 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
-				(void)tokens;
-				// TODO: tokenize + parse + execute here
+				cmds = parse_tokens(tokens);
+				exec_loop(cmds, shelly);
 			}
 		}
 		free(input_str);
@@ -188,7 +188,9 @@ static void	read_eval_print_loop(t_shelly *shelly)
 static void	non_interactive_mode(t_shelly *shelly)
 {
 	char	*line;
-
+	t_token	*tokens;
+	t_cmd_line	*cmds;
+	
 	// set_signals_noninteractive();
 	sig_mode(CHILD);
 	while (1)
@@ -196,8 +198,10 @@ static void	non_interactive_mode(t_shelly *shelly)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
+		tokens = tokenize_input(line);
+		cmds = parse_tokens(tokens);
+		exec_loop(cmds, shelly);
 		// TODO: tokenize + expand + execute here
-		(void)shelly;
 		free(line);
 	}
 }

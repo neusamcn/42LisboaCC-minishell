@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 17:45:10 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/17 17:58:26 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:10:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parsing.h"
+#include "parsing.h"
 
 static char	quote_check(char *input_str)
 {

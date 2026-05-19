@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 14:33:08 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:04:04 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <sys/wait.h>
 # include <signal.h>
 
+extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
+
+typedef struct s_cmd_line	t_cmd_line;
 
 /* Structs & Enums */
 typedef enum e_mode
@@ -71,7 +74,6 @@ typedef struct s_cmd_line
 	struct s_cmd_line	*next;
 }	t_cmd_line;
 
-
 /* Error handling */
 void	print_err_msg(char *my_msg);
 int		mndp_exec_error(char *cmd);
@@ -85,11 +87,8 @@ void	sig_mode(int md);
 // void	sigint_prompt_handler(int signal); // currently static
 void	set_signal_stat(int value);
 // void	sigint_glob(int sig); // currently static
-// int	get_signal_stat(void); // TODO: here or in execution.h?
-// int	status_check(int status); // TODO: here or in execution.h?
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
-
 
 #endif
