@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 17:38:40 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:33:16 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 
+
+extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
 
 /* Structs & Enums */
 typedef enum e_mode

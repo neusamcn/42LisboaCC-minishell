@@ -35,6 +35,7 @@ AI was used as a support for research in order to find and better understand the
 #### Shell Behavior Reference
 
 - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/bash.html)
+- [Understanding Shell Expansion](https://effective-shell.com/part-6-advanced-techniques/understanding-shell-expansion/)
 
 ## Project's Scope
 

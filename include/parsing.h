@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 17:13:15 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 20:39:41 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef enum e_token_type
 	WORD,
 	REDIR,
 	CTRL_OP
-	// ASSIGN, // VAR=value before command
 	// TK_EOF, TODO: include?
 }	t_token_type;
 
@@ -89,6 +88,7 @@ typedef struct s_token
 	t_redir_type	redir; // Valid only if type == REDIR
 	t_word_type		word; // valid only if type == WORD
 	bool			space_b4_word; // true if at least 1 space b4 word
+	int				word_expnd; // 1 if expansion is done, -1 if failed/invalid
 	int				index;
 	char			*value; // For WORD, filename, delimiter, etc.
 	struct s_token	*previous; // TODO: review if necessary?

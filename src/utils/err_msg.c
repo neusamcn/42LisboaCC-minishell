@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   err_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 16:12:40 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:31:54 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
-/* System Errors. Using for: malloc, open, pipe, dup2, fork */
+/*System Errors. Usjng for: malloc, open, pipe, dup2, fork*/
 void	print_err_msg(char *my_msg)
 {
 	ft_putstr_fd(PALE_VIOLET_RED, 2);
@@ -35,7 +35,7 @@ int	mndp_exec_error(char *cmd)
 	return (127);
 }
 
-/* Syntax err, custom messages, bltns */
+/*Syntax err, custom messages, bltns*/
 int	mndp_log_err(char *msg, char *cmd)
 {
 	ft_putstr_fd(PALE_VIOLET_RED, 2);
@@ -44,7 +44,7 @@ int	mndp_log_err(char *msg, char *cmd)
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);
-	ft_putchar_fd('\n', 2);
+	//ft_putchar_fd('\n', 2);
 	return (true);
 }
 

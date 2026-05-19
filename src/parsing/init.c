@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 17:59:44 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 20:27:36 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*input_strs_join(char *input_str, char *extra_input)
 	char	*tmp;
 	char	*full_input;
 
-	tmp = ft_strjoin(input_str, " ");
+	tmp = ft_strjoin(input_str, "\n");
 	if (!tmp)
 		return (NULL);
 	full_input = ft_strjoin(tmp, extra_input);
@@ -74,14 +74,15 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
+				expand_params(tokens, shelly);
 				// TODO: delete tokens printer
-				// while (tokens)
-				// {
-				// 	ft_putnbr_fd(tokens->index, STDOUT_FILENO);
-				// 	ft_putstr_fd(": ", STDOUT_FILENO);
-				// 	ft_putendl_fd(tokens->value, STDOUT_FILENO);
-				// 	tokens = tokens->next;
-				// }
+				while (tokens)
+				{
+					ft_putnbr_fd(tokens->index, STDOUT_FILENO);
+					ft_putstr_fd(": ", STDOUT_FILENO);
+					ft_putendl_fd(tokens->value, STDOUT_FILENO);
+					tokens = tokens->next;
+				}
 				// TODO: tokenize + parse + execute here
 			}
 		}

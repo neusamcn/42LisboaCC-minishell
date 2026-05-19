@@ -3,15 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/18 16:56:09 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 22:34:02 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
+#include "../../include/parsing.h"
+
+char	*word_param_expansion(t_token *tkn, t_shelly *shelly)
+{
+	int		i;
+	int		start;
+	char	*tmp;
+	char	*expanded_word;
+
+	if (tkn->word != CMD || tkn->word != QMARK2)
+		return (tkn->word_expnd = -1, tkn->value);
+	ft_split_mult(tkn->value, "$");
+	i = 0;
+	tmp = NULL;
+	while (tkn->value[i])
+	{
+		start = 0;
+		while (tkn->value[i + start] && tkn->value[i + start] != '$')
+			start++;
+		if (!tkn->value[i + start])
+			break ;
+		if (start > 0)
+			tmp = ft_substr(tkn->value, i, start);
+		i += start;
+		i++;
+	}
+	tkn->word_expnd = 1;
+	// expanded_word = NULL;
+
+
+
+	if (tkn->value[i] == '?')
+	{
+		// TODO: expand to exit status of most recently executed foreground pipeline -- good?
+		if (tmp)
+			expanded_word = ft_strjoin_free(tmp, ft_itoa(g_signal_stat));
+		
+		return (expanded_word);
+	}
+	start = i;
+	i = scan_word_end(tkn->value, i);
+	tmp = ft_substr(tkn->value, start, i - start);
+	expanded_word = ft_strjoin(expanded_word, find_var_shellyenvp(shelly, tmp));
+	free(tmp);
+	tkn->word_expnd = 1;
+	return (expanded_word);
+}
+
+
+void	expand_params(t_token *tokens, t_shelly *shelly)
+{
+	if (!tokens || !shelly)
+		return ;
+	while (tokens)
+	{
+		if (tokens->word == CMD || tokens->word == QMARK2)
+			word_param_expansion(tokens, shelly);
+		tokens = tokens->next;
+	}
+}
+
+
 
 /* 
 	t_token	*tokenize_input(char *input_str)
