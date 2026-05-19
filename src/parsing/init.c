@@ -3,14 +3,117 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 19:37:29 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 14:31:40 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+
+
+static t_cmd_line *new_cmd(void)
+{
+	t_cmd_line *cmd;
+
+	cmd = ft_calloc_protec(1, sizeof(t_cmd_line));
+	cmd->cmds = NULL;
+	cmd->redir = NULL;
+	cmd->next = NULL;
+	return cmd;
+}
+
+static void add_arg(t_cmd_line *cmd, char *word)
+{
+	int i;
+	int len;
+	char **new;
+
+	if (!cmd || !word)
+		return;
+
+	len = 0;
+	if (cmd->cmds)
+		while (cmd->cmds[len])
+			len++;
+
+	new = malloc(sizeof(char *) * (len + 2));
+	if (!new)
+		return;
+
+	i = 0;
+	while (i < len)
+	{
+		new[i] = cmd->cmds[i];
+		i++;
+	}
+
+	new[i] = ft_strdup(word);
+	new[i + 1] = NULL;
+
+	free(cmd->cmds);
+	cmd->cmds = new;
+}
+
+static void	add_redir(t_cmd_line *cmd, t_token **tokens)
+{
+	t_redirects	*r;
+
+	if (!cmd || !*tokens || (*tokens)->type != REDIR)
+		return ;
+
+	r = ft_calloc_protec(1, sizeof(t_redirects));
+	r->type = (*tokens)->redir;
+
+	*tokens = (*tokens)->next;          // move to filename
+
+	if (*tokens && (*tokens)->type == WORD)
+	{
+		if (r->type == HEREDOC)
+			r->delimiter = ft_strdup((*tokens)->value);
+		else
+			r->filename = ft_strdup((*tokens)->value);
+		*tokens = (*tokens)->next;      // consume the filename
+	}
+
+	r->next = cmd->redir;
+	cmd->redir = r;
+}
+
+t_cmd_line	*parse_tokens(t_token *tokens)
+{
+	t_cmd_line	*head;
+	t_cmd_line	*cur;
+
+	head = new_cmd();
+	cur = head;
+
+	while (tokens)
+	{
+		if (tokens->type == WORD)
+		{
+			add_arg(cur, tokens->value);
+			tokens = tokens->next;
+		}
+		else if (tokens->type == REDIR)
+		{
+			add_redir(cur, &tokens);
+			continue;                   // tokens already moved inside add_redir
+		}
+		else if (tokens->type == CTRL_OP && tokens->ctrlop == PIPE)
+		{
+			cur->next = new_cmd();
+			cur = cur->next;
+			tokens = tokens->next;
+		}
+		else
+		{
+			tokens = tokens->next;
+		}
+	}
+	return (head);
+}
 
 static char	*input_strs_join(char *input_str, char *extra_input)
 {
