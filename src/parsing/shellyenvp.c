@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shellyenvp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 15:06:28 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:39:35 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_shelly	*set_shellyenvp(char **envp)
 	t_shelly	*shelly;
 
 	shelly = malloc_protec(sizeof(t_shelly), NULL);
-	if (!*envp)
+	if (!envp || !*envp)
 		return (set_minimal_shellyenvp(shelly));
 	shelly = copy_envp(envp, shelly);
 	return (shelly);

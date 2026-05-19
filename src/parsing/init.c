@@ -6,12 +6,12 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 18:34:10 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/19 18:55:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/execution.h"
 #include "../../include/parsing.h"
+#include "../../include/execution.h"
 
 static t_cmd_line *new_cmd(void)
 {
@@ -32,26 +32,21 @@ static void add_arg(t_cmd_line *cmd, char *word)
 
 	if (!cmd || !word)
 		return;
-
 	len = 0;
 	if (cmd->cmds)
 		while (cmd->cmds[len])
 			len++;
-
 	new = malloc(sizeof(char *) * (len + 2));
 	if (!new)
 		return;
-
 	i = 0;
 	while (i < len)
 	{
 		new[i] = cmd->cmds[i];
 		i++;
 	}
-
 	new[i] = ft_strdup(word);
 	new[i + 1] = NULL;
-
 	free(cmd->cmds);
 	cmd->cmds = new;
 }
@@ -62,12 +57,9 @@ static void	add_redir(t_cmd_line *cmd, t_token **tokens)
 
 	if (!cmd || !*tokens || (*tokens)->type != REDIR)
 		return ;
-
 	r = ft_calloc_protec(1, sizeof(t_redirects));
 	r->type = (*tokens)->redir;
-
 	*tokens = (*tokens)->next;          // move to filename
-
 	if (*tokens && (*tokens)->type == WORD)
 	{
 		if (r->type == HEREDOC)
@@ -76,7 +68,6 @@ static void	add_redir(t_cmd_line *cmd, t_token **tokens)
 			r->filename = ft_strdup((*tokens)->value);
 		*tokens = (*tokens)->next;      // consume the filename
 	}
-
 	r->next = cmd->redir;
 	cmd->redir = r;
 }
@@ -161,9 +152,10 @@ static void	read_eval_print_loop(t_shelly *shelly)
 {
 	char	*input_str;
 	t_token	*tokens;
-	t_cmd_line *cmds;
+	t_cmd_line	*cmds;
 	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
 
+	// set_signals_interactive_parent();
 	sig_mode(INTERACTIVE);
 	while (1)
 	{
@@ -179,6 +171,15 @@ static void	read_eval_print_loop(t_shelly *shelly)
 				tokens = tokenize_input(input_str);
 				cmds = parse_tokens(tokens);
 				exec_loop(cmds, shelly);
+				// TODO: delete tokens printer
+				// while (tokens)
+				// {
+				// 	ft_putnbr_fd(tokens->index, STDOUT_FILENO);
+				// 	ft_putstr_fd(": ", STDOUT_FILENO);
+				// 	ft_putendl_fd(tokens->value, STDOUT_FILENO);
+				// 	tokens = tokens->next;
+				// }
+				// TODO: tokenize + parse + execute here
 			}
 		}
 		free(input_str);
@@ -190,7 +191,6 @@ static void	non_interactive_mode(t_shelly *shelly)
 	char	*line;
 	t_token	*tokens;
 	t_cmd_line	*cmds;
-	
 	// set_signals_noninteractive();
 	sig_mode(CHILD);
 	while (1)
@@ -202,6 +202,7 @@ static void	non_interactive_mode(t_shelly *shelly)
 		cmds = parse_tokens(tokens);
 		exec_loop(cmds, shelly);
 		// TODO: tokenize + expand + execute here
+		(void)shelly;
 		free(line);
 	}
 }

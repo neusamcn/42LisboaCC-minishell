@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 18:34:58 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/19 19:31:54 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	mndp_log_err(char *msg, char *cmd)
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(COLOR_RESET, 2);
-	ft_putchar_fd('\n', 2);
+	//ft_putchar_fd('\n', 2);
 	return (true);
 }
 
