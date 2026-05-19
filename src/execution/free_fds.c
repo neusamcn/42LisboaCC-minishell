@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:39 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/19 19:55:28 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,19 @@ void	free_redirs(t_redirects *redir)
 	}
 }
 
-void	cleanup_xd_fds(t_cmd_line *start)
+void	cleanup_xd_fds(t_cmd_line *st)
 {
-	while (start)
+	t_redirects	*r;
+
+	while (st)
 	{
-		if (start->redir->xd_fd >= 0)
-			close(start->redir->xd_fd);
-		start = start->next;
+		r = st->redir;
+		while (r)
+		{
+			if (r->xd_fd >= 0)
+				close(r->xd_fd);
+			r = r->next;
+		}
+		st = st->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:33 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/19 20:08:43 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 	}
 	if (!og || !og->cmds || !og->cmds[0])
 		no_cmds_execution(og, shelly);
-	if (og->next == NULL && are_you_builtin(og) == BUILTINS)
+	else if (og->next == NULL && are_you_builtin(og) == BUILTINS)
 		lonely_blt(og, shelly);
-	else if (cmds->next == NULL)
+	else if (og->next == NULL)
 		mommy_n_father(og, shelly);
 	else
 		ex_pipeline_ec(og, shelly);

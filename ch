@@ -1,0 +1,11 @@
+Makefile
+README.md
+ch
+en.subject.pdf
+include
+libft
+minishell
+obj
+readline.supp
+src
+test_logs

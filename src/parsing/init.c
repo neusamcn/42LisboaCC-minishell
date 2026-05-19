@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 18:55:00 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/19 19:48:48 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static t_cmd_line *new_cmd(void)
 	t_cmd_line *cmd;
 
 	cmd = ft_calloc_protec(1, sizeof(t_cmd_line));
+	cmd->prevfd = -1;
 	cmd->cmds = NULL;
 	cmd->redir = NULL;
 	cmd->next = NULL;
