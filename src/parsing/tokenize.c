@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 21:02:43 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 21:39:27 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:39:24 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,24 @@
 
 // TODO: review and test file
 
-static t_token	*add_tkn_word(char *word, int word_len, t_token *tokens)
+static t_token	*add_tkn_word(char *word, int len, t_token *tkns, bool space_b4)
 {
 	t_token	*tkn_nd;
 	char	*value;
 
-	value = ft_substr(word, 0, word_len);
+	value = ft_substr(word, 0, len);
 	if (!value)
-		return (tokens);
+		return (tkns);
 	tkn_nd = new_tkn(WORD, value);
-	if (ft_strchr(value, '\'') || ft_strchr(value, '"'))
-		tkn_nd->quoted = 1;
-	append_tkn(&tokens, tkn_nd);
-	return (tokens);
+	if (ft_strchr(value, '\''))
+		tkn_nd->word = QMARK1;
+	else if (ft_strchr(value, '"'))
+		tkn_nd->word = QMARK2;
+	else
+		tkn_nd->word = CMD;
+	tkn_nd->space_b4_word = space_b4;
+	append_tkn(&tkns, tkn_nd);
+	return (tkns);
 }
 
 static t_token	*add_tkn_op(char *input_str, t_token *tokens)
@@ -36,20 +41,29 @@ static t_token	*add_tkn_op(char *input_str, t_token *tokens)
 
 	len = op_len(input_str);
 	tkn_nd = ft_calloc_protec(1, sizeof(t_token));
-	if (input_str[0] == '|')
+	if (len == 1 && *input_str == '|')
+	{
 		tkn_nd->type = CTRL_OP;
-	else
-		tkn_nd->type = REDIR;
-	if (len == 2 && input_str[0] == '<')
-		tkn_nd->redir = HEREDOC;
-	else if (len == 2 && input_str[0] == '>')
-		tkn_nd->redir = APPEND;
-	else if (input_str[0] == '<')
-		tkn_nd->redir = IN;
-	else if (input_str[0] == '>')
-		tkn_nd->redir = OUT;
-	else
 		tkn_nd->ctrlop = PIPE;
+	}
+	else
+	{
+		tkn_nd->type = REDIR;
+		if (len == 1)
+		{
+			if (*input_str == '<')
+				tkn_nd->redir = IN;
+			else if (*input_str == '>')
+				tkn_nd->redir = OUT;
+		}
+		else if (len == 2)
+		{
+			if (ft_strncmp(input_str, ">>", 2) == 0)
+				tkn_nd->redir = APPEND;
+			else if (ft_strncmp(input_str, "<<", 2) == 0)
+				tkn_nd->redir = HEREDOC;
+		}
+	}
 	tkn_nd->value = ft_substr(input_str, 0, len);
 	append_tkn(&tokens, tkn_nd);
 	return (tokens);
@@ -59,8 +73,10 @@ static int	add_tkn(char *input_str, int i, t_token **tokens)
 {
 	int		start;
 	int		len;
+	bool	space_b4_word;
 
-	if (input_str[i] == '|' || input_str[i] == '>' || input_str[i] == '<')
+	space_b4_word = false;
+	if (char_is_op(input_str[i]) == true)
 	{
 		*tokens = add_tkn_op(input_str + i, *tokens);
 		i += op_len(input_str + i);
@@ -70,7 +86,9 @@ static int	add_tkn(char *input_str, int i, t_token **tokens)
 		start = i;
 		i = scan_word_end(input_str, i);
 		len = i - start;
-		*tokens = add_tkn_word(input_str + start, len, *tokens);
+		if (input_str[i - 1])
+			space_b4_word = ft_isspace(input_str[i - 1]);
+		*tokens = add_tkn_word(input_str + start, len, *tokens, space_b4_word);
 	}
 	return (i);
 }
@@ -80,8 +98,6 @@ t_token	*tokenize_input(char *input_str)
 {
 	t_token	*tokens;
 	int		i;
-	// int		start;
-	// int		len;
 
 	tokens = NULL;
 	i = 0;
@@ -92,18 +108,6 @@ t_token	*tokenize_input(char *input_str)
 		if (!input_str[i])
 			break ;
 		i = add_tkn(input_str, i, &tokens);
-		// if (input_str[i] == '|' || input_str[i] == '>' || input_str[i] == '<')
-		// {
-		// 	tokens = add_tkn_op(input_str + i, tokens);
-		// 	i += op_len(input_str + i);
-		// }
-		// else
-		// {
-		// 	start = i;
-		// 	i = scan_word_end(input_str, i);
-		// 	len = i - start;
-		// 	tokens = add_tkn_word(input_str + start, len, tokens);
-		// }
 	}
 	return (tokens);
 }

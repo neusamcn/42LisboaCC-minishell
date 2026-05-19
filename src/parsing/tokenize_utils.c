@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 21:54:22 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:08:08 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	append_tkn(t_token **head, t_token *new_node)
 	if (!*head)
 	{
 		*head = new_node;
+		new_node->index = 0;
 		return ;
 	}
 	last = *head;
@@ -38,23 +39,31 @@ void	append_tkn(t_token **head, t_token *new_node)
 		last = last->next;
 	last->next = new_node;
 	new_node->previous = last;
+	new_node->index = new_node->previous->index + 1;
 }
 
 int	scan_word_end(char *input_str, int i)
 {
 	char	quote;
 
-	quote = 0;
+	if (input_str[i] == '\'' || input_str[i] == '"')
+	{
+		quote = input_str[i];
+		i++;
+	}
+	else
+		quote = 0;
 	while (input_str[i])
 	{
-		if (!quote && ft_isspace(input_str[i] == true))
+		if (!quote && (ft_isspace(input_str[i]) == true
+				|| char_is_op(input_str[i]) == true
+				|| input_str[i] == '\'' || input_str[i] == '"'))
 			break ;
-		if (!quote && char_is_op(input_str[i]) == true)
+		if (quote && input_str[i] == quote)
+		{
+			i++;
 			break ;
-		if (!quote && (input_str[i] == '\'' || input_str[i] == '"'))
-			quote = input_str[i];
-		else if (quote && input_str[i] == quote)
-			quote = 0;
+		}
 		i++;
 	}
 	return (i);

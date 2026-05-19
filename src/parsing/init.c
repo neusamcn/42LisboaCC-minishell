@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 19:37:29 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:59:44 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,14 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
-				(void)tokens;
+				// TODO: delete tokens printer
+				// while (tokens)
+				// {
+				// 	ft_putnbr_fd(tokens->index, STDOUT_FILENO);
+				// 	ft_putstr_fd(": ", STDOUT_FILENO);
+				// 	ft_putendl_fd(tokens->value, STDOUT_FILENO);
+				// 	tokens = tokens->next;
+				// }
 				// TODO: tokenize + parse + execute here
 			}
 		}

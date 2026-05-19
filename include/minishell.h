@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 20:33:09 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:38:40 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,6 @@ typedef enum e_mode
 	MNDWAIT
 }	t_mode_for_sig;
 
-typedef struct s_shelly
-{
-	char		**envp;
-	t_cmd_line	*cur_cmd;
-	int			fds_saved[2]; // put this one as -1
-	void		**malloc_ptrs;
-}	t_shelly;
-
 typedef enum e_redir_type
 {
 	NONE, // 0. TODO: understand why this is needded
@@ -64,12 +56,32 @@ typedef struct s_redirections
 typedef struct s_cmd_line
 {
 	char				**cmds;
-	t_redirects			redir;
+	t_redirects			*redir;
 	int					pipefd[2];
 	int					prevfd; // CHECK (?)
 	struct s_export		*bltn_export;
 	struct s_cmd_line	*next;
 }	t_cmd_line;
+
+typedef struct s_shelly
+{
+	char		**envp;
+	t_cmd_line	*cur_cmd;
+	int			fds_saved[2]; // put this one as -1
+	void		**malloc_ptrs; // TODO: delete if not used
+}	t_shelly;
+
+typedef struct s_export
+{
+	char				*arg;
+	int					flag;
+	char				*new_var;
+	char				**envp;
+	char				**newenv;
+	struct s_cmd_line	*expline;
+}	t_export;
+
+
 
 
 /* Error handling */
