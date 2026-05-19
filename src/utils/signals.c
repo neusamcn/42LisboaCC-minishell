@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 21:14:45 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 21:18:55 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	sigint_prompt_handler(int signal)
 }
 
 /* 
-Note about signal handlers and async-safety:
+TODO: Note about signal handlers and async-safety:
 sigint_prompt_handler calls rl_* and ft_putendl_fd.
 Those are not strictly async-signal-safe;
 many shells do similar things to integrate with readline,

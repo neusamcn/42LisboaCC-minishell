@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 20:39:39 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 21:44:03 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,8 @@ char			*syntax_check(char *input_str);
 /* Tokenizing utils */
 t_token			*new_tkn(t_token_type type, char *value);
 void			append_tkn(t_token **head, t_token *new_node);
-int				scan_word_end(char *s, int i);
-int				op_len(char *s);
-
+int				scan_word_end(char *input_str, int i);
+int				op_len(char *input_str);
 bool			char_is_op(char c);
 t_syntax_err	syntax_err_redir(char *input_str, int i);
 t_syntax_err	syntax_err_pipe(char *input_str, int i);

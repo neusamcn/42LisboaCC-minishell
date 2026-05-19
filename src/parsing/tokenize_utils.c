@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/16 16:45:54 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/18 21:54:22 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,31 @@ void	append_tkn(t_token **head, t_token *new_node)
 	new_node->previous = last;
 }
 
-int	scan_word_end(char *s, int i)
+int	scan_word_end(char *input_str, int i)
 {
 	char	quote;
 
 	quote = 0;
-	while (s[i])
+	while (input_str[i])
 	{
-		if (!quote && ft_isspace(s[i] == true))
+		if (!quote && ft_isspace(input_str[i] == true))
 			break ;
-		if (!quote && (s[i] == '>' || s[i] == '<' || s[i] == '|'))
+		if (!quote && char_is_op(input_str[i]) == true)
 			break ;
-		if (!quote && (s[i] == '\'' || s[i] == '"'))
-			quote = s[i];
-		else if (quote && s[i] == quote)
+		if (!quote && (input_str[i] == '\'' || input_str[i] == '"'))
+			quote = input_str[i];
+		else if (quote && input_str[i] == quote)
 			quote = 0;
 		i++;
 	}
 	return (i);
 }
 
-int	op_len(char *s)
+int	op_len(char *input_str)
 {
-	if ((s[0] == '<' && s[1] == '<') || (s[0] == '>' && s[1] == '>'))
+	if (*input_str == input_str[1] && (*input_str == '<' || *input_str == '>'))
 		return (2);
-	if (s[0] == '|')
+	if (*input_str == '|')
 		return (1);
 	return (1);
 }
