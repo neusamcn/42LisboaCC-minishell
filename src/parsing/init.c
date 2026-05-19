@@ -3,118 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 20:29:50 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/18 19:37:29 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
 #include "../../include/parsing.h"
-
-static t_cmd_line *new_cmd(void)
-{
-	t_cmd_line *cmd;
-
-	cmd = ft_calloc_protec(1, sizeof(t_cmd_line));
-	cmd->cmds = NULL;
-	cmd->redir = NULL;
-	cmd->next = NULL;
-	return cmd;
-}
-
-static void add_arg(t_cmd_line *cmd, char *word)
-{
-	int i;
-	int len;
-	char **new;
-
-	if (!cmd || !word)
-		return;
-
-	len = 0;
-	if (cmd->cmds)
-		while (cmd->cmds[len])
-			len++;
-
-	new = malloc(sizeof(char *) * (len + 2));
-	if (!new)
-		return;
-
-	i = 0;
-	while (i < len)
-	{
-		new[i] = cmd->cmds[i];
-		i++;
-	}
-
-	new[i] = ft_strdup(word);
-	new[i + 1] = NULL;
-
-	free(cmd->cmds);
-	cmd->cmds = new;
-}
-
-static void	add_redir(t_cmd_line *cmd, t_token **tokens)
-{
-	t_redirects	*r;
-
-	if (!cmd || !*tokens || (*tokens)->type != REDIR)
-		return ;
-
-	r = ft_calloc_protec(1, sizeof(t_redirects));
-	r->type = (*tokens)->redir;
-
-	*tokens = (*tokens)->next;          // move to filename
-
-	if (*tokens && (*tokens)->type == WORD)
-	{
-		if (r->type == HEREDOC)
-			r->delimiter = ft_strdup((*tokens)->value);
-		else
-			r->filename = ft_strdup((*tokens)->value);
-		*tokens = (*tokens)->next;      // consume the filename
-	}
-
-	r->next = cmd->redir;
-	cmd->redir = r;
-}
-
-t_cmd_line	*parse_tokens(t_token *tokens)
-{
-	t_cmd_line	*head;
-	t_cmd_line	*cur;
-
-	head = new_cmd();
-	cur = head;
-
-	while (tokens)
-	{
-		if (tokens->type == WORD)
-		{
-			add_arg(cur, tokens->value);
-			tokens = tokens->next;
-		}
-		else if (tokens->type == REDIR)
-		{
-			add_redir(cur, &tokens);
-			continue;                   // tokens already moved inside add_redir
-		}
-		else if (tokens->type == CTRL_OP && tokens->ctrlop == PIPE)
-		{
-			cur->next = new_cmd();
-			cur = cur->next;
-			tokens = tokens->next;
-		}
-		else
-		{
-			tokens = tokens->next;
-		}
-	}
-	return (head);
-}
-
 
 static char	*input_strs_join(char *input_str, char *extra_input)
 {
@@ -162,10 +58,10 @@ static void	read_eval_print_loop(t_shelly *shelly)
 {
 	char	*input_str;
 	t_token	*tokens;
-	t_cmd_line *cmds;
 	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
 
-	set_signals_interactive_parent();
+	// set_signals_interactive_parent();
+	sig_mode(INTERACTIVE);
 	while (1)
 	{
 		input_str = put_prompt(shelly, "shelly");
@@ -178,11 +74,8 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
-				cmds = parse_tokens(tokens);
-				printf("CMD CHECK:\n");
-				for (int i = 0; cmds && cmds->cmds && cmds->cmds[i]; i++)
-   				printf("argv[%d] = %s\n", i, cmds->cmds[i]);
-				exec_loop(cmds, shelly);
+				(void)tokens;
+				// TODO: tokenize + parse + execute here
 			}
 		}
 		free(input_str);
@@ -191,21 +84,15 @@ static void	read_eval_print_loop(t_shelly *shelly)
 
 static void	non_interactive_mode(t_shelly *shelly)
 {
-	t_token	*tokens;
-	t_cmd_line *cmds;
 	char	*line;
 
-	set_signals_noninteractive();
+	// set_signals_noninteractive();
+	sig_mode(CHILD);
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		tokens = tokenize_input(line);
-		printf("after tok\n");
-		cmds = parse_tokens(tokens);
-		printf("after parse\n");
-		exec_loop(cmds, shelly);
 		// TODO: tokenize + expand + execute here
 		(void)shelly;
 		free(line);
