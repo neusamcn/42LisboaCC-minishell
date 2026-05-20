@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 00:53:08 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/20 13:25:42 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_token
 	t_redir_type	redir; // Valid only if type == REDIR
 	t_word_type		word; // valid only if type == WORD
 	bool			space_b4_word; // true if at least 1 space b4 word
-	int				word_xpnd; // 1 if expansion is done, -1 if failed/invalid
+	int				word_xpndd; // 1 if expansion is done, -1 if failed/invalid
 	int				index;
 	char			*value; // For WORD, filename, delimiter, etc.
 	struct s_token	*previous; // TODO: review if necessary?

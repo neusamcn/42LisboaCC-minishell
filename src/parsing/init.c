@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 01:44:41 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/20 13:25:42 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 					ft_putnbr_fd(current->index, STDOUT_FILENO);
 					ft_putstr_fd(": ", STDOUT_FILENO);
 					ft_putendl_fd(current->value, STDOUT_FILENO);
-					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
 					ft_putstr_fd("\n\n", STDOUT_FILENO);
 					current = current->next;
 				}
@@ -95,7 +95,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 					ft_putnbr_fd(current->index, STDOUT_FILENO);
 					ft_putstr_fd(": ", STDOUT_FILENO);
 					ft_putendl_fd(current->value, STDOUT_FILENO);
-					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
 					ft_putstr_fd("\n\n", STDOUT_FILENO);
 					current = current->next;
 				}
