@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 20:27:36 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/20 01:44:41 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,30 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
+				// TODO: delete tokens printer
+				ft_putstr_fd("BEFORE EXPANSION:\n", STDOUT_FILENO);
+				t_token *current = tokens;
+				while (current)
+				{
+					ft_putnbr_fd(current->index, STDOUT_FILENO);
+					ft_putstr_fd(": ", STDOUT_FILENO);
+					ft_putendl_fd(current->value, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putstr_fd("\n\n", STDOUT_FILENO);
+					current = current->next;
+				}
 				expand_params(tokens, shelly);
 				// TODO: delete tokens printer
-				while (tokens)
+				current = tokens;
+				ft_putstr_fd("AFTER EXPANSION:\n", STDOUT_FILENO);
+				while (current)
 				{
-					ft_putnbr_fd(tokens->index, STDOUT_FILENO);
+					ft_putnbr_fd(current->index, STDOUT_FILENO);
 					ft_putstr_fd(": ", STDOUT_FILENO);
-					ft_putendl_fd(tokens->value, STDOUT_FILENO);
-					tokens = tokens->next;
+					ft_putendl_fd(current->value, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putstr_fd("\n\n", STDOUT_FILENO);
+					current = current->next;
 				}
 				// TODO: tokenize + parse + execute here
 			}
