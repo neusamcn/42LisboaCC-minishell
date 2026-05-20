@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 19:28:13 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/20 16:25:13 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef enum e_token_type
 	WORD,
 	REDIR,
 	CTRL_OP
-	// ASSIGN, // VAR=value before command
 	// TK_EOF, TODO: include?
 }	t_token_type;
 
@@ -89,6 +88,7 @@ typedef struct s_token
 	t_redir_type	redir; // Valid only if type == REDIR
 	t_word_type		word; // valid only if type == WORD
 	bool			space_b4_word; // true if at least 1 space b4 word
+	int				word_xpnd; // 1 if expansion is done, -1 if failed/invalid
 	int				index;
 	char			*value; // For WORD, filename, delimiter, etc.
 	struct s_token	*previous; // TODO: review if necessary?
@@ -151,12 +151,14 @@ char			*syntax_check(char *input_str);
 /* Tokenizing utils */
 t_token			*new_tkn(t_token_type type, char *value);
 void			append_tkn(t_token **head, t_token *new_node);
-int				scan_word_end(char *s, int i);
-int				op_len(char *s);
-
+int				scan_word_end(char *input_str, int i);
+int				op_len(char *input_str);
 bool			char_is_op(char c);
 t_syntax_err	syntax_err_redir(char *input_str, int i);
 t_syntax_err	syntax_err_pipe(char *input_str, int i);
+
+/* Expansion */
+void	expand_params(t_token *tokens, t_shelly *shelly);
 
 //delete later
 t_cmd_line	*parse_tokens(t_token *tokens);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 21:02:43 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 20:24:59 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/19 17:39:24 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,9 @@ static int	add_tkn(char *input_str, int i, t_token **tokens)
 }
 
 // TODO: if (str[i] != '`' && str[i]) // 96 ==> add?
-
 t_token	*tokenize_input(char *input_str)
 {
 	t_token	*tokens;
-	t_token *tmp;
 	int		i;
 
 	tokens = NULL;
@@ -110,35 +108,9 @@ t_token	*tokenize_input(char *input_str)
 		if (!input_str[i])
 			break ;
 		i = add_tkn(input_str, i, &tokens);
-	}
-	tmp = tokens;
-	while (tmp)
-	{
-		ft_putstr_fd("TOKEN: [", 2);
-		ft_putstr_fd(tmp->value, 2);
-		ft_putstr_fd("]\n", 2);
-		tmp = tmp->next;
 	}
 	return (tokens);
 }
-
-/* t_token	*tokenize_input(char *input_str)
-{
-	t_token	*tokens;
-	int		i;
-
-	tokens = NULL;
-	i = 0;
-	while (input_str[i])
-	{
-		while (input_str[i] && ft_isspace(input_str[i]) == true)
-			i++;
-		if (!input_str[i])
-			break ;
-		i = add_tkn(input_str, i, &tokens);
-	}
-	return (tokens);
-} */
 
 
 /*

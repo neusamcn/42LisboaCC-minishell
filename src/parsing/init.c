@@ -6,40 +6,41 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 19:48:48 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/20 16:27:20 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+
+#include "../../include/parsing.h"
 #include "../../include/execution.h"
 
-static t_cmd_line *new_cmd(void)
+static t_cmd_line	*new_cmd(void)
 {
-	t_cmd_line *cmd;
+	t_cmd_line	*cmd;
 
 	cmd = ft_calloc_protec(1, sizeof(t_cmd_line));
 	cmd->prevfd = -1;
-	cmd->cmds = NULL;
-	cmd->redir = NULL;
-	cmd->next = NULL;
-	return cmd;
+	cmd->pipefd[0] = -1;
+	cmd->pipefd[1] = -1;
+	return (cmd);
 }
 
-static void add_arg(t_cmd_line *cmd, char *word)
+static void	add_arg(t_cmd_line *cmd, char *word)
 {
-	int i;
-	int len;
-	char **new;
+	int		len;
+	int		i;
+	char	**new;
 
 	if (!cmd || !word)
-		return;
+		return ;
 	len = 0;
 	if (cmd->cmds)
 		while (cmd->cmds[len])
 			len++;
 	new = malloc(sizeof(char *) * (len + 2));
 	if (!new)
-		return;
+		return ;
 	i = 0;
 	while (i < len)
 	{
@@ -52,25 +53,37 @@ static void add_arg(t_cmd_line *cmd, char *word)
 	cmd->cmds = new;
 }
 
-static void	add_redir(t_cmd_line *cmd, t_token **tokens)
+static void	add_redir(t_cmd_line *cmd, t_token **tkn)
 {
 	t_redirects	*r;
+	t_redirects	*last;
 
-	if (!cmd || !*tokens || (*tokens)->type != REDIR)
+	if (!cmd || !*tkn || (*tkn)->type != REDIR)
 		return ;
 	r = ft_calloc_protec(1, sizeof(t_redirects));
-	r->type = (*tokens)->redir;
-	*tokens = (*tokens)->next;          // move to filename
-	if (*tokens && (*tokens)->type == WORD)
+	r->fd[0] = -1;
+	r->fd[1] = -1;
+	r->xd_fd = -1;
+	r->type = (*tkn)->redir;
+	*tkn = (*tkn)->next;
+	if (*tkn && (*tkn)->type == WORD)
 	{
 		if (r->type == HEREDOC)
-			r->delimiter = ft_strdup((*tokens)->value);
+			r->delimiter = ft_strdup((*tkn)->value);
 		else
-			r->filename = ft_strdup((*tokens)->value);
-		*tokens = (*tokens)->next;      // consume the filename
+			r->filename = ft_strdup((*tkn)->value);
+		*tkn = (*tkn)->next;
 	}
-	r->next = cmd->redir;
-	cmd->redir = r;
+	// append to end of redir list (preserve order)
+	if (!cmd->redir)
+	{
+		cmd->redir = r;
+		return ;
+	}
+	last = cmd->redir;
+	while (last->next)
+		last = last->next;
+	last->next = r;
 }
 
 t_cmd_line	*parse_tokens(t_token *tokens)
@@ -80,7 +93,6 @@ t_cmd_line	*parse_tokens(t_token *tokens)
 
 	head = new_cmd();
 	cur = head;
-
 	while (tokens)
 	{
 		if (tokens->type == WORD)
@@ -91,7 +103,6 @@ t_cmd_line	*parse_tokens(t_token *tokens)
 		else if (tokens->type == REDIR)
 		{
 			add_redir(cur, &tokens);
-			continue;                   // tokens already moved inside add_redir
 		}
 		else if (tokens->type == CTRL_OP && tokens->ctrlop == PIPE)
 		{
@@ -100,9 +111,7 @@ t_cmd_line	*parse_tokens(t_token *tokens)
 			tokens = tokens->next;
 		}
 		else
-		{
 			tokens = tokens->next;
-		}
 	}
 	return (head);
 }
@@ -112,7 +121,7 @@ static char	*input_strs_join(char *input_str, char *extra_input)
 	char	*tmp;
 	char	*full_input;
 
-	tmp = ft_strjoin(input_str, " ");
+	tmp = ft_strjoin(input_str, "\n");
 	if (!tmp)
 		return (NULL);
 	full_input = ft_strjoin(tmp, extra_input);
@@ -170,16 +179,34 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
+				// TODO: delete tokens printer
+				ft_putstr_fd("BEFORE EXPANSION:\n", STDOUT_FILENO);
+				t_token *current = tokens;
+				while (current)
+				{
+					ft_putnbr_fd(current->index, STDOUT_FILENO);
+					ft_putstr_fd(": ", STDOUT_FILENO);
+					ft_putendl_fd(current->value, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putstr_fd("\n\n", STDOUT_FILENO);
+					current = current->next;
+				}
+				expand_params(tokens, shelly);
+				// TODO: delete tokens printer
+				current = tokens;
+				ft_putstr_fd("AFTER EXPANSION:\n", STDOUT_FILENO);
+				while (current)
+				{
+					ft_putnbr_fd(current->index, STDOUT_FILENO);
+					ft_putstr_fd(": ", STDOUT_FILENO);
+					ft_putendl_fd(current->value, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putstr_fd("\n\n", STDOUT_FILENO);
+					current = current->next;
+				}
+				tokens = tokenize_input(input_str);
 				cmds = parse_tokens(tokens);
 				exec_loop(cmds, shelly);
-				// TODO: delete tokens printer
-				// while (tokens)
-				// {
-				// 	ft_putnbr_fd(tokens->index, STDOUT_FILENO);
-				// 	ft_putstr_fd(": ", STDOUT_FILENO);
-				// 	ft_putendl_fd(tokens->value, STDOUT_FILENO);
-				// 	tokens = tokens->next;
-				// }
 				// TODO: tokenize + parse + execute here
 			}
 		}
@@ -192,6 +219,7 @@ static void	non_interactive_mode(t_shelly *shelly)
 	char	*line;
 	t_token	*tokens;
 	t_cmd_line	*cmds;
+
 	// set_signals_noninteractive();
 	sig_mode(CHILD);
 	while (1)

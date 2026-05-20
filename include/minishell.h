@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 18:31:10 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/20 16:16:15 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@
 /* Standard libs */
 # include <errno.h>
 # include <readline/readline.h>
-# include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
 
-extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
 
-typedef struct s_cmd_line	t_cmd_line;
+extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
 
 /* Structs & Enums */
 typedef enum e_mode
@@ -37,14 +35,6 @@ typedef enum e_mode
 	CHILD, // fork + execve
 	MNDWAIT
 }	t_mode_for_sig;
-
-typedef struct s_shelly
-{
-	char		**envp;
-	t_cmd_line	*cur_cmd;
-	int			fds_saved[2]; // put this one as -1
-	void		**malloc_ptrs;
-}	t_shelly;
 
 typedef enum e_redir_type
 {
@@ -75,6 +65,14 @@ typedef struct s_cmd_line
 	struct s_cmd_line	*next;
 }	t_cmd_line;
 
+typedef struct s_shelly
+{
+	char		**envp;
+	t_cmd_line	*cur_cmd;
+	int			fds_saved[2]; // put this one as -1
+	void		**malloc_ptrs; // TODO: delete if not used
+}	t_shelly;
+
 /* Error handling */
 void	print_err_msg(char *my_msg);
 int		mndp_exec_error(char *cmd);
@@ -88,8 +86,11 @@ void	sig_mode(int md);
 // void	sigint_prompt_handler(int signal); // currently static
 void	set_signal_stat(int value);
 // void	sigint_glob(int sig); // currently static
+// int	get_signal_stat(void); // TODO: here or in execution.h?
+// int	status_check(int status); // TODO: here or in execution.h?
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
+
 
 #endif
