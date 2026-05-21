@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h"
+
 
 /*
 SIGINT (Ctrl+C) and SIGQUIT (Ctrl+\) must be handled diff in:
@@ -58,9 +59,6 @@ sig_mode(md):
         - SIGINT and SIGQUIT ignored while parent waits for children
 */
 
-//run oing google.com and then terminate w SIGINT to check the correct way 
-static int	g_signal_stat = 0;
-
 int	get_signal_stat(void)
 {
 	return (g_signal_stat);
@@ -71,8 +69,10 @@ int	status_check(int status)
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
+	{
+		if (WCOREDUMP(status))
+			ft_putstr_fd("Quit (core dumped)\n", 2);
 		status = 128 + WTERMSIG(status);
-	else if (WCOREDUMP(status))
-		ft_putstr_fd("Quit (core dumped)\n", 2);
+	}
 	return (status);
 }

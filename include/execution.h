@@ -27,6 +27,7 @@
 # include <sys/resource.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <string.h>
 
 # define CD "cd"
 # define ECHO "echo" 
@@ -43,15 +44,15 @@ typedef enum e_builts
 	EXTRENAL
 }	t_builtins_check;
 
-// typedef struct s_export
-// {
-// 	char				*arg;
-// 	int					flag;
-// 	char				*new_var;
-// 	char				**envp;
-// 	char				**newenv;
-// 	struct s_cmd_line	*expline;
-// }	t_export;
+typedef struct s_export
+{
+	char				*arg;
+	int					flag;
+	char				*new_var;
+	char				**envp;
+	char				**newenv;
+	struct s_cmd_line	*expline;
+}	t_export;
 
 typedef struct s_cd_blt
 {
@@ -128,5 +129,8 @@ int		mycd(t_cmd_line *cd, t_shelly *shelly);
 
 /*								EXIT								*/
 int		myexit(t_cmd_line *argv, t_shelly *shelly);
+
+int		get_signal_stat(void);
+int		status_check(int status);
 
 #endif

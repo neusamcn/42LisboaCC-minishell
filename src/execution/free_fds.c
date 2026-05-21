@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   free_fds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/12 11:36:34 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:55:28 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
+
 
 void	close_fds(t_redirects *redir)
 {
@@ -41,12 +42,19 @@ void	free_redirs(t_redirects *redir)
 	}
 }
 
-void	cleanup_xd_fds(t_cmd_line *start)
+void	cleanup_xd_fds(t_cmd_line *st)
 {
-	while (start)
+	t_redirects	*r;
+
+	while (st)
 	{
-		if (start->redir->xd_fd >= 0)
-			close(start->redir->xd_fd);
-		start = start->next;
+		r = st->redir;
+		while (r)
+		{
+			if (r->xd_fd >= 0)
+				close(r->xd_fd);
+			r = r->next;
+		}
+		st = st->next;
 	}
 }

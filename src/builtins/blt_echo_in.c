@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_echo_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:22 by megi              #+#    #+#             */
-/*   Updated: 2026/05/11 18:16:22 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:36:51 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h"
+
 
 //printing msges to stdout 
 // wildcart character * to output multiple files (ike cat hello*)

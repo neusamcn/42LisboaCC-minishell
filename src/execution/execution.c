@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/18 16:59:43 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 20:08:43 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h"
+
 
 /*
     1) cmds without exec (only redirections)
@@ -68,26 +69,30 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	t_cmd_line	*tmp;
-
-	tmp = cmds; // TODO: HUH> 
+	t_cmd_line	*og;
+	t_redirects *r;
+	
+	og = cmds;
+	tmp = og;
 	while (tmp)
 	{
-		while (tmp->redir && tmp->redir->type != NONE)
+		r = tmp->redir;
+		while (r)
 		{
-			if (tmp->redir->type == HEREDOC)
-				heredoc(tmp->redir);
-			tmp->redir = tmp->redir->next;
+			if (r->type == HEREDOC)
+				heredoc(r);
+			r = r->next;
 		}
 		tmp = tmp->next;
 	}
-	if (!cmds->cmds || !cmds->cmds[0])
-		no_cmds_execution(cmds, shelly);
-	if (cmds->next == NULL && are_you_builtin(cmds) == BUILTINS)
-		lonely_blt(cmds, shelly);
-	else if (cmds->next == NULL)
-		mommy_n_father(cmds, shelly);
+	if (!og || !og->cmds || !og->cmds[0])
+		no_cmds_execution(og, shelly);
+	else if (og->next == NULL && are_you_builtin(og) == BUILTINS)
+		lonely_blt(og, shelly);
+	else if (og->next == NULL)
+		mommy_n_father(og, shelly);
 	else
-		ex_pipeline_ec(cmds, shelly);
+		ex_pipeline_ec(og, shelly);
 }
 
 int	lonely_blt(t_cmd_line *s, t_shelly *shelly)

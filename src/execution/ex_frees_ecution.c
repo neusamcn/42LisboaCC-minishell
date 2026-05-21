@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ex_frees_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/12 11:37:06 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 20:12:32 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/minishell.h"
+#include "../../include/execution.h"
+
 
 void	ft_free_split(char **arr)
 {
@@ -45,8 +47,20 @@ void	pipe_cl(t_cmd_line *pipeline)
 	{
 		close(pipeline->pipefd[1]);
 		pipeline->next->prevfd = pipeline->pipefd[0];
+		//ft_printf("pipe_cl: next->prevfd = %d\n", pipeline->next->prevfd);
 	}
 }
+/* 
+void	pipe_cl(t_cmd_line *pipeline)
+{
+	if (pipeline->prevfd != -1)
+		close(pipeline->prevfd);
+	if (pipeline->next)
+	{
+		close(pipeline->pipefd[1]);
+		pipeline->next->prevfd = pipeline->pipefd[0];
+	}
+} */
 
 void	free_cmd_line(t_cmd_line *cmd)
 {

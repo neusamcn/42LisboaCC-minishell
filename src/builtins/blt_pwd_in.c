@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_pwd_in.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:00:13 by megi              #+#    #+#             */
-/*   Updated: 2026/05/10 20:21:04 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:37:05 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../../include/execution.h"
+
 
 // searching PWD in the env variables and print 
 // ft_strcmp(PWD=) 
