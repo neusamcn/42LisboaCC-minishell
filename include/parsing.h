@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 00:26:53 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 23:08:27 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,10 +158,10 @@ t_syntax_err	syntax_err_redir(char *input_str, int i);
 t_syntax_err	syntax_err_pipe(char *input_str, int i);
 
 /* Expansion */
-void	expand_params(t_token *tokens, t_shelly *shelly);
+void			expand_params(t_token *tokens, t_shelly *shelly);
 
 /* Parser */
-t_cmd_line	*parser(t_token *tokens);
+t_cmd_line		*parser(t_token *tokens);
 
 
 #endif
