@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/21 23:10:27 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/05/21 23:13:17 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,10 +27,10 @@ EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_e
 BUILTINS_SRCS = $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
 					blt_export_in.c blt_export_utils_in.c blt_pwd_in.c blt_run_in.c blt_unset_in.c)
 UTILS_SRCS		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)
-SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(UTILS_SRCS) # $(EXECUTION_SRCS) $(BUILTINS_SRCS)
+SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(UTILS_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h) # execution.h)
+HEADERS 		= $(addprefix include/, execution.h flair.h minishell.h parsing.h)
 
 CC 				= cc
 CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
