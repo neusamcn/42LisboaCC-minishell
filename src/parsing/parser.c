@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 22:41:15 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 22:52:24 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 23:17:37 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*cpy_cmd(t_token *tkns, t_cmd_line *cmd_line)
 		if (cmd_line->cmds == NULL)
 			cmds = ft_strdup(" ");
 		else
-			cmds = ft_strjoin_free(cmd_line->cmds, " ");
+			cmds = ft_strjoin_free(*cmd_line->cmds, " ");
 		cmds = ft_strjoin_free(cmds, tkns->value);
 	}
 	else
@@ -56,7 +56,7 @@ static char	*cpy_cmd(t_token *tkns, t_cmd_line *cmd_line)
 		if (cmd_line->cmds == NULL)
 			cmds = ft_strdup(tkns->value);
 		else
-			cmds = ft_strjoin_free(cmd_line->cmds, tkns->value);
+			cmds = ft_strjoin_free(*cmd_line->cmds, tkns->value);
 	}
 	return (cmds);
 }
@@ -76,7 +76,7 @@ t_cmd_line	*parser(t_token *tokens)
 	{
 		if (curr_tkn->type != CTRL_OP)
 		{
-			curr_cmd->cmds = cpy_cmd(curr_tkn, curr_cmd);
+			*curr_cmd->cmds = cpy_cmd(curr_tkn, curr_cmd);
 			get_redir(curr_tkn, curr_cmd);
 		}
 		else if (curr_tkn->type == CTRL_OP && curr_tkn->ctrlop == PIPE)
