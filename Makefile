@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/20 00:52:05 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/05/21 00:26:12 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,9 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c ft_wrappers.c init.c prompt.c shellyenvp.c \
-					syntax_check.c syntax_utils.c tokenize.c tokenize_utils.c)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c ft_wrappers.c init.c \
+					parser.c prompt.c shellyenvp.c syntax_check.c syntax_utils.c \
+					tokenize.c tokenize_utils.c)
 # EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
 					ex_utils_ecution.c exec_utils.c execution.c free_fds.c)

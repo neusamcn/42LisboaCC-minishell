@@ -6,22 +6,22 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 19:57:22 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/20 18:13:41 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
 // TODO: remove tester:
-static void	print_envp_vars(char **envp)
-{
-	int	i = 0;
-	while (envp[i])
-	{
-		ft_printf(MAGENTA"%d"COLOR_RESET": %s\n\n", i, envp[i]);
-		i++;
-	}
-}
+// static void	print_envp_vars(char **envp)
+// {
+// 	int	i = 0;
+// 	while (envp[i])
+// 	{
+// 		ft_printf(MAGENTA"%d"COLOR_RESET": %s\n\n", i, envp[i]);
+// 		i++;
+// 	}
+// }
 
 char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 {
@@ -121,11 +121,11 @@ t_shelly	*set_shellyenvp(char **envp)
 {
 	t_shelly	*shelly;
 
-	print_envp_vars(envp); // TODO: delete tester
+	// print_envp_vars(envp); // TODO: delete tester
 	shelly = malloc_protec(sizeof(t_shelly), NULL);
 	if (!envp || !*envp)
 		return (set_minimal_shellyenvp(shelly));
 	shelly = copy_envp(envp, shelly);
-	print_envp_vars(shelly->envp); // TODO: delete tester
+	// print_envp_vars(shelly->envp); // TODO: delete tester
 	return (shelly);
 }

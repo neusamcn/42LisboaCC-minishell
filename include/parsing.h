@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 13:25:42 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 00:26:53 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char			*getcwd_protec(char *buf, size_t size, t_shelly *shelly);
 void			*malloc_protec(size_t size, t_shelly *shelly);
 void			*ft_calloc_protec(size_t nmemb, size_t size);
 
-/* Parsing functions */
+/* Prompt & envp functions */
 t_shelly		*init(char **envp);
 char			*put_prompt(t_shelly *shelly, char *prompt);
 char			*put_extra_prompt(t_shelly *shelly, char *prev_input);
@@ -159,6 +159,9 @@ t_syntax_err	syntax_err_pipe(char *input_str, int i);
 
 /* Expansion */
 void	expand_params(t_token *tokens, t_shelly *shelly);
+
+/* Parser */
+t_cmd_line	*parser(t_token *tokens);
 
 
 #endif

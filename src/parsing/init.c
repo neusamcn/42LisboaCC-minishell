@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 13:25:42 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 00:19:08 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ static char	*validate_complete_input(char *input_str, t_shelly *shelly)
 
 static void	read_eval_print_loop(t_shelly *shelly)
 {
-	char	*input_str;
-	t_token	*tokens;
+	char		*input_str;
+	t_token		*tokens;
+	t_cmd_line	*cmd_line;
 	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
 
 	// set_signals_interactive_parent();
@@ -75,31 +76,32 @@ static void	read_eval_print_loop(t_shelly *shelly)
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
 				// TODO: delete tokens printer
-				ft_putstr_fd("BEFORE EXPANSION:\n", STDOUT_FILENO);
-				t_token *current = tokens;
-				while (current)
-				{
-					ft_putnbr_fd(current->index, STDOUT_FILENO);
-					ft_putstr_fd(": ", STDOUT_FILENO);
-					ft_putendl_fd(current->value, STDOUT_FILENO);
-					ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
-					ft_putstr_fd("\n\n", STDOUT_FILENO);
-					current = current->next;
-				}
+				// ft_putstr_fd("BEFORE EXPANSION:\n", STDOUT_FILENO);
+				// t_token *current = tokens;
+				// while (current)
+				// {
+				// 	ft_putnbr_fd(current->index, STDOUT_FILENO);
+				// 	ft_putstr_fd(": ", STDOUT_FILENO);
+				// 	ft_putendl_fd(current->value, STDOUT_FILENO);
+				// 	ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
+				// 	ft_putstr_fd("\n\n", STDOUT_FILENO);
+				// 	current = current->next;
+				// }
 				expand_params(tokens, shelly);
 				// TODO: delete tokens printer
-				current = tokens;
-				ft_putstr_fd("AFTER EXPANSION:\n", STDOUT_FILENO);
-				while (current)
-				{
-					ft_putnbr_fd(current->index, STDOUT_FILENO);
-					ft_putstr_fd(": ", STDOUT_FILENO);
-					ft_putendl_fd(current->value, STDOUT_FILENO);
-					ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
-					ft_putstr_fd("\n\n", STDOUT_FILENO);
-					current = current->next;
-				}
+				// current = tokens;
+				// ft_putstr_fd("AFTER EXPANSION:\n", STDOUT_FILENO);
+				// while (current)
+				// {
+				// 	ft_putnbr_fd(current->index, STDOUT_FILENO);
+				// 	ft_putstr_fd(": ", STDOUT_FILENO);
+				// 	ft_putendl_fd(current->value, STDOUT_FILENO);
+				// 	ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
+				// 	ft_putstr_fd("\n\n", STDOUT_FILENO);
+				// 	current = current->next;
+				// }
 				// TODO: tokenize + parse + execute here
+				cmd_line = parser(tokens);
 			}
 		}
 		free(input_str);

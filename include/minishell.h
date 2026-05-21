@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 19:33:16 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 00:15:09 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,20 @@ typedef struct s_redirections
 	t_redir_type			type; // IN (<), OUT (>), APPEND (>>), HEREDOC (<<)
 	char					*filename; // Target file for <, >, >>. Usually NULL for heredoc.
 	char					*delimiter; // Used only for heredoc (<<), e.g. EOF in cat << EOF. Usually NULL for non-heredoc.
-	int						fd[2]; // TODO: Milena, I'll need to understand this better
-	int						xd_fd; // TODO: Milena, I'll need to understand this better
+	int						fd[2]; // -1
+	int						xd_fd; // -1
 	struct s_redirections	*next; // Linked list of redirections in lexical order.
 }	t_redirects;
 
+// echo -n hi "hi" 'hi' >> test.txt < a | wc -l
 typedef struct s_cmd_line
 {
-	char				**cmds;
-	t_redirects			*redir;
-	int					pipefd[2];
-	int					prevfd; // CHECK (?)
-	struct s_export		*bltn_export;
-	struct s_cmd_line	*next;
+	char				**cmds; // bltns only come here; each argv on either side of | is a node
+	t_redirects			*redir; // if not redir, choose NONE
+	int					pipefd[2]; // Neusa doesn't populate
+	int					prevfd; // CHECK (?) // Neusa doesn't populate
+	struct s_export		*bltn_export; // Neusa doesn't populate
+	struct s_cmd_line	*next; // only populate if something comes after pipe; last one is NULL
 }	t_cmd_line;
 
 typedef struct s_shelly
