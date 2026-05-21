@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 00:15:09 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 21:32:44 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_cmd_line
 	t_redirects			*redir; // if not redir, choose NONE
 	int					pipefd[2]; // Neusa doesn't populate
 	int					prevfd; // CHECK (?) // Neusa doesn't populate
-	struct s_export		*bltn_export; // Neusa doesn't populate
+	struct s_export		*bltn_export; // Neusa populates default NULL w/ calloc
 	struct s_cmd_line	*next; // only populate if something comes after pipe; last one is NULL
 }	t_cmd_line;
 

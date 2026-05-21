@@ -6,11 +6,12 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 00:19:08 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 20:45:59 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+#include "../../include/execution.h"
 
 static char	*input_strs_join(char *input_str, char *extra_input)
 {
@@ -59,9 +60,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 	char		*input_str;
 	t_token		*tokens;
 	t_cmd_line	*cmd_line;
-	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
 
-	// set_signals_interactive_parent();
 	sig_mode(INTERACTIVE);
 	while (1)
 	{
@@ -102,6 +101,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 				// }
 				// TODO: tokenize + parse + execute here
 				cmd_line = parser(tokens);
+				// exec_loop(cmd_line, shelly);
 			}
 		}
 		free(input_str);
@@ -110,17 +110,20 @@ static void	read_eval_print_loop(t_shelly *shelly)
 
 static void	non_interactive_mode(t_shelly *shelly)
 {
-	char	*line;
+	char		*line;
+	t_token		*tokens;
+	t_cmd_line	*cmd_line;
 
-	// set_signals_noninteractive();
 	sig_mode(CHILD);
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		// TODO: tokenize + expand + execute here
-		(void)shelly;
+		// TODO: test all below!
+		tokens = tokenize_input(line);
+		cmd_line = parser(tokens);
+		exec_loop(cmd_line, shelly);
 		free(line);
 	}
 }
