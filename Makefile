@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/21 00:26:12 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/05/21 23:10:27 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,10 @@ OBJ_DIR 		= obj
 PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c ft_wrappers.c init.c \
 					parser.c prompt.c shellyenvp.c syntax_check.c syntax_utils.c \
 					tokenize.c tokenize_utils.c)
-# EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
+EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
-					ex_utils_ecution.c exec_utils.c execution.c free_fds.c)
-# BUILTINS_SRCS = $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
+					ex_utils_ecution.c execution.c free_fds.c)
+BUILTINS_SRCS = $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
 					blt_export_in.c blt_export_utils_in.c blt_pwd_in.c blt_run_in.c blt_unset_in.c)
 UTILS_SRCS		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)
 SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(UTILS_SRCS) # $(EXECUTION_SRCS) $(BUILTINS_SRCS)
