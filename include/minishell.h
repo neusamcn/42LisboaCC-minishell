@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 21:32:44 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 22:59:00 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_redirections
 	struct s_redirections	*next; // Linked list of redirections in lexical order.
 }	t_redirects;
 
-// echo -n hi "hi" 'hi' >> test.txt < a | wc -l
 typedef struct s_cmd_line
 {
 	char				**cmds; // bltns only come here; each argv on either side of | is a node

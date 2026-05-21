@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 20:45:59 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 22:58:50 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 				// }
 				// TODO: tokenize + parse + execute here
 				cmd_line = parser(tokens);
-				// exec_loop(cmd_line, shelly);
+				exec_loop(cmd_line, shelly);
 			}
 		}
 		free(input_str);
