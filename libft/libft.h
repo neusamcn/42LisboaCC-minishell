@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:19:10 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 22:27:29 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/20 17:44:52 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int		ft_atoi(const char *nptr);
 int		ft_lstsize(t_list *lst);
 
 char	**ft_split(char const *s, char c);
-char	**ft_split_mult(char const *str, char *skip);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strdup(const char *s);

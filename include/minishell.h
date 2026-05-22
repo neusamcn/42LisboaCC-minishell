@@ -6,7 +6,7 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 16:16:15 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/21 21:33:08 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
-
 
 extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
 
@@ -55,12 +54,26 @@ typedef struct s_redirections
 	struct s_redirections	*next; // Linked list of redirections in lexical order.
 }	t_redirects;
 
+/* echo -n what >> | wc -l 
+
+node1.next != NULL
+cmds = echo 
+cmds = -n
+is it a next node? node1 -> null> no -> 
+
+node2 
+cmds =wc
+cmds = -l
+
+node2 -> NULL
+ */
+
 typedef struct s_cmd_line
 {
 	char				**cmds;
 	t_redirects			*redir;
 	int					pipefd[2];
-	int					prevfd; // CHECK (?)
+	int					prevfd;
 	struct s_export		*bltn_export;
 	struct s_cmd_line	*next;
 }	t_cmd_line;
@@ -91,6 +104,5 @@ void	set_signal_stat(int value);
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
-
 
 #endif

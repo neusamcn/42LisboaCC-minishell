@@ -6,12 +6,11 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:47 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/21 21:27:58 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
-
 
 // if av[1] == ".." == previous pwd or av[1] == "." ignoring signal ? retur 
 // to prompt 

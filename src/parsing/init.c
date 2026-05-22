@@ -6,115 +6,13 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 16:27:20 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/20 18:05:40 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
-#include "../../include/parsing.h"
 #include "../../include/execution.h"
 
-static t_cmd_line	*new_cmd(void)
-{
-	t_cmd_line	*cmd;
-
-	cmd = ft_calloc_protec(1, sizeof(t_cmd_line));
-	cmd->prevfd = -1;
-	cmd->pipefd[0] = -1;
-	cmd->pipefd[1] = -1;
-	return (cmd);
-}
-
-static void	add_arg(t_cmd_line *cmd, char *word)
-{
-	int		len;
-	int		i;
-	char	**new;
-
-	if (!cmd || !word)
-		return ;
-	len = 0;
-	if (cmd->cmds)
-		while (cmd->cmds[len])
-			len++;
-	new = malloc(sizeof(char *) * (len + 2));
-	if (!new)
-		return ;
-	i = 0;
-	while (i < len)
-	{
-		new[i] = cmd->cmds[i];
-		i++;
-	}
-	new[i] = ft_strdup(word);
-	new[i + 1] = NULL;
-	free(cmd->cmds);
-	cmd->cmds = new;
-}
-
-static void	add_redir(t_cmd_line *cmd, t_token **tkn)
-{
-	t_redirects	*r;
-	t_redirects	*last;
-
-	if (!cmd || !*tkn || (*tkn)->type != REDIR)
-		return ;
-	r = ft_calloc_protec(1, sizeof(t_redirects));
-	r->fd[0] = -1;
-	r->fd[1] = -1;
-	r->xd_fd = -1;
-	r->type = (*tkn)->redir;
-	*tkn = (*tkn)->next;
-	if (*tkn && (*tkn)->type == WORD)
-	{
-		if (r->type == HEREDOC)
-			r->delimiter = ft_strdup((*tkn)->value);
-		else
-			r->filename = ft_strdup((*tkn)->value);
-		*tkn = (*tkn)->next;
-	}
-	// append to end of redir list (preserve order)
-	if (!cmd->redir)
-	{
-		cmd->redir = r;
-		return ;
-	}
-	last = cmd->redir;
-	while (last->next)
-		last = last->next;
-	last->next = r;
-}
-
-t_cmd_line	*parse_tokens(t_token *tokens)
-{
-	t_cmd_line	*head;
-	t_cmd_line	*cur;
-
-	head = new_cmd();
-	cur = head;
-	while (tokens)
-	{
-		if (tokens->type == WORD)
-		{
-			add_arg(cur, tokens->value);
-			tokens = tokens->next;
-		}
-		else if (tokens->type == REDIR)
-		{
-			add_redir(cur, &tokens);
-		}
-		else if (tokens->type == CTRL_OP && tokens->ctrlop == PIPE)
-		{
-			cur->next = new_cmd();
-			cur = cur->next;
-			tokens = tokens->next;
-		}
-		else
-			tokens = tokens->next;
-	}
-	return (head);
-}
 
 static char	*input_strs_join(char *input_str, char *extra_input)
 {
@@ -162,7 +60,6 @@ static void	read_eval_print_loop(t_shelly *shelly)
 {
 	char	*input_str;
 	t_token	*tokens;
-	t_cmd_line	*cmds;
 	// char	**tokens; // ft_split(mini_av, ' ' or ft_isspace())
 
 	// set_signals_interactive_parent();
@@ -187,7 +84,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 					ft_putnbr_fd(current->index, STDOUT_FILENO);
 					ft_putstr_fd(": ", STDOUT_FILENO);
 					ft_putendl_fd(current->value, STDOUT_FILENO);
-					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
 					ft_putstr_fd("\n\n", STDOUT_FILENO);
 					current = current->next;
 				}
@@ -200,13 +97,11 @@ static void	read_eval_print_loop(t_shelly *shelly)
 					ft_putnbr_fd(current->index, STDOUT_FILENO);
 					ft_putstr_fd(": ", STDOUT_FILENO);
 					ft_putendl_fd(current->value, STDOUT_FILENO);
-					ft_putnbr_fd(current->word_xpnd, STDOUT_FILENO);
+					ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
 					ft_putstr_fd("\n\n", STDOUT_FILENO);
 					current = current->next;
 				}
-				tokens = tokenize_input(input_str);
-				cmds = parse_tokens(tokens);
-				exec_loop(cmds, shelly);
+				exec_loop(tokens, shelly);
 				// TODO: tokenize + parse + execute here
 			}
 		}
@@ -214,11 +109,12 @@ static void	read_eval_print_loop(t_shelly *shelly)
 	}
 }
 
+
 static void	non_interactive_mode(t_shelly *shelly)
 {
 	char	*line;
-	t_token	*tokens;
-	t_cmd_line	*cmds;
+	t_token *t;
+	t_cmd_line *wh;
 
 	// set_signals_noninteractive();
 	sig_mode(CHILD);
@@ -227,9 +123,9 @@ static void	non_interactive_mode(t_shelly *shelly)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		tokens = tokenize_input(line);
-		cmds = parse_tokens(tokens);
-		exec_loop(cmds, shelly);
+		t = tokenize_input(line);
+		wh = parsing_f(t);
+		exec_loop(t, shelly);
 		// TODO: tokenize + expand + execute here
 		(void)shelly;
 		free(line);

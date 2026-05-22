@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:20:34 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/19 20:02:19 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/20 13:35:49 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*ft_strjoin_free(char *s1, char *s2)
 
 	res = ft_strjoin(s1, s2);
 	free(s1);
-	free(s2);
 	return (res);
 }
 
