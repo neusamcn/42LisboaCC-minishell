@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:33:09 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:53:20 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,13 @@ void	free_redirs(t_redirects *redir)
 {
 	t_redirects	*next;
 
-	if (!redir)
-		return ;
-	if (redir->xd_fd >= 0)
-		close(redir->xd_fd);
-	redir = redir->next;
 	while (redir)
 	{
 		next = redir->next;
 		if (redir->xd_fd >= 0)
 			close(redir->xd_fd);
+		free(redir->filename);
+		free(redir->delimiter);
 		free(redir);
 		redir = next;
 	}

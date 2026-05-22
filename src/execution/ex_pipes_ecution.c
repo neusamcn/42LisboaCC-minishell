@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:36:14 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:53:48 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
 		last_st = fork_pl(pl, shelly);
 		if (last_st == -1)
 			break ;
-		if (pl->next)
+		if (pl->prevfd != -1)
+    		close(pl->prevfd);
+ 		if (pl->next)
 			pl->next->prevfd = pl->pipefd[0];
 		cmd_num++;
 		pl = pl->next;

@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:19:26 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:37:40 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,10 @@ void	heredoc(t_redirects *redir)
 		return ;
 	pid = fork();
 	if (pid == -1)
-		return ;
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+	}
 	if (pid == 0)
 		child_hd(redir, pipefd);
 	sig_mode(MNDWAIT);

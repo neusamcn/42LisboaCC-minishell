@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:37:48 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 21:14:28 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,22 @@ single_child_ex():
 static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 {
 	int			save_out;
+	t_redirects	*r;
 
 	(void)shelly->envp;
 	if (!cmds->cmds || !cmds->cmds[0])
 	{
-		save_out = dup(1);
+		save_out = dup(STDIN_FILENO);
 		if (save_out == -1)
 			return ;
-		while (cmds->redir && cmds->redir->type != NONE)
+		r = cmds->redir;
+		while (r && r->type != NONE)
 		{
-			if (cmds->redir->type == OUT || cmds->redir->type == APPEND)
-				append(cmds->redir);
-			else if (cmds->redir->type == IN)
-				in_redir(cmds->redir);
-			cmds->redir = cmds->redir->next;
+			if (r->type == OUT || r->type == APPEND)
+				append(r);
+			else if (r->type == IN)
+				in_redir(r);
+			r = r->next;
 		}
 		dup2(save_out, STDOUT_FILENO);
 		close(save_out);
@@ -151,6 +153,9 @@ int	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 		if (kid->cmds && kid->cmds[0])
 		{
 			mndp_log_err("command not found\n", kid->cmds[0]);
+			free_cmd_line(kid);
+			free(shelly);
+			//FRREEEEE EVERYTHING
 			exit(127);
 		}
 	}

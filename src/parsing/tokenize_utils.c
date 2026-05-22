@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 18:08:08 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:31:05 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,19 @@ int	op_len(char *input_str)
 		return (1);
 	return (1);
 }
+
+/* void free_tokens(t_token *tok)
+{
+    t_token *next;
+
+    while (tok)
+    {
+        next = tok->next;
+        free(tok->value);
+        free(tok);
+        tok = next;
+    }
+} */
 
 // static t_token_type	tkn_sym_type(char *input_str)
 // {

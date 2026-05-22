@@ -36,7 +36,7 @@
 # define ENV "env" 
 # define EXPORT "export"
 # define UNSET "unset" 
-# define HD "mini: warning: here-document delimited by end-of-file (wanted '"
+# define HD "mini: warning: here-document delimited by end-of-file (wanted ')"
 
 typedef enum e_builts
 {
