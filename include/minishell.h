@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 21:33:08 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/21 22:59:00 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
+
 
 extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
 
@@ -49,33 +50,19 @@ typedef struct s_redirections
 	t_redir_type			type; // IN (<), OUT (>), APPEND (>>), HEREDOC (<<)
 	char					*filename; // Target file for <, >, >>. Usually NULL for heredoc.
 	char					*delimiter; // Used only for heredoc (<<), e.g. EOF in cat << EOF. Usually NULL for non-heredoc.
-	int						fd[2]; // TODO: Milena, I'll need to understand this better
-	int						xd_fd; // TODO: Milena, I'll need to understand this better
+	int						fd[2]; // -1
+	int						xd_fd; // -1
 	struct s_redirections	*next; // Linked list of redirections in lexical order.
 }	t_redirects;
 
-/* echo -n what >> | wc -l 
-
-node1.next != NULL
-cmds = echo 
-cmds = -n
-is it a next node? node1 -> null> no -> 
-
-node2 
-cmds =wc
-cmds = -l
-
-node2 -> NULL
- */
-
 typedef struct s_cmd_line
 {
-	char				**cmds;
-	t_redirects			*redir;
-	int					pipefd[2];
-	int					prevfd;
-	struct s_export		*bltn_export;
-	struct s_cmd_line	*next;
+	char				**cmds; // bltns only come here; each argv on either side of | is a node
+	t_redirects			*redir; // if not redir, choose NONE
+	int					pipefd[2]; // Neusa doesn't populate
+	int					prevfd; // CHECK (?) // Neusa doesn't populate
+	struct s_export		*bltn_export; // Neusa populates default NULL w/ calloc
+	struct s_cmd_line	*next; // only populate if something comes after pipe; last one is NULL
 }	t_cmd_line;
 
 typedef struct s_shelly
@@ -85,6 +72,19 @@ typedef struct s_shelly
 	int			fds_saved[2]; // put this one as -1
 	void		**malloc_ptrs; // TODO: delete if not used
 }	t_shelly;
+
+typedef struct s_export
+{
+	char				*arg;
+	int					flag;
+	char				*new_var;
+	char				**envp;
+	char				**newenv;
+	struct s_cmd_line	*expline;
+}	t_export;
+
+
+
 
 /* Error handling */
 void	print_err_msg(char *my_msg);
@@ -104,5 +104,6 @@ void	set_signal_stat(int value);
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
+
 
 #endif

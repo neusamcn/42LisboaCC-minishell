@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 17:55:41 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/21 23:08:27 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 // TODO: review std libs that should be general =>> minishell.h
 /* Standard libs */
 // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
-// # include <linux/limits.h>
+# include <linux/limits.h>
 
 /* Structs */
 // TODO: create separate header?
@@ -134,7 +134,7 @@ char			*getcwd_protec(char *buf, size_t size, t_shelly *shelly);
 void			*malloc_protec(size_t size, t_shelly *shelly);
 void			*ft_calloc_protec(size_t nmemb, size_t size);
 
-/* Parsing functions */
+/* Prompt & envp functions */
 t_shelly		*init(char **envp);
 char			*put_prompt(t_shelly *shelly, char *prompt);
 char			*put_extra_prompt(t_shelly *shelly, char *prev_input);
@@ -158,7 +158,10 @@ t_syntax_err	syntax_err_redir(char *input_str, int i);
 t_syntax_err	syntax_err_pipe(char *input_str, int i);
 
 /* Expansion */
-void	expand_params(t_token *tokens, t_shelly *shelly);
+void			expand_params(t_token *tokens, t_shelly *shelly);
+
+/* Parser */
+t_cmd_line		*parser(t_token *tokens);
 
 
 #endif

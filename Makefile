@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: megi <megi@student.42.fr>                  +#+  +:+       +#+         #
+#    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/20 16:18:39 by megi             ###   ########.fr        #
+#    Updated: 2026/05/21 23:13:17 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,9 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c prompt.c shellyenvp.c \
-					syntax_check.c syntax_utils.c tokenize.c tokenize_utils.c expansion.c)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c ft_wrappers.c init.c \
+					parser.c prompt.c shellyenvp.c syntax_check.c syntax_utils.c \
+					tokenize.c tokenize_utils.c)
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
 					ex_utils_ecution.c execution.c free_fds.c)
@@ -29,17 +30,14 @@ UTILS_SRCS		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)
 SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(UTILS_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h execution.h)
+HEADERS 		= $(addprefix include/, execution.h flair.h minishell.h parsing.h)
 
 CC 				= cc
-# CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
-# CFLAGS 		= -Wall -Werror -Wextra
+CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
+CFLAGS 			= -Wall -Werror -Wextra
 LDFLAGS 		= -L$(LIBFT_DIR)
 LDLIBS 			= -lft -lreadline
 RM 				= rm -f
-
-CPPFLAGS += -I/opt/homebrew/opt/readline/include
-LDFLAGS  += -L/opt/homebrew/opt/readline/lib
 
 TEST_DIR		= test_logs
 ESC             := $(shell printf '\033')
