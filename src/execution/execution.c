@@ -6,12 +6,11 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 16:33:26 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:37:48 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
-
 
 /*
     1) cmds without exec (only redirections)
@@ -52,7 +51,6 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 		save_out = dup(1);
 		if (save_out == -1)
 			return ;
-		//redir = &cmds->redir;
 		while (cmds->redir && cmds->redir->type != NONE)
 		{
 			if (cmds->redir->type == OUT || cmds->redir->type == APPEND)
@@ -70,8 +68,8 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	t_cmd_line	*tmp;
 	t_cmd_line	*og;
-	t_redirects *r;
-	
+	t_redirects	*r;
+
 	og = cmds;
 	tmp = og;
 	while (tmp)

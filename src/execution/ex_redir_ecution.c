@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redir_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:22 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 19:19:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
-
 
 /*
 Input/output redirections && HD for a single cmd in a pipeline
@@ -20,8 +19,8 @@ its file descriptors before execution.
 A cmd may have:
 		NONE, // 0
 		IN,  // < redir input to a cmd, taking input from a file
-		OUT, // > redir output to a file, and overwrites the file if it already exists
-		APPEND, // >> redir output top a file, append the output to the end of the file
+		OUT, // > redir output to a file & overwr the file if it alreexists
+		APPEND, // >> r output top a file, app the output to the end of the f
 		HEREDOC, // <<
 They are applied BEFORE execve in child process.
 
@@ -38,7 +37,6 @@ HEREDOC processes;
         - This fd will later be used as stdin during execution
 */
 
-// true means error and false means success!
 bool	which_redir_type(t_cmd_line *cmd)
 {
 	t_redirects	*redir;

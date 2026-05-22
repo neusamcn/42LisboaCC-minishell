@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 16:13:52 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:16:09 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,21 @@ typedef struct s_export
 typedef struct s_redirections
 {
 	t_redir_type			type; // IN (<), OUT (>), APPEND (>>), HEREDOC (<<)
-	char					*filename; // Target file for <, >, >>. Usually NULL for heredoc.
-	char					*delimiter; // Used only for heredoc (<<), e.g. EOF in cat << EOF. Usually NULL for non-heredoc.
+	char					*filename; // Target file for <, >, >>.
+	char					*delimiter; //heredoc (<<), 
 	int						fd[2]; // -1
 	int						xd_fd; // -1
-	struct s_redirections	*next; // Linked list of redirections in lexical order.
+	struct s_redirections	*next; // Linked list of redirs in lexical order.
 }	t_redirects;
 
 typedef struct s_cmd_line
 {
-	char				**cmds; // bltns only come here; each argv on either side of | is a node
+	char				**cmds; // bltns only come here;
 	t_redirects			*redir; // if not redir, choose NONE
 	int					pipefd[2]; // Neusa doesn't populate
 	int					prevfd; // CHECK (?) // Neusa doesn't populate
 	struct s_export		*bltn_export; // Neusa populates default NULL w/ calloc
-	struct s_cmd_line	*next; // only populate if something comes after pipe; last one is NULL
+	struct s_cmd_line	*next; // only populate if something comes after pipe; 
 }	t_cmd_line;
 
 typedef struct s_shelly
@@ -90,16 +90,9 @@ void	syntax_err_msg(char *err_token);
 
 /* Signal handling */
 void	sig_mode(int md);
-// void	set_signals_interactive_parent(void); // TODO: remove?
-// void	set_signals_noninteractive(void); // TODO: remove?
-// void	sigint_prompt_handler(int signal); // currently static
 void	set_signal_stat(int value);
-// void	sigint_glob(int sig); // currently static
-// int	get_signal_stat(void); // TODO: here or in execution.h?
-// int	status_check(int status); // TODO: here or in execution.h?
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
-
 
 #endif

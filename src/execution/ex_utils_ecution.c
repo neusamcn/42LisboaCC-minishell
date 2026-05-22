@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ex_utils_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:29 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 19:19:53 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
-
 
 char	*abs_or_rel_p(t_cmd_line *c, t_shelly *shelly)
 {
@@ -27,18 +26,18 @@ char	*abs_or_rel_p(t_cmd_line *c, t_shelly *shelly)
 
 bool	if_redir(t_cmd_line *s)
 {
-    t_redirects	*tmp;
+	t_redirects	*tmp;
 
-    if (!s || !s->redir)
-        return (false);
-    tmp = s->redir;
-    while (tmp)
-    {
-        if (tmp->type != NONE)
-            return (true);
-        tmp = tmp->next;
-    }
-    return (false);
+	if (!s || !s->redir)
+		return (false);
+	tmp = s->redir;
+	while (tmp)
+	{
+		if (tmp->type != NONE)
+			return (true);
+		tmp = tmp->next;
+	}
+	return (false);
 }
 
 void	store_fds(int read_save, int write_save)

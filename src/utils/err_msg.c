@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 16:12:23 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:48:47 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	mndp_log_err(char *msg, char *cmd)
 
 void	syntax_err_msg(char *err_token)
 {
-	// TODO: should it output to STDERR ? use print_err_msg?
 	ft_printf("-bash shelly: syntax error near unexpected token `%s'\n",
 		err_token);
 }

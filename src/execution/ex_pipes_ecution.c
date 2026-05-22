@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 18:03:02 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:36:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ The execution starts by going through the list of cmds:
 	5. if fail: error printed, child exists with status 127
 4) parent processes: loop thru the cmd list :
 	1. close unused pipe ends && keep track of process IDs
-	2. store the PID of the last cmd (cmd->NULL), because its exist stat defines 
+	2. store the PID of the last cmd (cmd->NULL), cause its exist stat defines 
 	the final pipeline status, as required by shell behavior 
 	3. once all proc. created, parent waits for ALL child proc. && collect the
 	exit status of each proc.
@@ -54,7 +54,7 @@ static pid_t	fork_pl(t_cmd_line *pl, t_shelly *shelly)
 		child_ex(0, pl, shelly);
 	if (pl->next)
 	{
-        pl->next->prevfd = pl->pipefd[0];
+		pl->next->prevfd = pl->pipefd[0];
 		close(pl->pipefd[1]);
 	}
 	sig_mode(MNDWAIT);
@@ -76,7 +76,7 @@ int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
 	{
 		last_st = fork_pl(pl, shelly);
 		if (last_st == -1)
-			break ; // or return 1?
+			break ;
 		if (pl->next)
 			pl->next->prevfd = pl->pipefd[0];
 		cmd_num++;
@@ -98,7 +98,7 @@ int	mndwait(pid_t last_p, int cmd_nmb)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == -1)
-			break ; // or return (1)? 
+			break ;
 		if (pid == last_p)
 			last_stat = status;
 		cmd_nmb--;
@@ -125,26 +125,19 @@ void	child_ex_fds(t_cmd_line *kid)
 
 void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 {
-	//ft_putstr_fd("child_ex called\n", 2);
 	sig_mode(CHILD);
 	child_ex_fds(kid);
-	//ft_putstr_fd("after fds\n", 2);
 	if (!kid->cmds || !kid->cmds[0])
 	{
 		ft_putstr_fd("no cmds exit\n", 2);
 		exit(0);
 	}
-/* 	ft_putstr_fd("before builtin check\n", 2);
-	ft_putstr_fd(kid->cmds[0], 2);
-	ft_putstr_fd("\n", 2);
-	ft_putstr_fd("builtin check\n", 2);	 */
 	if (are_you_builtin(kid) == BUILTINS)
 	{
 		r_bltn(kid, shelly);
 		exit(get_signal_stat());
 	}
 	path = relative_path(kid, shelly);
-	//printf("path=%s cmd=%s\n", path, kid->cmds[0]); 
 	if (!path)
 	{
 		if (kid->cmds && kid->cmds[0])

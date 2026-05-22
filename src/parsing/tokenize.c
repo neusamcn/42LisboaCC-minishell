@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 21:02:43 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/19 17:39:24 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:57:37 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,8 @@ static t_token	*add_tkn_word(char *word, int len, t_token *tkns, bool space_b4)
 	return (tkns);
 }
 
-static t_token	*add_tkn_op(char *input_str, t_token *tokens)
+static void	set_op_type(char *input_str, t_token *tkn_nd, int len)
 {
-	t_token	*tkn_nd;
-	int		len;
-
-	len = op_len(input_str);
-	tkn_nd = ft_calloc_protec(1, sizeof(t_token));
 	if (len == 1 && *input_str == '|')
 	{
 		tkn_nd->type = CTRL_OP;
@@ -64,6 +59,16 @@ static t_token	*add_tkn_op(char *input_str, t_token *tokens)
 				tkn_nd->redir = HEREDOC;
 		}
 	}
+}
+
+static t_token	*add_tkn_op(char *input_str, t_token *tokens)
+{
+	t_token	*tkn_nd;
+	int		len;
+
+	len = op_len(input_str);
+	tkn_nd = ft_calloc_protec(1, sizeof(t_token));
+	set_op_type(input_str, tkn_nd, len);
 	tkn_nd->value = ft_substr(input_str, 0, len);
 	append_tkn(&tokens, tkn_nd);
 	return (tokens);
@@ -93,7 +98,6 @@ static int	add_tkn(char *input_str, int i, t_token **tokens)
 	return (i);
 }
 
-// TODO: if (str[i] != '`' && str[i]) // 96 ==> add?
 t_token	*tokenize_input(char *input_str)
 {
 	t_token	*tokens;
@@ -111,7 +115,6 @@ t_token	*tokenize_input(char *input_str)
 	}
 	return (tokens);
 }
-
 
 /*
 1) Step-by-step tokenizer algorithm

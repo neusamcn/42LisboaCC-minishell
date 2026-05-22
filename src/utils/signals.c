@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 14:07:34 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:47:13 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	set_sigaction(int signo, void (*handler)(int), int flags)
 	if (sigaction(signo, &sa, NULL) == -1)
 	{
 		print_err_msg("sigaction failed");
-		exit_cleanup(EXIT_FAILURE, NULL); // TODO: review adding *minishell
+		exit_cleanup(EXIT_FAILURE, NULL);
 	}
 }
 
@@ -79,22 +79,22 @@ If you see strange crashes, switch to flag-based approach.
 
 void	sig_mode(int md)
 {
-	if (md == INTERACTIVE) // shell waiting for a command
+	if (md == INTERACTIVE)
 	{
 		set_sigaction(SIGINT, sigint_prompt_handler, 0);
 		set_sigaction(SIGQUIT, SIG_IGN, 0);
 	}
-	else if (md == BLT_EXECUTING) // we are doing a bltn is a parent process
+	else if (md == BLT_EXECUTING)
 	{
 		set_sigaction(SIGINT, sigint_glob, 0);
 		set_sigaction(SIGQUIT, SIG_IGN, 0);
 	}
-	else if (md == CHILD) // when we are entering child process
+	else if (md == CHILD)
 	{
 		set_sigaction(SIGINT, SIG_DFL, 0);
 		set_sigaction(SIGQUIT, SIG_DFL, 0);
 	}
-	else if (md == MNDWAIT) // when a parent waits dor a ch process
+	else if (md == MNDWAIT)
 	{
 		set_sigaction(SIGINT, SIG_IGN, 0);
 		set_sigaction(SIGQUIT, SIG_IGN, 0);

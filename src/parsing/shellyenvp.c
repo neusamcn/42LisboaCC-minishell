@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shellyenvp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/20 18:13:41 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 20:08:07 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
-// TODO: remove tester:
-// static void	print_envp_vars(char **envp)
-// {
-// 	int	i = 0;
-// 	while (envp[i])
-// 	{
-// 		ft_printf(MAGENTA"%d"COLOR_RESET": %s\n\n", i, envp[i]);
-// 		i++;
-// 	}
-// }
 
 char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 {
@@ -30,10 +19,11 @@ char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 	int		i;
 
 	if (!shelly || !shelly->envp || !envp_var_key)
-		return (""); // TODO: exit_cleanup() instead ?
+		return ("");
 	search_key_len = ft_strlen(envp_var_key);
 	i = -1;
-	while ((found_envp = shelly->envp[++i]))
+	found_envp = *shelly->envp;
+	while ((found_envp[++i]))
 	{
 		if (!ft_strncmp(found_envp, envp_var_key, search_key_len)
 			&& found_envp[search_key_len] == '=')
@@ -54,7 +44,6 @@ static t_shelly	*set_minimal_shellyenvp(t_shelly *shelly)
 		exit_cleanup(EXIT_FAILURE, shelly);
 	cwd = NULL;
 	getcwd_protec(cwd, PATH_MAX, shelly);
-	// TODO: if result is nil, cwd = "\"?
 	shelly->envp[1] = ft_strjoin("PWD=", cwd);
 	if (!(shelly->envp[1]))
 		exit_cleanup(EXIT_FAILURE, shelly);
@@ -65,7 +54,6 @@ static t_shelly	*set_minimal_shellyenvp(t_shelly *shelly)
 	if (!(shelly->envp[3]))
 		exit_cleanup(EXIT_FAILURE, shelly);
 	shelly->envp[4] = NULL;
-	// TODO: set PATH, PWD, SHLVL, HOME in hashmap ?
 	return (shelly);
 }
 
@@ -121,11 +109,9 @@ t_shelly	*set_shellyenvp(char **envp)
 {
 	t_shelly	*shelly;
 
-	// print_envp_vars(envp); // TODO: delete tester
 	shelly = malloc_protec(sizeof(t_shelly), NULL);
 	if (!envp || !*envp)
 		return (set_minimal_shellyenvp(shelly));
 	shelly = copy_envp(envp, shelly);
-	// print_envp_vars(shelly->envp); // TODO: delete tester
 	return (shelly);
 }

@@ -12,7 +12,6 @@
 
 #include "../../include/execution.h"
 
-
 /*
 SIGINT (Ctrl+C) and SIGQUIT (Ctrl+\) must be handled diff in:
     - interactive prompt (waiting for input)

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free_fds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 19:55:28 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 19:33:09 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 void	close_fds(t_redirects *redir)
 {

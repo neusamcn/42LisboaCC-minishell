@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 20:49:59 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:17:08 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../include/minishell.h"
 #include "../include/parsing.h"
 
 void	exit_cleanup(int exit_status, t_shelly *shelly)
 {
 	int	i;
 
-	ft_putendl_fd("Exiting shelly...", STDOUT_FILENO);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	rl_clear_history();
 	i = 0;
 	if (shelly)
@@ -36,7 +35,6 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac != 1 || av[1])
 	{
-		// TODO: print_err_args_msg() ?
 		ft_putendl_fd("Invalid arguments to run Minishell. Try "
 			ORCHID"./minishell"COLOR_RESET" at "
 			ORCHID"dir /minishell"COLOR_RESET" root.", STDOUT_FILENO);
@@ -44,6 +42,5 @@ int	main(int ac, char **av, char **envp)
 	}
 	ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
 	shelly = init(envp);
-	// TODO: add **av/*av/av[0] as arg?
 	exit_cleanup(EXIT_SUCCESS, shelly);
 }

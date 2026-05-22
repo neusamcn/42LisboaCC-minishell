@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path_ecution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:08 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 19:41:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 
 char	*absolute_path(t_cmd_line *data)
 {
-	char	*path;
+	char		*path;
 	struct stat	sb;
 
 	if (!data || !data->cmds || !data->cmds[0])

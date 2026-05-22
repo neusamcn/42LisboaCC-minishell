@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   blt_run_in.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 21:00:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:37:07 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 19:47:52 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
-
 
 int	are_you_builtin(t_cmd_line *cmd_line)
 {

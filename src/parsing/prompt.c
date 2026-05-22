@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 00:04:41 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/18 16:14:40 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:45:08 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ char	*put_extra_prompt(t_shelly *shelly, char *prev_input)
 	{
 		free(prev_input);
 		exit_cleanup(EXIT_SUCCESS, shelly);
-		// TODO: confirm correct exit status for this case
 	}
 	return (extra_input);
 }

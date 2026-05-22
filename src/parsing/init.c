@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 17:14:50 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:49:58 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,8 @@ static char	*validate_complete_input(char *input_str, t_shelly *shelly)
 	char	*full_input;
 
 	syntax_err = syntax_check(input_str);
-/* 	while (syntax_err && (ft_strcmp(syntax_err, "incomplete") == 0
-			|| ft_strcmp(syntax_err, "'") == 0
-			|| ft_strcmp(syntax_err, "\"") == 0)) */
 	while (syntax_err && (!(ft_strcmp(syntax_err, "incomplete"))
-		|| !(ft_strcmp(syntax_err, "'")) || !(ft_strcmp(syntax_err, "\""))))
+			|| !(ft_strcmp(syntax_err, "'")) || !(ft_strcmp(syntax_err, "\""))))
 	{
 		extra_input = put_extra_prompt(shelly, input_str);
 		full_input = input_strs_join(input_str, extra_input);
@@ -98,7 +95,6 @@ static void	non_interactive_mode(t_shelly *shelly)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		// TODO: test all below!
 		tokens = tokenize_input(line);
 		cmd_line = parser(tokens);
 		exec_loop(cmd_line, shelly);
@@ -111,15 +107,9 @@ t_shelly	*init(char **envp)
 	t_shelly	*shelly;
 
 	shelly = set_shellyenvp(envp);
-	// TODO: initialise other elements of *shelly
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		read_eval_print_loop(shelly);
 	else
 		non_interactive_mode(shelly);
-		// TODO: does this mode not need shelly_envp?
-		// Read line from stdin
-		// Parse + execute
-		// Repeat until EOF
-		// Exit with proper status
 	return (shelly);
 }

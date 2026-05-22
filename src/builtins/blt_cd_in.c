@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 16:32:17 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:49:38 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ if args > 2 its an error and if arg 2 im giving it as a path and finding in
 pwd 
 (old, new)
 
-CD sjould run inside the parent proc. cuz changing dir inside a child process not affect the shell env
+CD sjould run inside the parent proc. cuz changing dir inside a child 
+process not affect the shell env
 
 mycd_args():
     Check which path cd should use.
