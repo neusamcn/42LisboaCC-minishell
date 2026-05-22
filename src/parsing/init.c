@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 22:58:50 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 17:14:50 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,11 @@ static char	*validate_complete_input(char *input_str, t_shelly *shelly)
 	char	*full_input;
 
 	syntax_err = syntax_check(input_str);
+/* 	while (syntax_err && (ft_strcmp(syntax_err, "incomplete") == 0
+			|| ft_strcmp(syntax_err, "'") == 0
+			|| ft_strcmp(syntax_err, "\"") == 0)) */
 	while (syntax_err && (!(ft_strcmp(syntax_err, "incomplete"))
-			|| !(ft_strcmp(syntax_err, "'")) || !(ft_strcmp(syntax_err, "\""))))
+		|| !(ft_strcmp(syntax_err, "'")) || !(ft_strcmp(syntax_err, "\""))))
 	{
 		extra_input = put_extra_prompt(shelly, input_str);
 		full_input = input_strs_join(input_str, extra_input);
@@ -74,32 +77,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 			{
 				add_history(input_str);
 				tokens = tokenize_input(input_str);
-				// TODO: delete tokens printer
-				// ft_putstr_fd("BEFORE EXPANSION:\n", STDOUT_FILENO);
-				// t_token *current = tokens;
-				// while (current)
-				// {
-				// 	ft_putnbr_fd(current->index, STDOUT_FILENO);
-				// 	ft_putstr_fd(": ", STDOUT_FILENO);
-				// 	ft_putendl_fd(current->value, STDOUT_FILENO);
-				// 	ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
-				// 	ft_putstr_fd("\n\n", STDOUT_FILENO);
-				// 	current = current->next;
-				// }
 				expand_params(tokens, shelly);
-				// TODO: delete tokens printer
-				// current = tokens;
-				// ft_putstr_fd("AFTER EXPANSION:\n", STDOUT_FILENO);
-				// while (current)
-				// {
-				// 	ft_putnbr_fd(current->index, STDOUT_FILENO);
-				// 	ft_putstr_fd(": ", STDOUT_FILENO);
-				// 	ft_putendl_fd(current->value, STDOUT_FILENO);
-				// 	ft_putnbr_fd(current->word_xpndd, STDOUT_FILENO);
-				// 	ft_putstr_fd("\n\n", STDOUT_FILENO);
-				// 	current = current->next;
-				// }
-				// TODO: tokenize + parse + execute here
 				cmd_line = parser(tokens);
 				exec_loop(cmd_line, shelly);
 			}

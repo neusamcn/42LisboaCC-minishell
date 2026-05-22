@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_frees_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 20:12:32 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 17:46:24 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,12 @@ int	free_path(char **paths)
 
 void	pipe_cl(t_cmd_line *pipeline)
 {
-	if (pipeline->prevfd != -1)
-		close(pipeline->prevfd);
-	if (pipeline->next)
-	{
+	if (pipeline->next && pipeline->pipefd[1] != -1)
 		close(pipeline->pipefd[1]);
-		pipeline->next->prevfd = pipeline->pipefd[0];
-		//ft_printf("pipe_cl: next->prevfd = %d\n", pipeline->next->prevfd);
-	}
+	if (pipeline->pipefd[0] != -1)
+		close(pipeline->pipefd[0]);
+	pipeline->pipefd[0] = -1;
+	pipeline->pipefd[1] = -1;
 }
 /* 
 void	pipe_cl(t_cmd_line *pipeline)

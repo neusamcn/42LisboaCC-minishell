@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
+#    By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/21 23:13:17 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/05/22 18:14:22 by megiazar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,7 +99,7 @@ test: re $(TEST_DIR)
 	@echo "Valgrind run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_out.log$(COLOR_RESET)"
 
 vsupp: re $(TEST_DIR)
-	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all -s --suppressions=$(TEST_DIR)/valg_supp_readline.supp \
+	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all -s --suppressions=$(TEST_DIR)/readline.supp \
 	--log-file=$(TEST_DIR)/valg_supp_out.log ./$(NAME)
 	@echo "Valgrind run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_sup_out.log$(COLOR_RESET)"
 

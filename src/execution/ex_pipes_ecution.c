@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 22:13:52 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 18:03:02 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ static pid_t	fork_pl(t_cmd_line *pl, t_shelly *shelly)
 		return (perror("fork"), -1);
 	if (pid == 0)
 		child_ex(0, pl, shelly);
-	pipe_cl(pl);
+	if (pl->next)
+	{
+        pl->next->prevfd = pl->pipefd[0];
+		close(pl->pipefd[1]);
+	}
 	sig_mode(MNDWAIT);
 	return (pid);
 }
@@ -72,9 +76,9 @@ int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
 	{
 		last_st = fork_pl(pl, shelly);
 		if (last_st == -1)
-			break ; // or return 1? 
-		if (pl->next && pl->pipefd[0] != -1)
-        	close(pl->pipefd[0]);
+			break ; // or return 1?
+		if (pl->next)
+			pl->next->prevfd = pl->pipefd[0];
 		cmd_num++;
 		pl = pl->next;
 	}
@@ -108,6 +112,8 @@ void	child_ex_fds(t_cmd_line *kid)
 		dup2(kid->prevfd, STDIN_FILENO);
 	if (kid->next)
 		dup2(kid->pipefd[1], STDOUT_FILENO);
+	if (which_redir_type(kid) != 0)
+		exit(1);
 	if (kid->prevfd != -1)
 		close(kid->prevfd);
 	if (kid->next)
@@ -115,32 +121,30 @@ void	child_ex_fds(t_cmd_line *kid)
 		close(kid->pipefd[0]);
 		close(kid->pipefd[1]);
 	}
-	if (which_redir_type(kid) != 0)
-		exit(1);
 }
 
 void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 {
-	ft_putstr_fd("child_ex called\n", 2);
+	//ft_putstr_fd("child_ex called\n", 2);
 	sig_mode(CHILD);
 	child_ex_fds(kid);
-	ft_putstr_fd("after fds\n", 2);
+	//ft_putstr_fd("after fds\n", 2);
 	if (!kid->cmds || !kid->cmds[0])
 	{
 		ft_putstr_fd("no cmds exit\n", 2);
 		exit(0);
 	}
-	ft_putstr_fd("before builtin check\n", 2);
+/* 	ft_putstr_fd("before builtin check\n", 2);
 	ft_putstr_fd(kid->cmds[0], 2);
 	ft_putstr_fd("\n", 2);
-	ft_putstr_fd("builtin check\n", 2);	
+	ft_putstr_fd("builtin check\n", 2);	 */
 	if (are_you_builtin(kid) == BUILTINS)
 	{
 		r_bltn(kid, shelly);
 		exit(get_signal_stat());
 	}
 	path = relative_path(kid, shelly);
-	printf("path=%s cmd=%s\n", path, kid->cmds[0]); 
+	//printf("path=%s cmd=%s\n", path, kid->cmds[0]); 
 	if (!path)
 	{
 		if (kid->cmds && kid->cmds[0])

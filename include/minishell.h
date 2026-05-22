@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 22:59:00 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 16:13:52 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
-
 
 extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
 
@@ -44,6 +43,16 @@ typedef enum e_redir_type
 	APPEND, // >> redir output to file, append output to before EOF
 	HEREDOC, // <<
 }	t_redir_type;
+
+typedef struct s_export
+{
+	char				*arg;
+	int					flag;
+	char				*new_var;
+	char				**envp;
+	char				**newenv;
+	struct s_cmd_line	*expline;
+}	t_export;
 
 typedef struct s_redirections
 {
@@ -73,23 +82,10 @@ typedef struct s_shelly
 	void		**malloc_ptrs; // TODO: delete if not used
 }	t_shelly;
 
-typedef struct s_export
-{
-	char				*arg;
-	int					flag;
-	char				*new_var;
-	char				**envp;
-	char				**newenv;
-	struct s_cmd_line	*expline;
-}	t_export;
-
-
-
-
 /* Error handling */
 void	print_err_msg(char *my_msg);
 int		mndp_exec_error(char *cmd);
-int		mndp_log_err(char *msg, char *cmd);
+void	mndp_log_err(char *msg, char *cmd);
 void	syntax_err_msg(char *err_token);
 
 /* Signal handling */
