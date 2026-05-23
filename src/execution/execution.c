@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 00:17:08 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 00:26:00 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,11 @@ void	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 
 	sig_mode(CHILD);
 	if (which_redir_type(kid) != false)
-		exit(1);
+		//exit(1);
+	{
+		free_cmd_line(kid);
+		exit_cleanup(1, shelly);
+	}
 	path = abs_or_rel_p(kid, shelly);
 	if (!path)
 	{
