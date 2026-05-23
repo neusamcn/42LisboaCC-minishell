@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 22:59:00 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/21 23:24:41 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef enum e_mode
 
 typedef enum e_redir_type
 {
-	NONE, // 0. TODO: understand why this is needded
+	NONE,
 	IN, // < redir input to a cmd, taking input from a file
 	OUT, // > redir output to file, overwrites the file if it already exists
 	APPEND, // >> redir output to file, append output to before EOF

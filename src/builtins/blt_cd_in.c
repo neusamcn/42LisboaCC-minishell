@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_in.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:47 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 16:32:17 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
-
 
 // if av[1] == ".." == previous pwd or av[1] == "." ignoring signal ? retur 
 // to prompt 
@@ -83,10 +82,10 @@ static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 			i++;
 		}
 		if (found == 0)
-			return (mndp_log_err("cd: HOME not set\n", cd->cmds[0]));
+			return (mndp_log_err("cd: HOME not set\n", cd->cmds[0]), 127);
 	}
 	else if (cd->cmds[2] != NULL)
-		return (mndp_log_err("cd; too many arguments\n", cd->cmds[0]));
+		return (mndp_log_err("cd; too many arguments\n", cd->cmds[0]), 127);
 	else
 		vars->path = cd->cmds[1];
 	return (false);
@@ -95,16 +94,16 @@ static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 static int	mycd_errors(char *path)
 {
 	if (errno == EACCES)
-		return (mndp_log_err("Permission denied\n", path));
+		return (mndp_log_err("Permission denied\n", path), 1);
 	else if (errno == ENOENT)
-		return (mndp_log_err("No such file or directory\n", path));
+		return (mndp_log_err("No such file or directory\n", path), 1);
 	else if (errno == ENOTDIR)
-		return (mndp_log_err("Not a directory\n", path));
+		return (mndp_log_err("Not a directory\n", path), 1);
 	else if (errno == ELOOP)
-		return (mndp_log_err("Too many levels of symbolic links\n", path));
+		return (mndp_log_err("Too many levels of symbolic links\n", path), 1);
 	else if (errno == ENAMETOOLONG)
-		return (mndp_log_err("File name too long\n", path));
-	return (mndp_log_err("cd; no such file or directory\n", path));
+		return (mndp_log_err("File name too long\n", path), 1);
+	return (mndp_log_err("cd; no such file or directory\n", path), 1);
 }
 
 static int	upd_pwd(t_shelly *shelly, t_cd *vars)

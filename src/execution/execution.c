@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/19 20:08:43 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/22 16:33:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 	else if (og->next == NULL && are_you_builtin(og) == BUILTINS)
 		lonely_blt(og, shelly);
 	else if (og->next == NULL)
-		mommy_n_father(og, shelly);
+		g_signal_stat = mommy_n_father(og, shelly);
 	else
 		ex_pipeline_ec(og, shelly);
 }
@@ -99,6 +99,7 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 {
 	int	read_save;
 	int	write_save;
+	int	status;
 
 	read_save = dup(STDIN_FILENO);
 	write_save = dup(STDOUT_FILENO);
@@ -116,10 +117,10 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 		return (true);
 	}
 	sig_mode(BLT_EXECUTING);
-	r_bltn(s, shelly);
+	status = r_bltn(s, shelly);
 	store_fds(read_save, write_save);
 	sig_mode(INTERACTIVE);
-	return (get_signal_stat());
+	return (set_signal_stat(status), 1);
 }
 
 int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
@@ -150,8 +151,10 @@ int	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 	if (!path)
 	{
 		if (kid->cmds && kid->cmds[0])
-			mndp_log_err("commad not found\n", kid->cmds[0]);
-		exit(127);
+		{
+			mndp_log_err("command not found\n", kid->cmds[0]);
+			exit(127);
+		}
 	}
 	execve(path, kid->cmds, shelly->envp);
 	free(path);

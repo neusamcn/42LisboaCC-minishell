@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 22:41:15 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/21 23:17:37 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:27:34 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
 {
-	if (!tkns || !cmd_line || tkns->type == CTRL_OP || tkns->ctrlop == PIPE)
+	if (!tkns || !cmd_line || tkns->type != REDIR)
 		return ;
 	cmd_line->redir = ft_calloc_protec(1, sizeof(t_redirects));
 	// TODO: Create next and link nodes?
@@ -24,12 +24,10 @@ static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
 		cmd_line->redir->fd[0] = -1;
 		cmd_line->redir->fd[1] = -1;
 		cmd_line->redir->xd_fd = -1;
-		if (tkns->redir == HEREDOC && tkns->next->type == WORD && tkns->next)
+		if (tkns->redir == HEREDOC && tkns->next && tkns->next->type == WORD)
 			cmd_line->redir->delimiter = ft_strdup(tkns->next->value);
-		else if (tkns->redir == IN && tkns->previous
-			&& tkns->previous->type == WORD)
-			cmd_line->redir->filename = ft_strdup(tkns->previous->value);
-		else if ((tkns->redir == OUT || tkns->redir == APPEND) && tkns->next)
+		else if ((tkns->redir == OUT || tkns->redir == APPEND
+				|| tkns->redir == IN) && tkns->next && tkns->next->type == WORD)
 			cmd_line->redir->filename = ft_strdup(tkns->next->value);
 	}
 	else
@@ -40,7 +38,7 @@ static char	*cpy_cmd(t_token *tkns, t_cmd_line *cmd_line)
 {
 	char	*cmds;
 
-	if (!tkns || !cmd_line || tkns->type == CTRL_OP)
+	if (!tkns || !cmd_line || tkns->type == CTRL_OP || tkns->ctrlop == PIPE)
 		return (NULL);
 	cmds = NULL;
 	if (tkns->space_b4_word == true)

@@ -44,16 +44,6 @@ typedef enum e_builts
 	EXTRENAL
 }	t_builtins_check;
 
-typedef struct s_export
-{
-	char				*arg;
-	int					flag;
-	char				*new_var;
-	char				**envp;
-	char				**newenv;
-	struct s_cmd_line	*expline;
-}	t_export;
-
 typedef struct s_cd_blt
 {
 	char	*path;

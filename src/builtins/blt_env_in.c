@@ -6,12 +6,11 @@
 /*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 18:08:07 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/19 18:36:53 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/21 21:16:48 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
-
 
 int	myenv(t_cmd_line *cmd, t_shelly *shelly)
 {
