@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/23 22:28:33 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 00:17:08 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 	return (status_check(status));
 }
 
-int	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
+void	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 {
 	char	*path;
 
@@ -154,17 +154,17 @@ int	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 	if (!path)
 	{
 		if (kid->cmds && kid->cmds[0])
-		{
 			mndp_log_err("command not found\n", kid->cmds[0]);
-			//free_cmd_line(kid);
+		free_cmd_line(kid);
 			//free(shelly);
 			//exit_cleanup(EXIT_FAILURE, shelly);
-			//exit_cleanup(127, shelly);
-			exit(127);
-		}
+		exit_cleanup(127, shelly);
+		//exit(127);
 	}
 	execve(path, kid->cmds, shelly->envp);
 	free(path);
+	free_cmd_line(kid);
 	mndp_log_err("Execution failed!\n", kid->cmds[0]);
-	exit(127);
+	//exit(127);
+	exit_cleanup(127, shelly);
 }

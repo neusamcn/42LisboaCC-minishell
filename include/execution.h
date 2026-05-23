@@ -64,7 +64,7 @@ int		lonely_blt(t_cmd_line *s, t_shelly *shelly);
 int		are_you_builtin(t_cmd_line *cmd_line);
 void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly);
 void	child_ex_fds(t_cmd_line *kid);
-int		single_child_ex(t_cmd_line *kid, t_shelly *shelly);
+void	single_child_ex(t_cmd_line *kid, t_shelly *shelly);
 int		mndwait(pid_t last_p, int cmd_nmb);
 int		ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly);
 

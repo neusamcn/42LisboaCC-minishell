@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 22:41:15 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 21:37:51 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 00:12:17 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,38 @@ static void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	return (new_ptr);
 }
 
-static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
+static void get_redir(t_token *tkns, t_cmd_line *cmd_line)
+{
+	t_redirects *new_redir;
+	t_redirects *last;
+
+	if (!tkns || !cmd_line || tkns->type != REDIR)
+		return ;
+	new_redir = ft_calloc_protec(1, sizeof(t_redirects));
+	new_redir->type = tkns->redir;
+	new_redir->fd[0] = -1;
+	new_redir->fd[1] = -1;
+	new_redir->xd_fd = -1;
+	if (tkns->redir == HEREDOC && tkns->next && tkns->next->type == WORD)
+	{
+		new_redir->heredoc_quoted = (tkns->next->word != CMD);
+		new_redir->delimiter = word_param_expansion(tkns->next->value, NULL);
+	}
+	else if ((tkns->redir == IN || tkns->redir == OUT
+		|| tkns->redir == APPEND) && tkns->next)
+		new_redir->filename = ft_strdup(tkns->next->value);
+	if (!cmd_line->redir)
+		cmd_line->redir = new_redir;
+	else
+	{
+		last = cmd_line->redir;
+		while (last->next)
+		last = last->next;
+		last->next = new_redir;
+	}
+	}
+
+/* static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
 {
 	if (!tkns || !cmd_line || tkns->type != REDIR)
 		return ;
@@ -53,7 +84,7 @@ static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
 	}
 	else
 		cmd_line->redir->type = NONE;
-}
+} */
 
 static void	cpy_cmd(t_token *tkns, t_cmd_line *cmd_line)
 {

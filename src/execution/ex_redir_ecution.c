@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/23 20:04:40 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 00:16:38 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ static void child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
 	char *expanded;
 
 	close(pipefd[0]);
-	ft_printf("delimiter: [%s] heredoc_quoted: %d\n", redir->delimiter, redir->heredoc_quoted);
 	sig_mode(CHILD);
 	while (1)
 	{
