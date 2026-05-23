@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 19:34:19 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 22:19:09 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int				op_len(char *input_str);
 bool			char_is_op(char c);
 t_syntax_err	syntax_err_redir(char *input_str, int i);
 t_syntax_err	syntax_err_pipe(char *input_str, int i);
-//void 			free_tokens(t_token *tok);
+void 			free_tokens(t_token *tkn);
 
 /* Expansion */
 void			expand_params(t_token *tokens, t_shelly *shelly);

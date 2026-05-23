@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 17:47:21 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 21:50:35 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,18 @@ int	op_len(char *input_str)
 	return (1);
 }
 
-/* void free_tokens(t_token *tok)
+void free_tokens(t_token *tkn)
 {
     t_token *next;
 
-    while (tok)
+    while (tkn)
     {
-        next = tok->next;
-        free(tok->value);
-        free(tok);
-        tok = next;
+        next = tkn->next;
+        free(tkn->value);
+        free(tkn);
+        tkn = next;
     }
-} */
+}
 
 // static t_token_type	tkn_sym_type(char *input_str)
 // {

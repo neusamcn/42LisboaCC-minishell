@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 19:17:08 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 22:27:09 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	exit_cleanup(int exit_status, t_shelly *shelly)
 {
 	int	i;
 
-	ft_putendl_fd("exit", STDOUT_FILENO);
-	rl_clear_history();
-	i = 0;
+	//ft_putendl_fd("exit", STDOUT_FILENO);
+	//rl_clear_history();
 	if (shelly)
 	{
+		i = 0;
 		while (shelly->envp[i])
 			free(shelly->envp[i++]);
 		free(shelly->envp);

@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 21:10:19 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 22:06:25 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,13 @@ static void	read_eval_print_loop(t_shelly *shelly)
 				expand_params(tokens, shelly);
 				cmd_line = parser(tokens);
 				exec_loop(cmd_line, shelly);
+				free_tokens(tokens);
 				free_cmd_line(cmd_line);
+				free(input_str);
 			}
 		}
-		free(input_str);
+		else
+			free(input_str);
 	}
 }
 
@@ -99,6 +102,8 @@ static void	non_interactive_mode(t_shelly *shelly)
 		tokens = tokenize_input(line);
 		cmd_line = parser(tokens);
 		exec_loop(cmd_line, shelly);
+		free_tokens(tokens);
+		free_cmd_line(cmd_line);
 		free(line);
 	}
 }
