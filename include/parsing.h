@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 23:25:08 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/23 19:34:19 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,17 @@ t_syntax_err	syntax_err_pipe(char *input_str, int i);
 
 /* Expansion */
 void			expand_params(t_token *tokens, t_shelly *shelly);
-
+int				cpy_norm_str(char *tkn_val, int i, char **xpndd_word);
+int				xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly);
+void			handle_in_double(char *tkn_val, int *i, char **xpndd_word,
+					t_shelly *shelly, bool *in_double);
+void			handle_in_single(char *tkn_val, int *i, char **xpndd_word,
+					bool *in_single);
+void			handle_unquoted(char *tkn_val, int *i, char **xpndd_word,
+					t_shelly *shelly, bool *in_single, bool *in_double);
+char			*word_param_expansion(char *tkn_val, t_shelly *shelly);
 /* Parser */
-t_cmd_line		*parser(t_token *tokens);
+t_cmd_line	*parser(t_token *tokens);
+
 
 #endif

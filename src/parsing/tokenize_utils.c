@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 20:31:05 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 17:47:21 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,29 @@ int	scan_word_end(char *input_str, int i)
 {
 	char	quote;
 
+	while (input_str[i] && !ft_isspace(input_str[i])
+				&& !char_is_op(input_str[i]))
+	{
+		if (input_str[i] == '\'' || input_str[i] == '"')
+		{
+			quote = input_str[i];
+			i++;
+		while (input_str[i] && input_str[i] != quote)
+			i++;
+		if (input_str[i] == quote)
+			i++;
+		}
+		else
+			i++;
+	}
+	return (i);
+}
+
+/* 
+int	scan_word_end(char *input_str, int i)
+{
+	char	quote;
+
 	if (input_str[i] == '\'' || input_str[i] == '"')
 	{
 		quote = input_str[i];
@@ -67,7 +90,7 @@ int	scan_word_end(char *input_str, int i)
 		i++;
 	}
 	return (i);
-}
+} */
 
 int	op_len(char *input_str)
 {

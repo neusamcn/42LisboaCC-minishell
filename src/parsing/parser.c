@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 22:41:15 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 20:05:23 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 20:21:31 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,13 @@ static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
 		cmd_line->redir->fd[1] = -1;
 		cmd_line->redir->xd_fd = -1;
 		if (tkns->redir == HEREDOC && tkns->next && tkns->next->type == WORD)
-			cmd_line->redir->delimiter = ft_strdup(tkns->next->value);
+		{
+			printf("hd delim raw: %s\n", tkns->next->value);
+			cmd_line->redir->heredoc_quoted = (tkns->next->word != CMD);
+			//cmd_line->redir->delimiter = ft_strdup(tkns->next->value);
+			cmd_line->redir->delimiter = word_param_expansion(tkns->next->value, NULL);
+			printf("hd delim after exp: %s\n", cmd_line->redir->delimiter);
+		}
 		else if (tkns->redir == IN && tkns->next)
 			cmd_line->redir->filename = ft_strdup(tkns->next->value);
 		else if ((tkns->redir == OUT || tkns->redir == APPEND) && tkns->next)

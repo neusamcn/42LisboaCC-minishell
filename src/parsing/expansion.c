@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/23 13:16:07 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/23 20:12:25 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ static bool	is_varkey(char *str, int i)
 	return (false);
 }
 
-static int	cpy_norm_str(char *tkn_val, int i, char **xpndd_word)
+int	cpy_norm_str(char *tkn_val, int i, char **xpndd_word)
 {
 	int		start;
 	char	*tmp;
 
 	start = i;
-	while (tkn_val[i] && is_varkey(tkn_val, i) == false)
+	while (tkn_val[i] && is_varkey(tkn_val, i) == false
+			&& tkn_val[i] != '\'' && tkn_val[i] != '"')
 		i++;
 	tmp = ft_substr(tkn_val, start, i - start);
 	*xpndd_word = ft_strjoin_free(*xpndd_word, tmp);
@@ -54,7 +55,35 @@ static int	cpy_norm_str(char *tkn_val, int i, char **xpndd_word)
 	return (i);
 }
 
-static int	xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly)
+int xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly)
+{
+	int 	start;
+	char	*envp_key;
+	char	*envp_val;
+
+	i++;
+	if (tkn_val[i] == '?' && tkn_val[i - 1] == '$')
+	{
+		envp_val = ft_itoa(g_signal_stat);
+		*xpndd_word = ft_strjoin_free(*xpndd_word, envp_val);
+		free(envp_val);
+		return (i + 1);
+	}
+	start = i;
+	while (ft_isalnum(tkn_val[i]) || tkn_val[i] == '_')  // <-- replace is_varkey with this
+		i++;
+	envp_key = ft_substr(tkn_val, start, i - start);
+	ft_printf("key extracted: [%s]\n", envp_key);  // debug
+	envp_val = find_var_shellyenvp(shelly, envp_key);
+	ft_printf("val found: [%s]\n", envp_val ? envp_val : "NULL");  // debug
+	if (!envp_val)
+		envp_val = "";
+	*xpndd_word = ft_strjoin_free(*xpndd_word, envp_val);
+	free(envp_key);
+	return (i);
+}
+
+/* static int	xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly)
 {
 	int		start;
 	char	*envp_key;
@@ -84,15 +113,17 @@ static int	xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly)
 	// ft_printf("xpndd_word envp: %s\n", *xpndd_word);
 	free(envp_key);
 	return (i);
-}
+} */
 
-static char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
+char *word_param_expansion(char *tkn_val, t_shelly *shelly)
 {
 	char	*xpndd_word;
 	int		i;
 	bool	in_single;
 	bool	in_double;
 
+	if (!tkn_val)
+		return (ft_strdup(""));
 	xpndd_word = ft_strdup("");
 	if (!xpndd_word)
 		return (NULL);
@@ -102,52 +133,67 @@ static char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 	while (tkn_val[i])
 	{
 		if (in_single)
-		{
-			if (tkn_val[i] == '\'')
-				in_single = false;
-			else
-				i = cpy_norm_str(tkn_val, i, &xpndd_word) - 1;
-		}
-		else if (tkn_val[i] == '\'')
-			in_single = true;
-		else if (tkn_val[i] == '"')
-			in_double = !in_double;
-		else if (is_varkey(tkn_val, i) == true)
-		{
-			i = xpnd_var(tkn_val, i, &xpndd_word, shelly);
-			continue ;
-		}
+			handle_in_single(tkn_val, &i, &xpndd_word, &in_single);
+		else if (in_double)
+			handle_in_double(tkn_val, &i, &xpndd_word, shelly, &in_double);
 		else
-			i = cpy_norm_str(tkn_val, i, &xpndd_word) - 1;
-		i++;
+			handle_unquoted(tkn_val, &i, &xpndd_word, shelly,
+				&in_single, &in_double);
 	}
 	return (xpndd_word);
 }
 
-void	expand_params(t_token *tokens, t_shelly *shelly)
+void expand_params(t_token *tokens, t_shelly *shelly)
 {
-	char	*xpndd_word;
+	char  *xpndd_word;
+	//t_cmd_line *cmd;
+	//t_redirects *redir;
 
-	if (!tokens || !shelly)
-		return ;
 	while (tokens)
 	{
 		if (tokens->word == CMD || tokens->word == QMARK2
 			|| tokens->word == QMARK1)
+	{
+		if (tokens->previous && tokens->previous->type == REDIR 
+				&& tokens->previous->redir == HEREDOC)
 		{
-			xpndd_word = word_param_expansion(tokens->value, shelly);
-			if (!xpndd_word)
-				tokens->word_xpndd = -1;
-			else
-			{
-				free(tokens->value);
-				tokens->value = xpndd_word;
-				tokens->word_xpndd = 1;
-			}
+			printf("eh %s\n", tokens->value);
+			tokens = tokens->next;
+			continue ;
 		}
-		tokens = tokens->next;
+		xpndd_word = word_param_expansion(tokens->value, shelly);
+		if (!xpndd_word)
+			tokens->word_xpndd = -1;
+		else
+		{
+			free(tokens->value);
+			tokens->value = xpndd_word;
+			tokens->word_xpndd = 1;
+		}
 	}
+	tokens = tokens->next;
+	}
+/* 	cmd = cmds;
+	while (cmd)
+	{
+		redir = cmd->redir;
+		while (redir)
+		{
+			if (redir->type == HEREDOC && redir->delimiter)
+			{
+				xpndd_word = word_param_expansion(redir->delimiter, shelly);
+				if (xpndd_word)
+				{
+					free(redir->delimiter);
+					redir->delimiter = xpndd_word;
+				}
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	} */
 }
+
 
 /* static char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 {

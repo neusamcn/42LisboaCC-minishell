@@ -76,7 +76,7 @@ void	store_fds(int read_save, int write_save);
 /*									REDIRECTIONs					*/
 bool	which_redir_type(t_cmd_line *cmd);
 bool	in_redir(t_redirects *redir);
-void	heredoc(t_redirects *redir);
+void	heredoc(t_redirects *redir, t_shelly *shelly);
 bool	append(t_redirects *redir);
 
 /*									FREEs							*/

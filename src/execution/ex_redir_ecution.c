@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redir_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 20:37:40 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 20:04:40 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
+#include "../../include/parsing.h"
 
 /*
 Input/output redirections && HD for a single cmd in a pipeline
@@ -100,7 +101,43 @@ bool	in_redir(t_redirects *redir)
 	return (false);
 }
 
-static void	child_hd(t_redirects *redir, int pipefd[2])
+static void child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
+{
+	char *msg;
+	char *expanded;
+
+	close(pipefd[0]);
+	ft_printf("delimiter: [%s] heredoc_quoted: %d\n", redir->delimiter, redir->heredoc_quoted);
+	sig_mode(CHILD);
+	while (1)
+	{
+		msg = readline("> ");
+		if (!msg)
+		{
+			mndp_log_err(HD, redir->delimiter);
+			ft_putstr_fd("')\n", 2);
+			break ;
+		}
+		if (ft_strcmp(msg, redir->delimiter) == 0)
+		{
+			free(msg);
+			break ;
+		}
+		if (!redir->heredoc_quoted)
+		{
+			expanded = word_param_expansion(msg, shelly);
+			free(msg);
+			msg = expanded;
+		}
+		write(pipefd[1], msg, ft_strlen(msg));
+		write(pipefd[1], "\n", 1);
+		free(msg);
+	}
+	close(pipefd[1]);
+	exit(0);
+}
+
+/* static void	child_hd(t_redirects *redir, int pipefd[2])
 {
 	char	*msg;
 
@@ -126,9 +163,9 @@ static void	child_hd(t_redirects *redir, int pipefd[2])
 	}
 	close(pipefd[1]);
 	exit(0);
-}
+} */
 
-void	heredoc(t_redirects *redir)
+void	heredoc(t_redirects *redir, t_shelly *shelly)
 {
 	pid_t	pid;
 	int		status;
@@ -143,7 +180,7 @@ void	heredoc(t_redirects *redir)
 		close(pipefd[1]);
 	}
 	if (pid == 0)
-		child_hd(redir, pipefd);
+		child_hd(redir, pipefd, shelly);
 	sig_mode(MNDWAIT);
 	waitpid(pid, &status, 0);
 	sig_mode(INTERACTIVE);

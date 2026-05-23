@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 21:14:28 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 20:07:52 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 		while (r)
 		{
 			if (r->type == HEREDOC)
-				heredoc(r);
+			{
+				printf("call hd, dm [%s]\n", r->delimiter);
+				heredoc(r, shelly);
+			}
 			r = r->next;
 		}
 		tmp = tmp->next;

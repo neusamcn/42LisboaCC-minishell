@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 19:16:09 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 18:32:11 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_redirections
 	char					*delimiter; //heredoc (<<), 
 	int						fd[2]; // -1
 	int						xd_fd; // -1
+	bool					heredoc_quoted;
 	struct s_redirections	*next; // Linked list of redirs in lexical order.
 }	t_redirects;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 20:30:52 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 21:10:19 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,8 @@ static void	read_eval_print_loop(t_shelly *shelly)
 				tokens = tokenize_input(input_str);
 				expand_params(tokens, shelly);
 				cmd_line = parser(tokens);
-				//free_tokens(tokens);
 				exec_loop(cmd_line, shelly);
-				//free_cmd_line(cmd_line);
+				free_cmd_line(cmd_line);
 			}
 		}
 		free(input_str);

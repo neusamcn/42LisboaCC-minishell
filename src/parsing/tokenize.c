@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 21:02:43 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 19:57:37 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 17:44:02 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ static t_token	*add_tkn_word(char *word, int len, t_token *tkns, bool space_b4)
 	if (!value)
 		return (tkns);
 	tkn_nd = new_tkn(WORD, value);
-	if (ft_strchr(value, '\''))
+	if (value[0] ==  '\'')
+		tkn_nd->word = QMARK1;
+	else if (value[0] == '"')
+		tkn_nd->word = QMARK2;
+/* 	if (ft_strchr(value, '\''))
 		tkn_nd->word = QMARK1;
 	else if (ft_strchr(value, '"'))
-		tkn_nd->word = QMARK2;
+		tkn_nd->word = QMARK2; */
 	else
 		tkn_nd->word = CMD;
 	tkn_nd->space_b4_word = space_b4;

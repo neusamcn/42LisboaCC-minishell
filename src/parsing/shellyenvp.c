@@ -3,16 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   shellyenvp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 20:08:07 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 18:02:12 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
+char *find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
+{
+	size_t	search_key_len;
+	int		i;
+
+	if (!shelly || !shelly->envp || !envp_var_key)
+		return (NULL);
+	search_key_len = ft_strlen(envp_var_key);
+	i = 0;
+	while (shelly->envp[i])
+	{
+		if (!ft_strncmp(shelly->envp[i], envp_var_key, search_key_len)
+			&& shelly->envp[i][search_key_len] == '=')
+			return (shelly->envp[i] + search_key_len + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+/* char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 {
 	size_t	search_key_len;
 	char	*found_envp;
@@ -30,7 +49,7 @@ char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 			return (found_envp + search_key_len + 1);
 	}
 	return ("");
-}
+} */
 
 static t_shelly	*set_minimal_shellyenvp(t_shelly *shelly)
 {
