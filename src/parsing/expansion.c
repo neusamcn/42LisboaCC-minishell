@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/23 20:12:25 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/23 21:36:16 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,72 @@ int xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly)
 		return (i + 1);
 	}
 	start = i;
-	while (ft_isalnum(tkn_val[i]) || tkn_val[i] == '_')  // <-- replace is_varkey with this
+	while (ft_isalnum(tkn_val[i]) || tkn_val[i] == '_')
 		i++;
 	envp_key = ft_substr(tkn_val, start, i - start);
-	ft_printf("key extracted: [%s]\n", envp_key);  // debug
 	envp_val = find_var_shellyenvp(shelly, envp_key);
-	ft_printf("val found: [%s]\n", envp_val ? envp_val : "NULL");  // debug
 	if (!envp_val)
 		envp_val = "";
 	*xpndd_word = ft_strjoin_free(*xpndd_word, envp_val);
 	free(envp_key);
 	return (i);
+}
+
+char *word_param_expansion(char *tkn_val, t_shelly *shelly)
+{
+	char	*xpndd_word;
+	int		i;
+	bool	in_single;
+	bool	in_double;
+
+	if (!tkn_val)
+		return (ft_strdup(""));
+	xpndd_word = ft_strdup("");
+	if (!xpndd_word)
+		return (NULL);
+	i = 0;
+	in_single = false;
+	in_double = false;
+	while (tkn_val[i])
+	{
+		if (in_single)
+			handle_in_single(tkn_val, &i, &xpndd_word, &in_single);
+		else if (in_double)
+			handle_in_double(tkn_val, &i, &xpndd_word, shelly, &in_double);
+		else
+			handle_unquoted(tkn_val, &i, &xpndd_word, shelly,
+				&in_single, &in_double);
+	}
+	return (xpndd_word);
+}
+
+void expand_params(t_token *t, t_shelly *shelly)
+{
+	char  *xpndd_word;
+
+	while (t)
+	{
+		if (t->word == CMD || t->word == QMARK2 || t->word == QMARK1)
+	{
+		if (t->previous && t->previous->type == REDIR 
+				&& t->previous->redir == HEREDOC)
+		{
+			printf("eh %s\n", t->value);
+			t = t->next;
+			continue ;
+		}
+		xpndd_word = word_param_expansion(t->value, shelly);
+		if (!xpndd_word)
+			t->word_xpndd = -1;
+		else
+		{
+			free(t->value);
+			t->value = xpndd_word;
+			t->word_xpndd = 1;
+		}
+	}
+	t = t->next;
+	}
 }
 
 /* static int	xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly)
@@ -114,86 +169,6 @@ int xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly)
 	free(envp_key);
 	return (i);
 } */
-
-char *word_param_expansion(char *tkn_val, t_shelly *shelly)
-{
-	char	*xpndd_word;
-	int		i;
-	bool	in_single;
-	bool	in_double;
-
-	if (!tkn_val)
-		return (ft_strdup(""));
-	xpndd_word = ft_strdup("");
-	if (!xpndd_word)
-		return (NULL);
-	i = 0;
-	in_single = false;
-	in_double = false;
-	while (tkn_val[i])
-	{
-		if (in_single)
-			handle_in_single(tkn_val, &i, &xpndd_word, &in_single);
-		else if (in_double)
-			handle_in_double(tkn_val, &i, &xpndd_word, shelly, &in_double);
-		else
-			handle_unquoted(tkn_val, &i, &xpndd_word, shelly,
-				&in_single, &in_double);
-	}
-	return (xpndd_word);
-}
-
-void expand_params(t_token *tokens, t_shelly *shelly)
-{
-	char  *xpndd_word;
-	//t_cmd_line *cmd;
-	//t_redirects *redir;
-
-	while (tokens)
-	{
-		if (tokens->word == CMD || tokens->word == QMARK2
-			|| tokens->word == QMARK1)
-	{
-		if (tokens->previous && tokens->previous->type == REDIR 
-				&& tokens->previous->redir == HEREDOC)
-		{
-			printf("eh %s\n", tokens->value);
-			tokens = tokens->next;
-			continue ;
-		}
-		xpndd_word = word_param_expansion(tokens->value, shelly);
-		if (!xpndd_word)
-			tokens->word_xpndd = -1;
-		else
-		{
-			free(tokens->value);
-			tokens->value = xpndd_word;
-			tokens->word_xpndd = 1;
-		}
-	}
-	tokens = tokens->next;
-	}
-/* 	cmd = cmds;
-	while (cmd)
-	{
-		redir = cmd->redir;
-		while (redir)
-		{
-			if (redir->type == HEREDOC && redir->delimiter)
-			{
-				xpndd_word = word_param_expansion(redir->delimiter, shelly);
-				if (xpndd_word)
-				{
-					free(redir->delimiter);
-					redir->delimiter = xpndd_word;
-				}
-			}
-			redir = redir->next;
-		}
-		cmd = cmd->next;
-	} */
-}
-
 
 /* static char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 {
