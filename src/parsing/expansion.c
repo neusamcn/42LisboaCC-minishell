@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/20 17:33:14 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:16:07 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,69 @@ static char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 {
 	char	*xpndd_word;
 	int		i;
+	bool	in_single;
+	bool	in_double;
+
+	xpndd_word = ft_strdup("");
+	if (!xpndd_word)
+		return (NULL);
+	i = 0;
+	in_single = false;
+	in_double = false;
+	while (tkn_val[i])
+	{
+		if (in_single)
+		{
+			if (tkn_val[i] == '\'')
+				in_single = false;
+			else
+				i = cpy_norm_str(tkn_val, i, &xpndd_word) - 1;
+		}
+		else if (tkn_val[i] == '\'')
+			in_single = true;
+		else if (tkn_val[i] == '"')
+			in_double = !in_double;
+		else if (is_varkey(tkn_val, i) == true)
+		{
+			i = xpnd_var(tkn_val, i, &xpndd_word, shelly);
+			continue ;
+		}
+		else
+			i = cpy_norm_str(tkn_val, i, &xpndd_word) - 1;
+		i++;
+	}
+	return (xpndd_word);
+}
+
+void	expand_params(t_token *tokens, t_shelly *shelly)
+{
+	char	*xpndd_word;
+
+	if (!tokens || !shelly)
+		return ;
+	while (tokens)
+	{
+		if (tokens->word == CMD || tokens->word == QMARK2
+			|| tokens->word == QMARK1)
+		{
+			xpndd_word = word_param_expansion(tokens->value, shelly);
+			if (!xpndd_word)
+				tokens->word_xpndd = -1;
+			else
+			{
+				free(tokens->value);
+				tokens->value = xpndd_word;
+				tokens->word_xpndd = 1;
+			}
+		}
+		tokens = tokens->next;
+	}
+}
+
+/* static char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
+{
+	char	*xpndd_word;
+	int		i;
 
 	xpndd_word = ft_strdup("");
 	if (!xpndd_word)
@@ -107,7 +170,8 @@ static char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 		// ft_printf("xpndd_word cpy_norm_str: %s\n", xpndd_word);
 	}
 	return (xpndd_word);
-}
+} */
+/* 
 
 void	expand_params(t_token *tokens, t_shelly *shelly)
 {
@@ -155,3 +219,4 @@ void	expand_params(t_token *tokens, t_shelly *shelly)
 		tokens = tokens->next;
 	}
 }
+ */

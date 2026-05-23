@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 20:31:17 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/22 23:25:08 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 /* Standard libs */
 // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
-# include <linux/limits.h>
+//# include <linux/limits.h>
 
 /* Structs */
 typedef struct s_syntax_err
