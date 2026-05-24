@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 05:15:35 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:00:42 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	exit_cleanup(int exit_status, t_shelly *shelly)
 {
-	int fd;
+	int	fd;
 
 	rl_clear_history();
 	fd = 3;
@@ -27,7 +27,7 @@ void	exit_cleanup(int exit_status, t_shelly *shelly)
 	}
 	if (shelly)
 	{
-		free_tokens(shelly->cur_tok);
+		free_tkn(shelly->cur_tok);
 		free_cmd_line(shelly->cur_cmd);
 		free_copyenvp(shelly);
 		free(shelly);
@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 			ORCHID"dir /minishell"COLOR_RESET" root.", STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
-	ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
+	//ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
 	shelly = init(envp);
 	exit_cleanup(EXIT_SUCCESS, shelly);
 }

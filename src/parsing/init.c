@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 05:30:43 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:01:24 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,16 @@ static void	readevalprint_input(char *input_str, t_shelly *shelly)
 	cmd_line = parser(tokens);
 	shelly->cur_cmd = cmd_line;
 	exec_loop(cmd_line, shelly);
-	free_tokens(tokens);
+	free_tkn(tokens);
 	shelly->cur_tok = NULL;
 	free_cmd_line(cmd_line);
 	shelly->cur_cmd = NULL;
 	free(input_str);
 }
 
-static void read_eval_print_loop(t_shelly *shelly)
+static void	read_eval_print_loop(t_shelly *shelly)
 {
-	char *input_str;
+	char	*input_str;
 
 	sig_mode(INTERACTIVE);
 	while (1)
@@ -91,7 +91,7 @@ static void read_eval_print_loop(t_shelly *shelly)
 				readevalprint_input(input_str, shelly);
 		}
 		else
-		free(input_str);
+			free(input_str);
 	}
 }
 
@@ -111,16 +111,37 @@ static void	non_interactive_mode(t_shelly *shelly)
 			break ;
 		tokens = tokenize_input(line);
 		shelly->cur_tok = tokens;
+		if (!tokens)
+		{
+			free(line);
+			continue ;
+		}
+		expand_params(tokens, shelly);
 		cmd_line = parser(tokens);
 		shelly->cur_cmd = cmd_line;
 		exec_loop(cmd_line, shelly);
-		free_tokens(tokens);
+		free_tkn(tokens);
 		shelly->cur_tok = NULL;
 		free_cmd_line(cmd_line);
 		shelly->cur_cmd = NULL;
 		free(line);
 	}
 }
+
+/* t_shelly	*init(char **envp)
+{
+    t_shelly	*shelly;
+
+    shelly = set_shellyenvp(envp);
+    if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+    {
+        ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
+        read_eval_print_loop(shelly);
+    }
+    else
+        non_interactive_mode(shelly);
+    return (shelly);
+} */
 
 t_shelly	*init(char **envp)
 {

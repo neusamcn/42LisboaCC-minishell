@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 05:25:05 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 12:55:31 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	cpy_norm_str(char *tkn_val, int i, char **xpndd_word)
 
 	start = i;
 	while (tkn_val[i] && is_varkey(tkn_val, i) == false
-					&& tkn_val[i] != '\'' && tkn_val[i] != '"')
+			&& tkn_val[i] != '\'' && tkn_val[i] != '"')
 		i++;
 	tmp = ft_substr(tkn_val, start, i - start);
 	*xpndd_word = ft_strjoin_free(*xpndd_word, tmp);
@@ -111,24 +111,24 @@ void	expand_params(t_token *t, t_shelly *shelly)
 	while (t)
 	{
 		if (t->word == CMD || t->word == QMARK2 || t->word == QMARK1)
-	{
-		if (t->previous && t->previous->type == REDIR 
-				&& t->previous->redir == HEREDOC)
 		{
-			printf("eh %s\n", t->value);
-			t = t->next;
-			continue ;
+			if (t->previous && t->previous->type == REDIR
+					&& t->previous->redir == HEREDOC)
+			{
+				printf("eh %s\n", t->value);
+				t = t->next;
+				continue ;
+			}
+			xpndd_word = word_param_expansion(t->value, shelly);
+			if (!xpndd_word)
+				t->word_xpndd = -1;
+			else
+			{
+				free(t->value);
+				t->value = xpndd_word;
+				t->word_xpndd = 1;
+			}
 		}
-		xpndd_word = word_param_expansion(t->value, shelly);
-		if (!xpndd_word)
-			t->word_xpndd = -1;
-		else
-		{
-			free(t->value);
-			t->value = xpndd_word;
-			t->word_xpndd = 1;
-		}
-	}
-	t = t->next;
+		t = t->next;
 	}
 }

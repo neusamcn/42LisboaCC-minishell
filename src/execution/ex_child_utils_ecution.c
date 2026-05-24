@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:13:46 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/24 05:22:53 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:02:06 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	babies_cleanup(t_shelly *shelly, char *path)
 {
 	if (path)
 		free(path);
-	free_tokens(shelly->cur_tok);
+	free_tkn(shelly->cur_tok);
 	free_copyenvp(shelly);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_utils_in.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/22 19:49:23 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 07:29:29 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 bool	exp_argv(char c, int j)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
-		|| c == '_' || (j > 0 && c >= '0' && c <= '9') || c == '=')
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
+		return (true);
+	if	(j > 0 && c >= '0' && c <= '9') 
+		return (true);
+	if (j > 0 && c == '=')
 		return (true);
 	return (false);
 }

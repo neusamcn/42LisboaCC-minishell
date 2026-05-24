@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 18:09:11 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/24 05:36:03 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 12:57:25 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	cpy_dollar_literal(char *tkn_val, int i, char **xpndd_word)
 	buf[1] = '\0';
 	buf[0] = tkn_val[i];
 	*xpndd_word = ft_strjoin_free(*xpndd_word, buf);
-		i++;
+	i++;
 	while (ft_isalnum(tkn_val[i]) || tkn_val[i] == '_'
 		|| tkn_val[i] == '?')
 	{
@@ -30,7 +30,8 @@ static int	cpy_dollar_literal(char *tkn_val, int i, char **xpndd_word)
 	return (i);
 }
 
-void	handle_in_double(char *tkn_val, int *i, t_exp_state *st, t_shelly *shelly)
+void	handle_in_double(char *tkn_val, int *i, t_exp_state *st,
+			t_shelly *shelly)
 {
 	char	buf[2];
 
@@ -38,15 +39,15 @@ void	handle_in_double(char *tkn_val, int *i, t_exp_state *st, t_shelly *shelly)
 	if (tkn_val[*i] == '"')
 		st->in_double = false;
 	else if (tkn_val[*i] == '$' && tkn_val[*i + 1]
-		&& (ft_isalnum(tkn_val[*i + 1]) || tkn_val[*i + 1] == '_'
-		|| tkn_val[*i + 1] == '?'))
+			&& (ft_isalnum(tkn_val[*i + 1]) || tkn_val[*i + 1] == '_'
+			|| tkn_val[*i + 1] == '?'))
 		{
-		if (shelly)
-			*i = xpnd_var(tkn_val, *i, st->xpndd_word, shelly);
-		else
-			*i = cpy_dollar_literal(tkn_val, *i, st->xpndd_word);
-		return ;
-	}
+			if (shelly)
+				*i = xpnd_var(tkn_val, *i, st->xpndd_word, shelly);
+			else
+				*i = cpy_dollar_literal(tkn_val, *i, st->xpndd_word);
+			return ;
+		}
 	else
 	{
 		buf[0] = tkn_val[*i];
@@ -70,14 +71,16 @@ void	handle_in_single(char *tkn_val, int *i, t_exp_state *st)
 	(*i)++;
 }
 
-void	handle_unquoted(char *tkn_val, int *i, t_exp_state *st, t_shelly *shelly)
+void	handle_unquoted(char *tkn_val, int *i, t_exp_state *st,
+			t_shelly *shelly)
 {
 	if (tkn_val[*i] == '\'')
 		return (st->in_single = true, (void)(*i)++);
 	if (tkn_val[*i] == '"')
 		return (st->in_double = true, (void)(*i)++);
 	if (tkn_val[*i] == '$' && tkn_val[*i + 1]
-		&& (ft_isalnum(tkn_val[*i + 1]) || tkn_val[*i + 1] == '_'
+		&& (ft_isalnum(tkn_val[*i + 1])
+		|| tkn_val[*i + 1] == '_'
 		|| tkn_val[*i + 1] == '?'))
 	{
 		if (shelly)

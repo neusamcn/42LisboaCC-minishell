@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 05:25:55 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 12:57:40 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	scan_word_end(char *input_str, int i)
 	char	quote;
 
 	while (input_str[i] && !ft_isspace(input_str[i])
-							&& !char_is_op(input_str[i]))
+			&& !char_is_op(input_str[i]))
 	{
 		if (input_str[i] == '\'' || input_str[i] == '"')
 		{
@@ -71,9 +71,9 @@ int	op_len(char *input_str)
 	return (1);
 }
 
-void	free_tokens(t_token *tkn)
+void	free_tkn(t_token *tkn)
 {
-	t_token *next;
+	t_token	*next;
 
 	while (tkn)
 	{

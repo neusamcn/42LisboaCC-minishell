@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/24 05:23:45 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 12:17:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ void	write_hd_line(char *msg, int fd, t_shelly *shelly, bool quoted)
 
 	line = msg;
 	if (!quoted)
-	line = word_param_expansion(msg, shelly);
+		line = word_param_expansion(msg, shelly);
 	write(fd, line, ft_strlen(line));
 	write(fd, "\n", 1);
 	if (!quoted)
-	free(line);
+		free(line);
 	free(msg);
 }
 
@@ -76,7 +76,7 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 	pid_t	pid;
 	int		status;
 	int		pipefd[2];
-	
+
 	if (pipe(pipefd) == -1)
 		return ;
 	pid = fork();
@@ -86,7 +86,7 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 		close(pipefd[1]);
 	}
 	if (pid == 0)
-	child_hd(redir, pipefd, shelly);
+		child_hd(redir, pipefd, shelly);
 	sig_mode(MNDWAIT);
 	waitpid(pid, &status, 0);
 	sig_mode(INTERACTIVE);

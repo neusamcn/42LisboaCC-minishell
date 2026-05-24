@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 05:45:54 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 11:43:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 int	myexport(t_cmd_line *exp, t_shelly *shelly)
 {
 	int			i;
-	int			exported;
+	int			f_exported;
+	int			oops_error;
 	t_export	ex;
 
 	if (exp->cmds[1] == NULL)
@@ -29,19 +30,22 @@ int	myexport(t_cmd_line *exp, t_shelly *shelly)
 		return (0);
 	}
 	i = 1;
+	oops_error = 0;
 	while (exp->cmds[i])
 	{
-		exported = parse_exp_arg(exp->cmds[i]);
-		if (exported != -1)
+		f_exported = parse_exp_arg(exp->cmds[i]);
+		if (f_exported != -1)
+			oops_error = 1;
+		else
 		{
 			ex.arg = exp->cmds[i];
-			ex.flag = exported;
+			ex.flag = f_exported;
 			ex.envp = shelly->envp;
 			shelly->envp = exp_flag(&ex);
 		}
 		i++;
 	}
-	return (false);
+	return (oops_error);
 }
 
 int	parse_exp_arg(char *arg)
@@ -68,46 +72,46 @@ int	parse_exp_arg(char *arg)
 char	**exp_flag(t_export *exp)
 {
 	char	*eq;
-	char	*key;
-	char	*value;
+	char	*k;
+	char	*v;
 
 	if (exp->flag == 0)
 	{
 		eq = ft_strchr(exp->arg, '=');
-		key = ft_substr(exp->arg, 0, eq - exp->arg);
-		value = eq + 1;
-		exp->envp = exp_minienv(exp, key, value, -1);
-		free(key);
+		k = ft_substr(exp->arg, 0, eq - exp->arg);
+		v = eq + 1;
+		exp->envp = exp_minienv(exp, k, v, -1);
+		free(k);
 	}
 	else if (exp->flag == 1)
 		exp->envp = exp_var(exp, exp->arg);
 	return (exp->envp);
 }
 
-char	**exp_var(t_export *mini, char *key)
+char	**exp_var(t_export *mini, char *k)
 {
 	int	i;
 
 	i = 0;
 	while (mini->envp[i])
 	{
-		if (ft_strncmp(mini->envp[i], key, ft_strlen(key)) == 0
-			&& mini->envp[i][ft_strlen(key)] == '=')
+		if (ft_strncmp(mini->envp[i], k, ft_strlen(k)) == 0
+			&& mini->envp[i][ft_strlen(k)] == '=')
 			return (mini->envp);
 		i++;
 	}
-	return (exp_minienv(mini, key, NULL, -1));
+	return (exp_minienv(mini, k, NULL, -1));
 }
 
-char	**exp_minienv(t_export *mini, char *key, char *value, int i)
+char	**exp_minienv(t_export *mini, char *k, char *v, int i)
 {
-	mini->new_var = ft_strjoin(key, "=");
-	if (value)
-		mini->new_var = ft_strjoin_free(mini->new_var, value);
+	mini->new_var = ft_strjoin(k, "=");
+	if (v)
+		mini->new_var = ft_strjoin_free(mini->new_var, v);
 	while (mini->envp[++i])
 	{
-		if (ft_strncmp(mini->envp[i], key, ft_strlen(key)) == 0
-			&& mini->envp[i][ft_strlen(key)] == '=')
+		if (ft_strncmp(mini->envp[i], k, ft_strlen(k)) == 0
+			&& mini->envp[i][ft_strlen(k)] == '=')
 		{
 			free(mini->envp[i]);
 			mini->envp[i] = mini->new_var;

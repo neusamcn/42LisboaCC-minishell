@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 05:17:03 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 12:15:46 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 	if (!cmds || !cmds->cmds || !cmds->cmds[0])
 		no_cmds_execution(cmds, shelly);
 	else if (cmds->next == NULL && are_you_builtin(cmds) == BUILTINS)
-		lonely_blt(cmds, shelly);
+		g_signal_stat = lonely_blt(cmds, shelly);
 	else if (cmds->next == NULL)
 		g_signal_stat = mommy_n_father(cmds, shelly);
 	else
@@ -104,7 +104,9 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 	status = r_bltn(s, shelly);
 	store_fds(read_save, write_save);
 	sig_mode(INTERACTIVE);
-	return (set_signal_stat(status), 1);
+	set_signal_stat(status);
+	return (status);
+	//return (set_signal_stat(status), 1);
 }
 
 int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
@@ -124,7 +126,7 @@ int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 	return (status_check(status));
 }
 
-void single_child_ex(t_cmd_line *kid, t_shelly *shelly)
+void	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 {
 	char	*path;
 	char	**envp;
