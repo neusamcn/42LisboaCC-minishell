@@ -6,14 +6,14 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 22:14:59 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/24 22:21:53 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 #include "../../include/execution.h"
 
-// DELETE TESTER
+// DELETE TESTERS
 void	print_tkns(t_token *tkn)
 {
 	t_token	*curr_tkn = tkn;
