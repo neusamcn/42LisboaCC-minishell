@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 12:55:31 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 19:06:41 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,21 @@ char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 	return (*st.xpndd_word);
 }
 
+static void	rm_empty_xpnsn(t_token *tkn)
+{
+	t_token	*prev;
+	t_token	*next;
+
+	if (tkn->value[0] != 0 || tkn->word_xpndd != 1)
+		return ;
+	next = tkn->next;
+	prev = tkn->previous;
+	prev->next = next;
+	next->previous = prev;
+	free(tkn->value);
+	free(tkn);
+}
+
 void	expand_params(t_token *t, t_shelly *shelly)
 {
 	char	*xpndd_word;
@@ -115,13 +130,14 @@ void	expand_params(t_token *t, t_shelly *shelly)
 			if (t->previous && t->previous->type == REDIR
 					&& t->previous->redir == HEREDOC)
 			{
-				printf("eh %s\n", t->value);
 				t = t->next;
 				continue ;
 			}
 			xpndd_word = word_param_expansion(t->value, shelly);
 			if (!xpndd_word)
 				t->word_xpndd = -1;
+			else if (t->value[0] == 0)
+				rm_empty_xpnsn(t);
 			else
 			{
 				free(t->value);

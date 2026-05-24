@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/24 04:27:26 by megiazar         ###   ########.fr        #
+#    Updated: 2026/05/24 16:48:36 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c epansion_utils.c ft_wrappers.c init.c \
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c expansion_utils.c ft_wrappers.c init.c \
 					parser.c prompt.c shellyenvp.c syntax_check.c syntax_utils.c \
 					tokenize.c tokenize_utils.c)
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
