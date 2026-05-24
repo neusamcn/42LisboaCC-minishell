@@ -6,11 +6,29 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 18:09:11 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/24 05:20:30 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:36:03 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+
+static int	cpy_dollar_literal(char *tkn_val, int i, char **xpndd_word)
+{
+	char	buf[2];
+
+	buf[1] = '\0';
+	buf[0] = tkn_val[i];
+	*xpndd_word = ft_strjoin_free(*xpndd_word, buf);
+		i++;
+	while (ft_isalnum(tkn_val[i]) || tkn_val[i] == '_'
+		|| tkn_val[i] == '?')
+	{
+		buf[0] = tkn_val[i];
+		*xpndd_word = ft_strjoin_free(*xpndd_word, buf);
+		i++;
+	}
+	return (i);
+}
 
 void	handle_in_double(char *tkn_val, int *i, t_exp_state *st, t_shelly *shelly)
 {
