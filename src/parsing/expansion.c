@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 19:06:41 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/24 22:15:31 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,31 +104,44 @@ char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 	return (*st.xpndd_word);
 }
 
-static void	rm_empty_xpnsn(t_token *tkn)
+static t_token	*rm_empty_xpnsn(t_token *tkn)
 {
-	t_token	*prev;
 	t_token	*next;
+	t_token	*curr;
 
-	if (tkn->value[0] != 0 || tkn->word_xpndd != 1)
-		return ;
+	if (!tkn)
+		return (NULL);
 	next = tkn->next;
-	prev = tkn->previous;
-	prev->next = next;
-	next->previous = prev;
+	curr = next;
+	while (curr)
+	{
+		curr->index -= 1;
+		curr = curr->next;
+	}
+	if (tkn->previous)
+		tkn->previous->next = tkn->next;
+	if (tkn->next && tkn->previous)
+		tkn->next->previous = tkn->previous;
 	free(tkn->value);
 	free(tkn);
+	tkn = NULL;
+	return (next);
 }
 
-void	expand_params(t_token *t, t_shelly *shelly)
+t_token	*expand_params(t_token *tokens, t_shelly *shelly)
 {
 	char	*xpndd_word;
+	t_token	*t;
+	t_token	*head;
 
+	t = tokens;
+	head = tokens;
 	while (t)
 	{
 		if (t->word == CMD || t->word == QMARK2 || t->word == QMARK1)
 		{
 			if (t->previous && t->previous->type == REDIR
-					&& t->previous->redir == HEREDOC)
+				&& t->previous->redir == HEREDOC)
 			{
 				t = t->next;
 				continue ;
@@ -136,8 +149,14 @@ void	expand_params(t_token *t, t_shelly *shelly)
 			xpndd_word = word_param_expansion(t->value, shelly);
 			if (!xpndd_word)
 				t->word_xpndd = -1;
-			else if (t->value[0] == 0)
-				rm_empty_xpnsn(t);
+			else if (xpndd_word[0] == 0 && t->next)
+			{
+				free(xpndd_word);
+				if (head == t)
+					head = t->next;
+				t = rm_empty_xpnsn(t);
+				continue ;
+			}
 			else
 			{
 				free(t->value);
@@ -147,4 +166,5 @@ void	expand_params(t_token *t, t_shelly *shelly)
 		}
 		t = t->next;
 	}
+	return (head);
 }

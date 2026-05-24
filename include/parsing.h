@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 18:08:10 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/24 22:04:20 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_syntax_err	syntax_err_pipe(char *input_str, int i);
 void			free_tkn(t_token *tkn);
 
 /* Expansion */
-void			expand_params(t_token *tokens, t_shelly *shelly);
+t_token			*expand_params(t_token *tokens, t_shelly *shelly);
 int				cpy_norm_str(char *tkn_val, int i, char **xpndd_word);
 int				xpnd_var(char *tkn_val, int i, char **xpndd_word,
 					t_shelly *shelly);

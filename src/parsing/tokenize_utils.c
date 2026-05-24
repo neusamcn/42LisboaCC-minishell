@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 18:33:50 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/24 22:04:54 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	scan_word_end(char *input_str, int i)
 	char	quote;
 
 	while (input_str[i] && !ft_isspace(input_str[i])
-			&& !char_is_op(input_str[i]))
+		&& !char_is_op(input_str[i]))
 	{
 		if (input_str[i] == '\'' || input_str[i] == '"')
 		{

@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 18:30:37 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/24 22:14:59 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,14 @@ static void	readevalprint_input(char *input_str, t_shelly *shelly)
 	add_history(input_str);
 	tokens = tokenize_input(input_str);
 	// DELETE TESTER
-	print_tkns(tokens);
+	// print_tkns(tokens);
 	shelly->cur_tok = tokens;
-	expand_params(tokens, shelly);
+	tokens = expand_params(tokens, shelly);
 	// DELETE TESTER
-	print_tkns(tokens);
+	// print_tkns(tokens);
 	cmd_line = parser(tokens);
 	// DELETE TESTER
-	print_cmdline(cmd_line);
+	// print_cmdline(cmd_line);
 	shelly->cur_cmd = cmd_line;
 	exec_loop(cmd_line, shelly);
 	free_tkn(tokens);
@@ -182,7 +182,7 @@ static void	non_interactive_mode(t_shelly *shelly)
 			free(line);
 			continue ;
 		}
-		expand_params(tokens, shelly);
+		tokens = expand_params(tokens, shelly);
 		cmd_line = parser(tokens);
 		shelly->cur_cmd = cmd_line;
 		exec_loop(cmd_line, shelly);

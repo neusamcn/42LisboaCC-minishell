@@ -6,7 +6,7 @@
 #    By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/24 16:48:36 by ncruz-ne         ###   ########.fr        #
+#    Updated: 2026/05/24 21:22:53 by ncruz-ne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ HEADERS 		= $(addprefix include/, execution.h flair.h minishell.h parsing.h)
 
 CC 				= cc
 CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
-CFLAGS 			= -Wall -Werror -Wextra
+CFLAGS 			= -Wall -Werror -Wextra -g
 LDFLAGS 		= -L$(LIBFT_DIR)
 LDLIBS 			= -lft -lreadline
 RM 				= rm -f

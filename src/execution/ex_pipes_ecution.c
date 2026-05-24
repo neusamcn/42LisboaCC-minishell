@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 05:22:30 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 20:39:25 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 {
 	sig_mode(CHILD);
 	path = NULL;
+	(void)path; // Milena, I added this to be able to compile
 	child_ex_fds(kid, shelly);
 	if (!kid->cmds || !kid->cmds[0])
 	{
