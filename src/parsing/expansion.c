@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 12:55:31 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 16:40:21 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ void	expand_params(t_token *t, t_shelly *shelly)
 			if (t->previous && t->previous->type == REDIR
 					&& t->previous->redir == HEREDOC)
 			{
-				printf("eh %s\n", t->value);
 				t = t->next;
 				continue ;
 			}
