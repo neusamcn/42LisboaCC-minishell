@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_unset_in.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:47:50 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 17:23:47 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 // unset is a builtins that deletes a variable (any var, even the one, you set 
 // using an export)
+
+//TODO: i need to connect nodes to each other
 
 static void	rm(t_shelly *shelly, char *name)
 {

@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 05:22:30 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 18:25:20 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ static void	child_ex_execve(t_cmd_line *kid, t_shelly *shelly)
 	babies_cleanup(shelly, NULL);
 	free(shelly);
 	execve(path, argv, envp);
-	mndp_log_err("execution failed!\n", argv[0]);
+	mndp_log_err("execution failed!", argv[0]);
 	exit(127);
 }
 

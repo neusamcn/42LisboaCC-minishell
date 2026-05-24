@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 13:00:42 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 18:07:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 
 void	exit_cleanup(int exit_status, t_shelly *shelly)
 {
-	int	fd;
+	// int	fd;
 
 	rl_clear_history();
-	fd = 3;
-	while (fd < 10)
-	{
-		if (fcntl(fd, F_GETFD) != -1)
-			close(fd);
-		fd++;
-	}
+	// fd = 3;
+	// while (fd < 10)
+	// {
+	// 	if (fcntl(fd, F_GETFD) != -1)
+	// 		close(fd);
+	// 	fd++;
+	// }
 	if (shelly)
 	{
 		free_tkn(shelly->cur_tok);

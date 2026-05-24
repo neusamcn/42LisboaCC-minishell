@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 13:09:49 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 18:24:42 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	parse_exp_arg(char *arg)
 		c = arg[j];
 		if (!exp_argv(c, j))
 		{
-			mndp_log_err("not valid in this context\n", arg);
+			mndp_log_err("not valid in this context", arg);
 			return (-1);
 		}
 		if (c == '=')

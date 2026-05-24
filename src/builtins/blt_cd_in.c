@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 04:36:44 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 18:24:54 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 			i++;
 		}
 		if (found == 0)
-			return (mndp_log_err("cd: HOME not set\n", cd->cmds[0]), 127);
+			return (mndp_log_err("cd: HOME not set", cd->cmds[0]), 127);
 	}
 	else if (cd->cmds[2] != NULL)
-		return (mndp_log_err("cd; too many arguments\n", cd->cmds[0]), 127);
+		return (mndp_log_err("cd; too many arguments", cd->cmds[0]), 127);
 	else
 		vars->path = cd->cmds[1];
 	return (false);
