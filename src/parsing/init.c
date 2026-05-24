@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 22:06:25 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:30:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,28 @@ static char	*validate_complete_input(char *input_str, t_shelly *shelly)
 	return (input_str);
 }
 
-static void	read_eval_print_loop(t_shelly *shelly)
+static void	readevalprint_input(char *input_str, t_shelly *shelly)
 {
-	char		*input_str;
 	t_token		*tokens;
 	t_cmd_line	*cmd_line;
+
+	add_history(input_str);
+	tokens = tokenize_input(input_str);
+	shelly->cur_tok = tokens;
+	expand_params(tokens, shelly);
+	cmd_line = parser(tokens);
+	shelly->cur_cmd = cmd_line;
+	exec_loop(cmd_line, shelly);
+	free_tokens(tokens);
+	shelly->cur_tok = NULL;
+	free_cmd_line(cmd_line);
+	shelly->cur_cmd = NULL;
+	free(input_str);
+}
+
+static void read_eval_print_loop(t_shelly *shelly)
+{
+	char *input_str;
 
 	sig_mode(INTERACTIVE);
 	while (1)
@@ -71,19 +88,10 @@ static void	read_eval_print_loop(t_shelly *shelly)
 		{
 			input_str = validate_complete_input(input_str, shelly);
 			if (input_str)
-			{
-				add_history(input_str);
-				tokens = tokenize_input(input_str);
-				expand_params(tokens, shelly);
-				cmd_line = parser(tokens);
-				exec_loop(cmd_line, shelly);
-				free_tokens(tokens);
-				free_cmd_line(cmd_line);
-				free(input_str);
-			}
+				readevalprint_input(input_str, shelly);
 		}
 		else
-			free(input_str);
+		free(input_str);
 	}
 }
 
@@ -96,14 +104,20 @@ static void	non_interactive_mode(t_shelly *shelly)
 	sig_mode(CHILD);
 	while (1)
 	{
+		tokens = NULL;
+		cmd_line = NULL;
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
 		tokens = tokenize_input(line);
+		shelly->cur_tok = tokens;
 		cmd_line = parser(tokens);
+		shelly->cur_cmd = cmd_line;
 		exec_loop(cmd_line, shelly);
 		free_tokens(tokens);
+		shelly->cur_tok = NULL;
 		free_cmd_line(cmd_line);
+		shelly->cur_cmd = NULL;
 		free(line);
 	}
 }

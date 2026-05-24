@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 00:16:38 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:16:31 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,91 +99,4 @@ bool	in_redir(t_redirects *redir)
 		return (true);
 	close(redir->fd[0]);
 	return (false);
-}
-
-static void child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
-{
-	char *msg;
-	char *expanded;
-
-	close(pipefd[0]);
-	sig_mode(CHILD);
-	while (1)
-	{
-		msg = readline("> ");
-		if (!msg)
-		{
-			mndp_log_err(HD, redir->delimiter);
-			ft_putstr_fd("')\n", 2);
-			break ;
-		}
-		if (ft_strcmp(msg, redir->delimiter) == 0)
-		{
-			free(msg);
-			break ;
-		}
-		if (!redir->heredoc_quoted)
-		{
-			expanded = word_param_expansion(msg, shelly);
-			free(msg);
-			msg = expanded;
-		}
-		write(pipefd[1], msg, ft_strlen(msg));
-		write(pipefd[1], "\n", 1);
-		free(msg);
-	}
-	close(pipefd[1]);
-	exit(0);
-}
-
-/* static void	child_hd(t_redirects *redir, int pipefd[2])
-{
-	char	*msg;
-
-	close(pipefd[0]);
-	sig_mode(CHILD);
-	while (1)
-	{
-		msg = readline("> ");
-		if (!msg)
-		{
-			mndp_log_err(HD, redir->delimiter);
-			ft_putstr_fd("')\n", 2);
-			break ;
-		}
-		if (ft_strcmp(msg, redir->delimiter) == 0)
-		{
-			free(msg);
-			break ;
-		}
-		write(pipefd[1], msg, ft_strlen(msg));
-		write(pipefd[1], "\n", 1);
-		free(msg);
-	}
-	close(pipefd[1]);
-	exit(0);
-} */
-
-void	heredoc(t_redirects *redir, t_shelly *shelly)
-{
-	pid_t	pid;
-	int		status;
-	int		pipefd[2];
-
-	if (pipe(pipefd) == -1)
-		return ;
-	pid = fork();
-	if (pid == -1)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-	}
-	if (pid == 0)
-		child_hd(redir, pipefd, shelly);
-	sig_mode(MNDWAIT);
-	waitpid(pid, &status, 0);
-	sig_mode(INTERACTIVE);
-	close(pipefd[1]);
-	redir->xd_fd = dup(pipefd[0]);
-	close(pipefd[0]);
 }

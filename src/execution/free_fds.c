@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free_fds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 20:53:20 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 04:49:37 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	close_fds(t_redirects *redir)
-{
-	if (!redir)
-		return ;
-	if (redir->fd[0] != -1)
-		close(redir->fd[0]);
-	if (redir->fd[1] != -1)
-		close(redir->fd[1]);
-}
 
 void	free_redirs(t_redirects *redir)
 {

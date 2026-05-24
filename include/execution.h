@@ -63,10 +63,12 @@ int		mommy_n_father(t_cmd_line *s, t_shelly *shelly);
 int		lonely_blt(t_cmd_line *s, t_shelly *shelly);
 int		are_you_builtin(t_cmd_line *cmd_line);
 void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly);
-void	child_ex_fds(t_cmd_line *kid);
+void	child_ex_fds(t_cmd_line *kid, t_shelly *shelly);
 void	single_child_ex(t_cmd_line *kid, t_shelly *shelly);
 int		mndwait(pid_t last_p, int cmd_nmb);
 int		ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly);
+void	lonely_child_exit(t_shelly *shelly, char *path, int status);
+void	lnly_ch_errmsg(t_cmd_line *kid, t_shelly *shelly);
 
 /*									EXECUTION UTILS					*/
 bool	if_redir(t_cmd_line *s);
@@ -76,18 +78,23 @@ void	store_fds(int read_save, int write_save);
 /*									REDIRECTIONs					*/
 bool	which_redir_type(t_cmd_line *cmd);
 bool	in_redir(t_redirects *redir);
-void	heredoc(t_redirects *redir, t_shelly *shelly);
 bool	append(t_redirects *redir);
 
+void	run_xds(t_cmd_line *cmds, t_shelly *shelly);
+void	write_hd_line(char *msg, int fd, t_shelly *shelly, bool quoted);
+void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly);
+void	mnd_heredoc(t_redirects *redir, t_shelly *shelly);
+
 /*									FREEs							*/
-void	close_fds(t_redirects *redir);
 int		free_path(char **paths);
-void	pipe_cl(t_cmd_line *pipeline);
 void	cleanup_xd_fds(t_cmd_line *start);
 void	free_cmd_line(t_cmd_line *cmd);
 void	ft_free_split(char **arr);
 void	free_redirs(t_redirects *redir);
 char	*ft_strjoin_free(char *s1, char *s2);
+void	free_copyenvp(t_shelly *shelly);
+void	free_shell(t_shelly *shelly);
+void	babies_cleanup(t_shelly *shelly, char *path);
 
 /*									BUILTINs						*/
 int		r_bltn(t_cmd_line *cmd_line, t_shelly *shelly);

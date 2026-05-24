@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_in.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:49:38 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 04:36:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,15 @@ static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 static int	mycd_errors(char *path)
 {
 	if (errno == EACCES)
-		return (mndp_log_err("Permission denied\n", path), 1);
+		return (mndp_log_err("Permission denied", path), 1);
 	else if (errno == ENOENT)
-		return (mndp_log_err("No such file or directory\n", path), 1);
+		return (mndp_log_err("No such file or directory", path), 1);
 	else if (errno == ENOTDIR)
-		return (mndp_log_err("Not a directory\n", path), 1);
+		return (mndp_log_err("Not a directory", path), 1);
 	else if (errno == ELOOP)
-		return (mndp_log_err("Too many levels of symbolic links\n", path), 1);
+		return (mndp_log_err("Too many levels of symbolic links", path), 1);
 	else if (errno == ENAMETOOLONG)
-		return (mndp_log_err("File name too long\n", path), 1);
+		return (mndp_log_err("File name too long", path), 1);
 	return (mndp_log_err("cd; no such file or directory\n", path), 1);
 }
 

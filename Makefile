@@ -6,7 +6,7 @@
 #    By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/23 21:42:38 by megiazar         ###   ########.fr        #
+#    Updated: 2026/05/24 04:27:26 by megiazar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c epansion_utils.c ft_
 					tokenize.c tokenize_utils.c)
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
-					ex_utils_ecution.c execution.c free_fds.c)
+					ex_utils_ecution.c execution.c free_fds.c ex_child_utils_ecution.c ex_hd_ecution.c)
 BUILTINS_SRCS = $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
 					blt_export_in.c blt_export_utils_in.c blt_pwd_in.c blt_run_in.c blt_unset_in.c)
 UTILS_SRCS		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)

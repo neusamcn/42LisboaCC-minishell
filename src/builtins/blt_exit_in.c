@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/23 22:22:07 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 04:36:55 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	myexit(t_cmd_line *argv, t_shelly *shelly)
 	}
 	if (argv->cmds[2] != NULL)
 	{
-		mndp_log_err("bash: exit: too many arguments\n", argv->cmds[1]);
+		mndp_log_err("bash: exit: too many arguments", argv->cmds[1]);
 		return (1);
 	}
 	if (exit_valid_var(argv) == 1)
@@ -62,7 +62,7 @@ int	myexit(t_cmd_line *argv, t_shelly *shelly)
 	}
 	else
 	{
-		mndp_log_err("bash: exit %s: needed a numeric arg\n", argv->cmds[1]);
+		mndp_log_err("bash: exit %s: needed a numeric arg", argv->cmds[1]);
 		return (2);
 	}
 	return (false);

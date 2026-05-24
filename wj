@@ -1,0 +1,22 @@
+total 2508
+drwxr-xr-x 10 megiazar 2025_lisboa    4096 May 24 00:48 .
+drwxr-xr-x  3 megiazar 2025_lisboa      58 May  9 19:19 ..
+-rw-r--r--  1 megiazar 2025_lisboa     178 May 24 00:17 da
+-rw-r--r--  1 megiazar 2025_lisboa    6148 May 19 14:28 .DS_Store
+-rw-r--r--  1 megiazar 2025_lisboa 2446787 May 19 14:28 en.subject.pdf
+drwxr-xr-x  8 megiazar 2025_lisboa    4096 May 24 00:32 .git
+-rw-r--r--  1 megiazar 2025_lisboa       9 May 19 14:28 .gitignore
+-rw-r--r--  1 megiazar 2025_lisboa       7 May 24 00:27 hi
+drwxr-xr-x  2 megiazar 2025_lisboa      76 May 23 17:19 include
+drwxr-xr-x  2 megiazar 2025_lisboa    4096 May 24 00:46 libft
+-rw-r--r--  1 megiazar 2025_lisboa    4546 May 23 21:42 Makefile
+-rwxr-xr-x  1 megiazar 2025_lisboa   62000 May 24 00:46 minishell
+-rw-r--r--  1 megiazar 2025_lisboa       0 May 24 00:17 net
+drwxr-xr-x  6 megiazar 2025_lisboa      81 May 24 00:46 obj
+-rw-r--r--  1 megiazar 2025_lisboa    5275 May 19 14:28 README.md
+drwxr-xr-x  6 megiazar 2025_lisboa      81 May 22 14:06 src
+-rw-r--r--  1 megiazar 2025_lisboa       0 May 24 00:30 srhn
+drwxr-xr-x  2 megiazar 2025_lisboa      92 May 22 18:14 test_logs
+drwxr-xr-x  3 megiazar 2025_lisboa      19 May 22 18:07 utils
+drwxr-xr-x  2 megiazar 2025_lisboa      75 May 19 14:28 .vscode
+-rw-r--r--  1 megiazar 2025_lisboa       0 May 24 00:48 wj

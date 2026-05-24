@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 22:15:05 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 00:46:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,50 @@ typedef struct s_cmd_line
 	struct s_cmd_line	*next; // only populate if something comes after pipe; 
 }	t_cmd_line;
 
+typedef struct s_syntax_err
+{
+	char	*err_str;
+	int		i;
+}	t_syntax_err;
+
+typedef enum e_token_type
+{
+	WORD,
+	REDIR,
+	CTRL_OP
+}	t_token_type;
+
+typedef enum e_ctrlop_type
+{
+	PIPE
+}	t_ctrlop_type;
+
+typedef enum e_word_type
+{
+	CMD,
+	QMARK1,
+	QMARK2
+}	t_word_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	t_ctrlop_type	ctrlop; // Valid only if type == CTRL_OP
+	t_redir_type	redir; // Valid only if type == REDIR
+	t_word_type		word; // valid only if type == WORD
+	bool			space_b4_word; // true if at least 1 space b4 word
+	int				word_xpndd; // 1 if expansion is done, -1 if failed/invalid
+	int				index;
+	char			*value; // For WORD, filename, delimiter, etc.
+	struct s_token	*previous; // TODO: review if necessary?
+	struct s_token	*next;
+}	t_token;
+
 typedef struct s_shelly
 {
 	char		**envp;
 	t_cmd_line	*cur_cmd;
+	t_token		*cur_tok;
 	int			fds_saved[2]; // put this one as -1
 	void		**malloc_ptrs; // TODO: delete if not used
 }	t_shelly;

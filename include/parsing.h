@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 22:19:09 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:15:12 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
 //# include <linux/limits.h>
 
-/* Structs */
+/* Structs *//* 
 typedef struct s_syntax_err
 {
 	char	*err_str;
@@ -58,7 +58,14 @@ typedef struct s_token
 	char			*value; // For WORD, filename, delimiter, etc.
 	struct s_token	*previous; // TODO: review if necessary?
 	struct s_token	*next;
-}	t_token;
+}	t_token; */
+
+typedef struct s_exp_state
+{
+	char	**xpndd_word;
+	bool	in_single;
+	bool	in_double;
+}	t_exp_state;
 
 typedef struct s_cmd
 {
@@ -97,21 +104,21 @@ int				op_len(char *input_str);
 bool			char_is_op(char c);
 t_syntax_err	syntax_err_redir(char *input_str, int i);
 t_syntax_err	syntax_err_pipe(char *input_str, int i);
-void 			free_tokens(t_token *tkn);
+void			free_tokens(t_token *tkn);
 
 /* Expansion */
 void			expand_params(t_token *tokens, t_shelly *shelly);
 int				cpy_norm_str(char *tkn_val, int i, char **xpndd_word);
-int				xpnd_var(char *tkn_val, int i, char **xpndd_word, t_shelly *shelly);
-void			handle_in_double(char *tkn_val, int *i, char **xpndd_word,
-					t_shelly *shelly, bool *in_double);
-void			handle_in_single(char *tkn_val, int *i, char **xpndd_word,
-					bool *in_single);
-void			handle_unquoted(char *tkn_val, int *i, char **xpndd_word,
-					t_shelly *shelly, bool *in_single, bool *in_double);
+int				xpnd_var(char *tkn_val, int i, char **xpndd_word,
+					t_shelly *shelly);
+void			handle_in_double(char *tkn_val, int *i, t_exp_state *st,
+					t_shelly *shelly);
+void			handle_in_single(char *tkn_val, int *i, t_exp_state *st);
+void			handle_unquoted(char *tkn_val, int *i, t_exp_state *st,
+					t_shelly *shelly);
 char			*word_param_expansion(char *tkn_val, t_shelly *shelly);
-/* Parser */
-t_cmd_line	*parser(t_token *tokens);
 
+/* Parser */
+t_cmd_line		*parser(t_token *tokens);
 
 #endif

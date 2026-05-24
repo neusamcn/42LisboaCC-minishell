@@ -6,13 +6,11 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 16:40:50 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/23 21:50:35 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:25:55 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
-// TODO: review and test file
 
 t_token	*new_tkn(t_token_type type, char *value)
 {
@@ -47,50 +45,22 @@ int	scan_word_end(char *input_str, int i)
 	char	quote;
 
 	while (input_str[i] && !ft_isspace(input_str[i])
-				&& !char_is_op(input_str[i]))
+							&& !char_is_op(input_str[i]))
 	{
 		if (input_str[i] == '\'' || input_str[i] == '"')
 		{
 			quote = input_str[i];
 			i++;
-		while (input_str[i] && input_str[i] != quote)
-			i++;
-		if (input_str[i] == quote)
-			i++;
+			while (input_str[i] && input_str[i] != quote)
+				i++;
+			if (input_str[i] == quote)
+				i++;
 		}
 		else
 			i++;
 	}
 	return (i);
 }
-
-/* 
-int	scan_word_end(char *input_str, int i)
-{
-	char	quote;
-
-	if (input_str[i] == '\'' || input_str[i] == '"')
-	{
-		quote = input_str[i];
-		i++;
-	}
-	else
-		quote = 0;
-	while (input_str[i])
-	{
-		if (!quote && (ft_isspace(input_str[i]) == true
-				|| char_is_op(input_str[i]) == true
-				|| input_str[i] == '\'' || input_str[i] == '"'))
-			break ;
-		if (quote && input_str[i] == quote)
-		{
-			i++;
-			break ;
-		}
-		i++;
-	}
-	return (i);
-} */
 
 int	op_len(char *input_str)
 {
@@ -101,35 +71,15 @@ int	op_len(char *input_str)
 	return (1);
 }
 
-void free_tokens(t_token *tkn)
+void	free_tokens(t_token *tkn)
 {
-    t_token *next;
+	t_token *next;
 
-    while (tkn)
-    {
-        next = tkn->next;
-        free(tkn->value);
-        free(tkn);
-        tkn = next;
-    }
+	while (tkn)
+	{
+		next = tkn->next;
+		free(tkn->value);
+		free(tkn);
+		tkn = next;
+	}
 }
-
-// static t_token_type	tkn_sym_type(char *input_str)
-// {
-// 	if (input_str == ">>" || input_str == "<<"
-// 		|| input_str + 1 == ">" || input_str + 1 == "<")  // can I do this?
-// 		return (REDIR);
-// 	else if (input_str + 1 == "|")
-// 		return (CTRL_OP);
-// 	return (WORD);
-// }
-
-// static t_token_type	tkn_type_check(char *input_str)
-// {
-// 	// if (input_str == ">>" || input_str == "<<"
-// 	// 	|| input_str + 1 == ">" || input_str + 1 == "<")
-// 	// 	return (REDIR);
-// 	// else if (input_str + 1 == "|") // can I do this?
-// 	// 	return (CTRL_OP);
-// 	// return (WORD);
-// }

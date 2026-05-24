@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 00:26:00 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:17:03 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,34 +68,15 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
-	t_cmd_line	*tmp;
-	t_cmd_line	*og;
-	t_redirects	*r;
-
-	og = cmds;
-	tmp = og;
-	while (tmp)
-	{
-		r = tmp->redir;
-		while (r)
-		{
-			if (r->type == HEREDOC)
-			{
-				printf("call hd, dm [%s]\n", r->delimiter);
-				heredoc(r, shelly);
-			}
-			r = r->next;
-		}
-		tmp = tmp->next;
-	}
-	if (!og || !og->cmds || !og->cmds[0])
-		no_cmds_execution(og, shelly);
-	else if (og->next == NULL && are_you_builtin(og) == BUILTINS)
-		lonely_blt(og, shelly);
-	else if (og->next == NULL)
-		g_signal_stat = mommy_n_father(og, shelly);
+	run_xds(cmds, shelly);
+	if (!cmds || !cmds->cmds || !cmds->cmds[0])
+		no_cmds_execution(cmds, shelly);
+	else if (cmds->next == NULL && are_you_builtin(cmds) == BUILTINS)
+		lonely_blt(cmds, shelly);
+	else if (cmds->next == NULL)
+		g_signal_stat = mommy_n_father(cmds, shelly);
 	else
-		ex_pipeline_ec(og, shelly);
+		ex_pipeline_ec(cmds, shelly);
 }
 
 int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
@@ -143,32 +124,27 @@ int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 	return (status_check(status));
 }
 
-void	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
+void single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 {
 	char	*path;
+	char	**envp;
+	char	**argv;
 
 	sig_mode(CHILD);
 	if (which_redir_type(kid) != false)
-		//exit(1);
-	{
-		free_cmd_line(kid);
-		exit_cleanup(1, shelly);
-	}
+		lonely_child_exit(shelly, NULL, 1);
 	path = abs_or_rel_p(kid, shelly);
 	if (!path)
-	{
-		if (kid->cmds && kid->cmds[0])
-			mndp_log_err("command not found\n", kid->cmds[0]);
-		free_cmd_line(kid);
-			//free(shelly);
-			//exit_cleanup(EXIT_FAILURE, shelly);
-		exit_cleanup(127, shelly);
-		//exit(127);
-	}
-	execve(path, kid->cmds, shelly->envp);
+		lnly_ch_errmsg(kid, shelly);
+	argv = kid->cmds;
+	kid->cmds = NULL;
+	envp = shelly->envp;
+	shelly->envp = NULL;
+	free_cmd_line(shelly->cur_cmd);
+	babies_cleanup(shelly, NULL);
+	free(shelly);
+	execve(path, argv, envp);
 	free(path);
-	free_cmd_line(kid);
-	mndp_log_err("Execution failed!\n", kid->cmds[0]);
-	//exit(127);
-	exit_cleanup(127, shelly);
+	mndp_log_err("Execution failed!", argv[0]);
+	exit(127);
 }

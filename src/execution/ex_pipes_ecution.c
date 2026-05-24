@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/23 21:45:55 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:22:30 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ static pid_t	fork_pl(t_cmd_line *pl, t_shelly *shelly)
 	if (pid == 0)
 		child_ex(0, pl, shelly);
 	if (pl->next)
-	{
-		pl->next->prevfd = pl->pipefd[0];
 		close(pl->pipefd[1]);
-	}
 	sig_mode(MNDWAIT);
 	return (pid);
 }
@@ -65,27 +62,27 @@ int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
 {
 	int			status;
 	int			cmd_num;
-	pid_t		last_st;
-	t_cmd_line	*start;
+	pid_t		last_stat;
+	t_cmd_line	*st;
 
-	start = pl;
+	st = pl;
 	pl->prevfd = -1;
-	last_st = 0;
+	last_stat = 0;
 	cmd_num = 0;
 	while (pl)
 	{
-		last_st = fork_pl(pl, shelly);
-		if (last_st == -1)
+		last_stat = fork_pl(pl, shelly);
+		if (last_stat == -1)
 			break ;
 		if (pl->prevfd != -1)
-    		close(pl->prevfd);
- 		if (pl->next)
+			close(pl->prevfd);
+		if (pl->next)
 			pl->next->prevfd = pl->pipefd[0];
 		cmd_num++;
 		pl = pl->next;
 	}
-	cleanup_xd_fds(start);
-	status = mndwait(last_st, cmd_num);
+	cleanup_xd_fds(st);
+	status = mndwait(last_stat, cmd_num);
 	return (set_signal_stat(status), 1);
 }
 
@@ -108,45 +105,53 @@ int	mndwait(pid_t last_p, int cmd_nmb)
 	return (status_check(last_stat));
 }
 
-void	child_ex_fds(t_cmd_line *kid)
+static void	child_ex_execve(t_cmd_line *kid, t_shelly *shelly)
 {
-	if (kid->prevfd != -1)
-		dup2(kid->prevfd, STDIN_FILENO);
-	if (kid->next)
-		dup2(kid->pipefd[1], STDOUT_FILENO);
-	if (which_redir_type(kid) != 0)
-		exit(1);
-	if (kid->prevfd != -1)
-		close(kid->prevfd);
-	if (kid->next)
+	char	**envp;
+	char	**argv;
+	char	*path;
+
+	path = relative_path(kid, shelly);
+	if (!path)
 	{
-		close(kid->pipefd[0]);
-		close(kid->pipefd[1]);
+		if (kid->cmds && kid->cmds[0])
+			mndp_exec_error(kid->cmds[0]);
+		free_cmd_line(shelly->cur_cmd);
+		babies_cleanup(shelly, NULL);
+		free(shelly);
+		exit(127);
 	}
+	argv = kid->cmds;
+	kid->cmds = NULL;
+	envp = shelly->envp;
+	shelly->envp = NULL;
+	free_cmd_line(shelly->cur_cmd);
+	babies_cleanup(shelly, NULL);
+	free(shelly);
+	execve(path, argv, envp);
+	mndp_log_err("execution failed!\n", argv[0]);
+	exit(127);
 }
 
 void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 {
 	sig_mode(CHILD);
-	child_ex_fds(kid);
+	path = NULL;
+	child_ex_fds(kid, shelly);
 	if (!kid->cmds || !kid->cmds[0])
 	{
-		ft_putstr_fd("no cmds exit\n", 2);
+		free_cmd_line(shelly->cur_cmd);
+		babies_cleanup(shelly, NULL);
+		free(shelly);
 		exit(0);
 	}
 	if (are_you_builtin(kid) == BUILTINS)
 	{
 		r_bltn(kid, shelly);
+		free_cmd_line(shelly->cur_cmd);
+		babies_cleanup(shelly, NULL);
+		free(shelly);
 		exit(get_signal_stat());
 	}
-	path = relative_path(kid, shelly);
-	if (!path)
-	{
-		if (kid->cmds && kid->cmds[0])
-			exit(mndp_exec_error(kid->cmds[0]));
-	}
-	execve(path, kid->cmds, shelly->envp);
-	if (kid->cmds && kid->cmds[0])
-		mndp_log_err("execution failed!\n", kid->cmds[0]);
-	exit(127);
+	child_ex_execve(kid, shelly);
 }

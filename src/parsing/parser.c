@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 22:41:15 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 00:12:17 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 05:24:18 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,62 +29,42 @@ static void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	return (new_ptr);
 }
 
-static void get_redir(t_token *tkns, t_cmd_line *cmd_line)
+static void	append_redir(t_cmd_line *cmd_line, t_redirects *new_r)
 {
-	t_redirects *new_redir;
-	t_redirects *last;
+	t_redirects	*last;
 
-	if (!tkns || !cmd_line || tkns->type != REDIR)
-		return ;
-	new_redir = ft_calloc_protec(1, sizeof(t_redirects));
-	new_redir->type = tkns->redir;
-	new_redir->fd[0] = -1;
-	new_redir->fd[1] = -1;
-	new_redir->xd_fd = -1;
-	if (tkns->redir == HEREDOC && tkns->next && tkns->next->type == WORD)
-	{
-		new_redir->heredoc_quoted = (tkns->next->word != CMD);
-		new_redir->delimiter = word_param_expansion(tkns->next->value, NULL);
-	}
-	else if ((tkns->redir == IN || tkns->redir == OUT
-		|| tkns->redir == APPEND) && tkns->next)
-		new_redir->filename = ft_strdup(tkns->next->value);
 	if (!cmd_line->redir)
-		cmd_line->redir = new_redir;
+		cmd_line->redir = new_r;
 	else
 	{
 		last = cmd_line->redir;
 		while (last->next)
 		last = last->next;
-		last->next = new_redir;
+		last->next = new_r;
 	}
-	}
+}
 
-/* static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
+static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
 {
+	t_redirects	*new_r;
+
 	if (!tkns || !cmd_line || tkns->type != REDIR)
 		return ;
-	cmd_line->redir = ft_calloc_protec(1, sizeof(t_redirects));
-	if (tkns->type == REDIR)
+	new_r = ft_calloc_protec(1, sizeof(t_redirects));
+	new_r->type = tkns->redir;
+	new_r->fd[0] = -1;
+	new_r->fd[1] = -1;
+	new_r->xd_fd = -1;
+	if (tkns->redir == HEREDOC && tkns->next && tkns->next->type == WORD)
 	{
-		cmd_line->redir->type = tkns->redir;
-		cmd_line->redir->fd[0] = -1;
-		cmd_line->redir->fd[1] = -1;
-		cmd_line->redir->xd_fd = -1;
-		if (tkns->redir == HEREDOC && tkns->next && tkns->next->type == WORD)
-		{
-			cmd_line->redir->heredoc_quoted = (tkns->next->word != CMD);
-			cmd_line->redir->delimiter = 
-								word_param_expansion(tkns->next->value, NULL);
-		}
-		else if (tkns->redir == IN && tkns->next)
-			cmd_line->redir->filename = ft_strdup(tkns->next->value);
-		else if ((tkns->redir == OUT || tkns->redir == APPEND) && tkns->next)
-			cmd_line->redir->filename = ft_strdup(tkns->next->value);
+		new_r->heredoc_quoted = (tkns->next->word != CMD);
+		new_r->delimiter = word_param_expansion(tkns->next->value, NULL);
 	}
-	else
-		cmd_line->redir->type = NONE;
-} */
+	else if ((tkns->redir == IN || tkns->redir == OUT
+		|| tkns->redir == APPEND) && tkns->next)
+		new_r->filename = ft_strdup(tkns->next->value);
+	append_redir(cmd_line, new_r);
+}
 
 static void	cpy_cmd(t_token *tkns, t_cmd_line *cmd_line)
 {
