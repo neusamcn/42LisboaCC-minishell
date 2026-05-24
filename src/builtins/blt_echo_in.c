@@ -1,0 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_echo_in.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/22 16:24:22 by megi              #+#    #+#             */
+/*   Updated: 2026/05/22 19:47:31 by megiazar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/execution.h"
+
+//printing mss to stdout 
+// wildcart character * to output multiple files (ike cat hello*)
+// print everything that i pass as a third args untill any redirections
+// untill a newline
+// getchar and putchar till receive a newline
+
+int	myecho(t_cmd_line *cmd, t_shelly *shelly)
+{
+	int	i;
+	int	newline;
+
+	(void)shelly->envp;
+	i = 1;
+	newline = 1;
+	while (cmd->cmds[i] && ft_strcmp(cmd->cmds[i], "-n") == 0)
+	{
+		newline = 0;
+		i++;
+	}
+	while (cmd->cmds[i])
+	{
+		printf("%s", cmd->cmds[i]);
+		if (cmd->cmds[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
+	return (false);
+}

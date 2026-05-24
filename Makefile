@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
+#    Updated: 2026/05/24 04:27:26 by megiazar         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME 			= minishell
 
 LIBFT_DIR		= libft
@@ -6,23 +18,25 @@ LIBFT_A			= $(LIBFT_DIR)/libft.a
 SRC_DIR 		= src
 OBJ_DIR 		= obj
 
-PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, ft_wrappers.c init.c shellyenvp.c prompt.c)
-EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c ex_signals_ecution.c \
-					ex_pipes_ecution.c ex_redir_ecution.c ex_utils_ecution.c execution.c free_fds.c)
-BUILTINS_SRCS 	= $(addprefix $(SRC_DIR)/biultins/, blt_echo_in.c blt_env_in.c blt_export_in.c \
-					blt_export_utils_in.c blt_run_in.c blt_pwd_in.c blt_unset_in.c blt_cd_in.c blt_exit_in.c)
-UTILS_SRCS 		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)
-
-SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS) $(UTILS_SRCS)
+PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c epansion_utils.c ft_wrappers.c init.c \
+					parser.c prompt.c shellyenvp.c syntax_check.c syntax_utils.c \
+					tokenize.c tokenize_utils.c)
+EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
+					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
+					ex_utils_ecution.c execution.c free_fds.c ex_child_utils_ecution.c ex_hd_ecution.c)
+BUILTINS_SRCS = $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
+					blt_export_in.c blt_export_utils_in.c blt_pwd_in.c blt_run_in.c blt_unset_in.c)
+UTILS_SRCS		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)
+SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(UTILS_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-HEADERS 		= $(addprefix include/, minishell.h flair.h parsing.h execution.h)
+HEADERS 		= $(addprefix include/, execution.h flair.h minishell.h parsing.h)
 
 CC 				= cc
-CFLAGS 			= -Wall -Werror -Wextra -Iinclude
-LDFLAGS 		= -L/opt/homebrew/opt/readline/lib
-CPPFLAGS 		= -I/opt/homebrew/opt/readline/include
-LDLIBS 			= -lreadline
+CPPFLAGS 		= -Iinclude -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
+CFLAGS 			= -Wall -Werror -Wextra
+LDFLAGS 		= -L$(LIBFT_DIR)
+LDLIBS 			= -lft -lreadline
 RM 				= rm -f
 
 TEST_DIR		= test_logs
@@ -47,18 +61,24 @@ PATH_COLOR      := $(ESC)[38;2;221;160;221m
 
 all: $(NAME)
 
+# TODO: can we hide this libft anouncement? 
+
 $(NAME): $(LIBFT_A) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT_A) $(LDFLAGS) $(LDLIBS) -o $@
+	@$(CC) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
+	@printf "%b compiled.\n" "$(GREEN)$@$(COLOR_RESET)"
 
 $(LIBFT_A):
-	@$(MAKE) -s -C $(LIBFT_DIR) $(notdir $@)
+	@$(MAKE) -C $(LIBFT_DIR) $(notdir $@)
+	@printf "%b compiled.\n" "$(SUCCESS_BOLD)$@$(COLOR_RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	@printf "%b created.\n" "$(SUCCESS)$@$(COLOR_RESET)"
 
 $(TEST_DIR):
 	@mkdir -p $@
+	@printf "%b created.\n" "$(SUCCESS)$@$(COLOR_RESET)"
 
 clean:
 	@$(RM) $(OBJS)
@@ -73,13 +93,22 @@ fclean: clean
 
 re: fclean all
 
-val: $(TEST_DIR)
-	valgrind --suppressions=readline.supp --leak-check=full --track-fds=yes --show-leak-kinds=all --trace-children=yes ./${NAME}
+test: re $(TEST_DIR)
+	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all -s \
+	--log-file=$(TEST_DIR)/valg_out.log ./$(NAME)
+	@echo "Valgrind run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_out.log$(COLOR_RESET)"
+
+vsupp: re $(TEST_DIR)
+	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all --trace-children=yes -s --suppressions=$(TEST_DIR)/readline.supp \
+	--log-file=$(TEST_DIR)/valg_supp_out.log ./$(NAME)
+	@echo "Valgrind run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_supp_out.log$(COLOR_RESET)"
+
+testset: re $(TEST_DIR)
+	@valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all --gen-suppressions=all --num-callers=30 \
+	./$(NAME) 2> $(TEST_DIR)/valgrind.raw
 	@echo "Valgrind suppression run concluded. See output in $(PATH_COLOR)$(TEST_DIR)/valg_supression_out.log$(COLOR_RESET)"
 
 tclean:
 	@$(RM) -r $(TEST_DIR)
-
-# TODO: add make norme rule to download most updated Norme pdf
 
 .PHONY: all clean fclean re test tclean testset vsupp

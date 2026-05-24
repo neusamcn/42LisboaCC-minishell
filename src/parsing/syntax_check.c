@@ -6,73 +6,93 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 17:45:10 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/26 23:22:08 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/17 17:58:26 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static char	*quote_handling(char *str, int quote_type, t_token *tokens)
+static char	quote_check(char *input_str)
 {
-	int	i;
+	char	open_qmark;
 
-	i = 1;
-	while (str[i] && !(str[i] == '"' || str[i] == 39)) // 34
+	open_qmark = 0;
+	while (input_str && *input_str)
 	{
-		if ((str[i] == '"' && (quote_type == 2 || quote_type == 4))
-			|| (str[i] == 39 && (quote_type == 1 || quote_type == 3)))
-			add_token_word(str, i, tokens);
+		if (!open_qmark && (*input_str == '\'' || *input_str == '"'))
+			open_qmark = *input_str;
+		else if (open_qmark && *input_str == open_qmark)
+			open_qmark = 0;
+		input_str++;
+	}
+	return (open_qmark);
+}
+
+static int	skip_quote(char *input_str, int i)
+{
+	char	qmark;
+
+	if (input_str[i] == '\'' || input_str[i] == '"')
+	{
+		qmark = input_str[i];
+		i++;
+		while (input_str[i] && input_str[i] != qmark)
+			i++;
+		if (input_str[i] == qmark)
+			i++;
+	}
+	return (i);
+}
+
+static char	*syntax_err_pipe_redir(char *input_str)
+{
+	int				i;
+	t_syntax_err	syntax_check;
+
+	i = 0;
+	while (input_str && input_str[i])
+	{
+		if (input_str[i] == '\'' || input_str[i] == '"')
+		{
+			i = skip_quote(input_str, i);
+			continue ;
+		}
+		else if (char_is_op(input_str[i]) == true)
+		{
+			if (input_str[i] == '>' || input_str[i] == '<')
+				syntax_check = syntax_err_redir(input_str, i);
+			else
+				syntax_check = syntax_err_pipe(input_str, i);
+			if (syntax_check.err_str)
+				return (syntax_check.err_str);
+			i = syntax_check.i;
+			continue ;
+		}
 		i++;
 	}
-	return (str + i);
-}
-static t_token_type	tkn_sym_type(char *input_str)
-{
-	if (input_str == ">>" || input_str == "<<"
-		|| input_str + 1 == ">" || input_str + 1 == "<")  // can I do this?
-		return (REDIR);
-	else if (input_str + 1 == "|")
-		return (CTRL_OP);
-	return (WORD);
+	return (NULL);
 }
 
-static t_token_type	tkn_type_check(char *input_str)
+char	*syntax_check(char *input_str)
 {
-	// if (input_str == ">>" || input_str == "<<"
-	// 	|| input_str + 1 == ">" || input_str + 1 == "<")
-	// 	return (REDIR);
-	// else if (input_str + 1 == "|") // can I do this?
-	// 	return (CTRL_OP);
-	// return (WORD);
-}
+	int		i;
+	char	open_qmark;
 
-// return symbol(s) of what's causing syntax err.
-char	*syntax_err_check(char *trimmed_input)
-{
-	char	*syntax_err;
-
-	syntax_err = NULL;
-	if (*trimmed_input == '|')
-		syntax_err = *trimmed_input; // == trimmed_input[0]
-	if (tkn_sym_type(trimmed_input + ft_strlen(trimmed_input) - 2) == REDIR)
-		syntax_err = "newline";
-	if (syntax_err)
-		syntax_err_msg(syntax_err);
-	return (syntax_err);
-	// while (trimmed_input[i])
-	// {
-		// while (trimmed_input[i] && ft_isspace(trimmed_input[i]))
-		// 	i++;
-		// if (!trimmed_input[i])
-		// 	break ;
-		// while (trimmed_input[i] && !(ft_isspace(trimmed_input[i])))
-		// {
-		// 	tkn_type_check(trimmed_input[i]);
-			// quote_type = quote_check(input_str + i);
-			// if (quote_type)
-			// 	init_2prompt();
-	// 		i++;
-	// 	}
-	// }
-	// return (NULL);
+	if (!input_str)
+		return ("newline");
+	i = 0;
+	while (input_str[i] && ft_isspace(input_str[i]) == true)
+		i++;
+	if (input_str[i] == 0)
+		return ("newline");
+	if (input_str[i] == '|')
+		return ("|");
+	open_qmark = quote_check(input_str);
+	if (open_qmark == '\'' || open_qmark == '"')
+	{
+		if (open_qmark == '\'')
+			return ("'");
+		return ("\"");
+	}
+	return (syntax_err_pipe_redir(input_str));
 }

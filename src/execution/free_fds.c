@@ -3,32 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   free_fds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:03:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/09 17:04:03 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/24 04:49:37 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "../../include/minishell.h"
 
-void close_fds(t_redirects *redir)
+void	free_redirs(t_redirects *redir)
 {
-    if (!redir)
-        return;
+	t_redirects	*next;
 
-    if (redir->fd[0] != -1)
-        close(redir->fd[0]);
-    if (redir->fd[1] != -1)
-        close(redir->fd[1]);
+	while (redir)
+	{
+		next = redir->next;
+		if (redir->xd_fd >= 0)
+			close(redir->xd_fd);
+		free(redir->filename);
+		free(redir->delimiter);
+		free(redir);
+		redir = next;
+	}
 }
 
-void	cleanup_xd_fds(t_cmd_line *start)
+void	cleanup_xd_fds(t_cmd_line *st)
 {
-	while (start)
+	t_redirects	*r;
+
+	while (st)
 	{
-		if (start->redir.xd_fd >= 0)
-			close(start->redir.xd_fd);
-		start = start->next;
+		r = st->redir;
+		while (r)
+		{
+			if (r->xd_fd >= 0)
+				close(r->xd_fd);
+			r = r->next;
+		}
+		st = st->next;
 	}
 }

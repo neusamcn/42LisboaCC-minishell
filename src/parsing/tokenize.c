@@ -3,42 +3,118 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 21:02:43 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/04/28 20:57:07 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/24 12:12:57 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
- // Milena, it's not finished!!!!!
+// TODO: review and test file
 
-static t_token	*add_token_word(char *word, int word_len, t_token *tokens)
+static t_token	*add_tkn_word(char *word, int len, t_token *tkns, bool space_b4)
 {
+	t_token	*tkn_nd;
+	char	*value;
+
+	value = ft_substr(word, 0, len);
+	if (!value)
+		return (tkns);
+	tkn_nd = new_tkn(WORD, value);
+	if (value[0] == '\'')
+		tkn_nd->word = QMARK1;
+	else if (value[0] == '"')
+		tkn_nd->word = QMARK2;
+	else
+		tkn_nd->word = CMD;
+	tkn_nd->space_b4_word = space_b4;
+	append_tkn(&tkns, tkn_nd);
+	return (tkns);
+}
+
+static void	set_op_type(char *input_str, t_token *tkn_nd, int len)
+{
+	if (len == 1 && *input_str == '|')
+	{
+		tkn_nd->type = CTRL_OP;
+		tkn_nd->ctrlop = PIPE;
+	}
+	else
+	{
+		tkn_nd->type = REDIR;
+		if (len == 1)
+		{
+			if (*input_str == '<')
+				tkn_nd->redir = IN;
+			else if (*input_str == '>')
+				tkn_nd->redir = OUT;
+		}
+		else if (len == 2)
+		{
+			if (ft_strncmp(input_str, ">>", 2) == 0)
+				tkn_nd->redir = APPEND;
+			else if (ft_strncmp(input_str, "<<", 2) == 0)
+				tkn_nd->redir = HEREDOC;
+		}
+	}
+}
+
+static t_token	*add_tkn_op(char *input_str, t_token *tokens)
+{
+	t_token	*tkn_nd;
+	int		len;
+
+	len = op_len(input_str);
+	tkn_nd = ft_calloc_protec(1, sizeof(t_token));
+	set_op_type(input_str, tkn_nd, len);
+	tkn_nd->value = ft_substr(input_str, 0, len);
+	append_tkn(&tokens, tkn_nd);
 	return (tokens);
 }
 
-// TODO: if (str[i] != '`' && str[i]) // 96 ==> add?
+static int	add_tkn(char *input_str, int i, t_token **tokens)
+{
+	int		start;
+	int		len;
+	bool	space_b4_word;
+
+	space_b4_word = false;
+	if (char_is_op(input_str[i]) == true)
+	{
+		*tokens = add_tkn_op(input_str + i, *tokens);
+		i += op_len(input_str + i);
+	}
+	else
+	{
+		start = i;
+		i = scan_word_end(input_str, i);
+		len = i - start;
+		if (input_str[i - 1])
+			space_b4_word = ft_isspace(input_str[i - 1]);
+		*tokens = add_tkn_word(input_str + start, len, *tokens, space_b4_word);
+	}
+	return (i);
+}
+
 t_token	*tokenize_input(char *input_str)
 {
-	char	*syntax_err;
 	t_token	*tokens;
-	// int		i;
-	// int		quote_type;
-	// i = 0;
+	int		i;
+
 	tokens = NULL;
-	// TODO: validate input_str (& 2ndary prompt) + tokenize
-	syntax_err = validate_input(input_str);
-	if (syntax_err);
-		syntax_err_msg(syntax_err);
-	// if ((input_str[i - 1] == 124 && init_2nd_prompt == 3)
-	// 	|| quote_type == 1 || quote_type == 2)
-	// TODO: secondary prompt function
-	tokens = ft_calloc_protec(1, sizeof(t_token));
+	i = 0;
+	while (input_str[i])
+	{
+		while (input_str[i] && ft_isspace(input_str[i]) == true)
+			i++;
+		if (!input_str[i])
+			break ;
+		i = add_tkn(input_str, i, &tokens);
+	}
 	return (tokens);
 }
-
 
 /*
 1) Step-by-step tokenizer algorithm
