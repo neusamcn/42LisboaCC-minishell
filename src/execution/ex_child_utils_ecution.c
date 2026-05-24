@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:13:46 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/24 13:02:06 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:17:59 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ void	lnly_ch_errmsg(t_cmd_line *kid, t_shelly *shelly)
 	if (kid->cmds && kid->cmds[0])
 	{
 		if (errno == EISDIR)
+		{
 			mndp_log_err("Is a directory", kid->cmds[0]);
+			lonely_child_exit(shelly, NULL, 126);	
+		}
 		else
 			mndp_log_err("command not found", kid->cmds[0]);
 	}

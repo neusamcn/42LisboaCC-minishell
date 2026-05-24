@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 12:15:46 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:18:36 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	run_xds(cmds, shelly);
-	if (!cmds || !cmds->cmds || !cmds->cmds[0])
+	if (!cmds || !cmds->cmds || !cmds->cmds[0] || cmds->cmds[0][0] == '\0')
 		no_cmds_execution(cmds, shelly);
 	else if (cmds->next == NULL && are_you_builtin(cmds) == BUILTINS)
 		g_signal_stat = lonely_blt(cmds, shelly);
@@ -106,7 +106,6 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 	sig_mode(INTERACTIVE);
 	set_signal_stat(status);
 	return (status);
-	//return (set_signal_stat(status), 1);
 }
 
 int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)

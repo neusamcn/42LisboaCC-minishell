@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path_ecution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:41:44 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:26:40 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ char	*absolute_path(t_cmd_line *data)
 	path = data->cmds[0];
 	if (!ft_strchr(path, '/'))
 		return (NULL);
-	if (access(path, F_OK | X_OK) == -1)
-		return (NULL);
 	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
 		errno = EISDIR;
 		return (NULL);
 	}
+	if (access(path, F_OK | X_OK) == -1)
+		return (NULL);
 	return (ft_strdup(path));
 }
 

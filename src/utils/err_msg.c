@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 04:32:39 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/24 13:22:00 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,17 @@ void	print_err_msg(char *my_msg)
 int	mndp_exec_error(char *cmd)
 {
 	if (errno == EACCES)
+	{
 		mndp_log_err("Permission denied", cmd);
+		return (126);
+	}
 	else if (errno == ENOENT)
 		mndp_log_err("No such file or directory", cmd);
 	else if (errno == EISDIR)
+	{
 		mndp_log_err("Is a directory", cmd);
+		return (126);	
+	}
 	else
 		mndp_log_err(strerror(errno), cmd);
 	return (127);
