@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/21 21:31:57 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/24 05:45:54 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,17 @@ int	parse_exp_arg(char *arg)
 
 char	**exp_flag(t_export *exp)
 {
-	char	**split;
-	int		i;
+	char	*eq;
+	char	*key;
+	char	*value;
 
-	i = 0;
 	if (exp->flag == 0)
 	{
-		split = ft_split(exp->arg, '=');
-		if (split)
-		{
-			exp->envp = exp_minienv(exp, split[0], split[1], -1);
-			while (split[i])
-				free(split[i++]);
-			free(split);
-		}
+		eq = ft_strchr(exp->arg, '=');
+		key = ft_substr(exp->arg, 0, eq - exp->arg);
+		value = eq + 1;
+		exp->envp = exp_minienv(exp, key, value, -1);
+		free(key);
 	}
 	else if (exp->flag == 1)
 		exp->envp = exp_var(exp, exp->arg);
