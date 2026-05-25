@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path_ecution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 16:27:12 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 13:26:40 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:40:08 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*relative_path(t_cmd_line *cmd_line, t_shelly *shelly)
 		return (path);
 	while (shelly->envp[i])
 	{
-		if (ft_strncmp(shelly->envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(shelly->envp[i], "PATH=", 5) == SHELLYPEERS)
 			return (paths_helper(cmd_line, shelly->envp[i] + 5));
 		i++;
 	}

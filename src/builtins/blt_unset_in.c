@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_unset_in.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 17:23:47 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:38:48 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int	mysunset(t_cmd_line *un, t_shelly *shelly)
 			rm(shelly, un->cmds[av]);
 		av++;
 	}
-	return (false);
+	return (OK);
 }

@@ -44,10 +44,14 @@ char	*put_prompt(t_shelly *shelly, char *prompt)
 	char	*full_prompt;
 	char	*input;
 	char	*user;
+	char	*home;
 
 	getcwd_protec(cwd, PATH_MAX, shelly);
 	user = find_var_shellyenvp(shelly, "USER");
-	if (ft_strcmp(cwd, find_var_shellyenvp(shelly, "HOME")))
+	if (!user)
+		user = "";
+	home = find_var_shellyenvp(shelly, "HOME");
+	if (!home || ft_strcmp(cwd, home))
 		full_prompt = build_pretty_prompt(user, prompt, cwd);
 	else
 		full_prompt = build_pretty_prompt(user, prompt, "~");

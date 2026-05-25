@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_in.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 18:24:54 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 18:21:29 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,17 @@ upd_pwd():
 
 static int	mycd_args(t_cmd_line *cd, t_shelly *shelly, t_cd *vars)
 {
-	int	i;
-	int	found;
-
-	found = 0;
 	if (cd->cmds[1] == NULL)
 	{
-		i = 0;
-		while (shelly->envp[i])
-		{
-			if (ft_strncmp(shelly->envp[i], "HOME=", 5) == 0)
-			{
-				vars->path = shelly->envp[i] + 5;
-				found = 1;
-				break ;
-			}
-			i++;
-		}
-		if (found == 0)
-			return (mndp_log_err("cd: HOME not set", cd->cmds[0]), 127);
+		vars->path = find_var_shellyenvp(shelly, "HOME");
+		if (!vars->path)
+			return (mndp_log_err("cd: HOME not set", cd->cmds[0]), 1);
 	}
 	else if (cd->cmds[2] != NULL)
-		return (mndp_log_err("cd; too many arguments", cd->cmds[0]), 127);
+		return (mndp_log_err("cd: too many arguments", cd->cmds[0]), 1);
 	else
 		vars->path = cd->cmds[1];
-	return (false);
+	return (OK);
 }
 
 static int	mycd_errors(char *path)
@@ -110,18 +96,8 @@ static int	mycd_errors(char *path)
 static int	upd_pwd(t_shelly *shelly, t_cd *vars)
 {
 	t_export	ex;
-	int			i;
 
-	i = 0;
-	while (shelly->envp[i])
-	{
-		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == false)
-		{
-			vars->old_pwd = shelly->envp[i] + 4;
-			break ;
-		}
-		i++;
-	}
+	vars->old_pwd = find_var_shellyenvp(shelly, "PWD");
 	ex.envp = shelly->envp;
 	ex.new_var = NULL;
 	ex.newenv = NULL;
@@ -129,7 +105,7 @@ static int	upd_pwd(t_shelly *shelly, t_cd *vars)
 	vars->new_pwd = getcwd(NULL, 0);
 	shelly->envp = exp_minienv(&ex, "PWD", vars->new_pwd, -1);
 	free(vars->new_pwd);
-	return (false);
+	return (OK);
 }
 
 int	mycd(t_cmd_line *cd, t_shelly *shelly)
@@ -139,10 +115,10 @@ int	mycd(t_cmd_line *cd, t_shelly *shelly)
 	vars.path = NULL;
 	vars.old_pwd = NULL;
 	vars.new_pwd = NULL;
-	if (mycd_args(cd, shelly, &vars) != false)
+	if (mycd_args(cd, shelly, &vars) != OK)
 		return (true);
-	if (chdir(vars.path) != false)
+	if (chdir(vars.path) == -1)
 		return (mycd_errors(vars.path));
 	upd_pwd(shelly, &vars);
-	return (false);
+	return (OK);
 }

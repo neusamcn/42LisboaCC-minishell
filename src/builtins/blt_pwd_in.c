@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_pwd_in.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:00:13 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:47:53 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:04:46 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int	mypwd(t_cmd_line *cmd, t_shelly *shelly)
 	i = 0;
 	while (shelly->envp[i])
 	{
-		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == false)
+		if (ft_strncmp(shelly->envp[i], "PWD=", 4) == SHELLYMATES)
 		{
 			ft_putendl_fd(shelly->envp[i] + 4, STDOUT_FILENO);
-			return (false);
+			return (OK);
 		}
 		i++;
 	}
 	mndp_log_err("pwd: PWD not setted", cmd->cmds[0]);
-	return (true);
+	return (OK);
 }

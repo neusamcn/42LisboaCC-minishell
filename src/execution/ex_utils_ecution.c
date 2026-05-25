@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_utils_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:19:53 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:41:14 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ bool	if_redir(t_cmd_line *s)
 	while (tmp)
 	{
 		if (tmp->type != NONE)
-			return (true);
+			return (KO);
 		tmp = tmp->next;
 	}
-	return (false);
+	return (OK);
 }
 
 void	store_fds(int read_save, int write_save)

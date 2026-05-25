@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_frees_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:09:51 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 05:16:10 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:39:36 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	free_path(char **paths)
 	while (paths[j])
 		free(paths[j++]);
 	free(paths);
-	return (1);
+	return (KO);
 }
 
 void	free_cmd_line(t_cmd_line *cmd)

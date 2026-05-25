@@ -62,8 +62,8 @@ static void	readevalprint_input(char *input_str, t_shelly *shelly)
 
 	add_history(input_str);
 	tokens = tokenize_input(input_str);
+	tokens = expand_params(tokens, shelly);
 	shelly->cur_tok = tokens;
-	expand_params(tokens, shelly);
 	cmd_line = parser(tokens);
 	shelly->cur_cmd = cmd_line;
 	exec_loop(cmd_line, shelly);
@@ -116,7 +116,8 @@ static void	non_interactive_mode(t_shelly *shelly)
 			free(line);
 			continue ;
 		}
-		expand_params(tokens, shelly);
+		tokens = expand_params(tokens, shelly);
+		shelly->cur_tok = tokens;
 		cmd_line = parser(tokens);
 		shelly->cur_cmd = cmd_line;
 		exec_loop(cmd_line, shelly);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_redir_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 23:41:36 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 05:16:31 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:41:00 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,26 @@ bool	which_redir_type(t_cmd_line *cmd)
 		if (redir->type == HEREDOC)
 		{
 			if (redir->xd_fd == -1)
-				return (true);
+				return (KO);
 			dup2(redir->xd_fd, STDIN_FILENO);
 			close(redir->xd_fd);
 		}
 		else if (redir->type == APPEND || redir->type == OUT)
 		{
 			if (append(redir))
-				return (true);
+				return (KO);
 		}
 		else if (redir->type == IN && in_redir(redir))
-			return (true);
+			return (KO);
 		redir = redir->next;
 	}
-	return (false);
+	return (OK);
 }
 
 bool	append(t_redirects *redir)
 {
 	if (!redir->filename)
-		return (true);
+		return (KO);
 	if (redir->type == APPEND)
 		redir->fd[1] = open(redir->filename, O_WRONLY | O_CREAT
 				| O_APPEND, 0644);
@@ -79,12 +79,12 @@ bool	append(t_redirects *redir)
 	if (redir->fd[1] == -1)
 	{
 		perror(redir->filename);
-		return (true);
+		return (KO);
 	}
 	if (dup2(redir->fd[1], STDOUT_FILENO) == -1)
-		return (true);
+		return (KO);
 	close(redir->fd[1]);
-	return (false);
+	return (OK);
 }
 
 bool	in_redir(t_redirects *redir)
@@ -93,10 +93,10 @@ bool	in_redir(t_redirects *redir)
 	if (redir->fd[0] == -1)
 	{
 		perror(redir->filename);
-		return (true);
+		return (KO);
 	}
 	if (dup2(redir->fd[0], STDIN_FILENO) == -1)
-		return (true);
+		return (KO);
 	close(redir->fd[0]);
-	return (false);
+	return (OK);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_echo_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:24:22 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:47:31 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 17:54:59 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,24 @@
 int	myecho(t_cmd_line *cmd, t_shelly *shelly)
 {
 	int	i;
-	int	newline;
+	int	if_newline_exists;
 
 	(void)shelly->envp;
 	i = 1;
-	newline = 1;
-	while (cmd->cmds[i] && ft_strcmp(cmd->cmds[i], "-n") == 0)
+	if_newline_exists = 1;
+	while (cmd->cmds[i] && ft_strcmp(cmd->cmds[i], "-n") == SHELLYMATES)
 	{
-		newline = 0;
+		if_newline_exists = 0;
 		i++;
 	}
 	while (cmd->cmds[i])
 	{
-		printf("%s", cmd->cmds[i]);
+		ft_printf("%s", cmd->cmds[i]);
 		if (cmd->cmds[i + 1])
-			printf(" ");
+			ft_printf(" ");
 		i++;
 	}
-	if (newline)
-		printf("\n");
-	return (false);
+	if (if_newline_exists)
+		ft_printf("\n");
+	return (OK);
 }

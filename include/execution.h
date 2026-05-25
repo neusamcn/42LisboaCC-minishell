@@ -29,6 +29,16 @@
 # include <sys/stat.h>
 # include <string.h>
 
+# define SHELLYMATES 0
+# define SHELLYPEERS 0
+# define VALID 0
+# define NON_VALID 1
+# define PLUS_OR_MINUS "+-" 
+# define TAB " \t"
+# define MINIM_DIG '0' 
+# define MAXIM_DIG '9'
+# define OK 0
+# define KO 1
 # define CD "cd"
 # define ECHO "echo" 
 # define EXIT "exit"
