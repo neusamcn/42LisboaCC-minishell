@@ -6,7 +6,7 @@
 #    By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/24 04:27:26 by megiazar         ###   ########.fr        #
+#    Updated: 2026/05/25 20:37:17 by megiazar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c epansion_utils.c ft_
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
 					ex_utils_ecution.c execution.c free_fds.c ex_child_utils_ecution.c ex_hd_ecution.c)
-BUILTINS_SRCS = $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
-					blt_export_in.c blt_export_utils_in.c blt_pwd_in.c blt_run_in.c blt_unset_in.c)
+BUILTINS_SRCS 	= $(addprefix $(SRC_DIR)/builtins/, blt_cd_in.c blt_echo_in.c blt_env_in.c blt_exit_in.c \
+					blt_export_in.c blt_export_utils_in.c blt_export_utils2_in.c blt_pwd_in.c blt_run_in.c blt_unset_in.c)
 UTILS_SRCS		= $(addprefix $(SRC_DIR)/utils/, err_msg.c signals.c)
 SRCS 			= $(SRC_DIR)/main.c $(PARSING_SRCS) $(UTILS_SRCS) $(EXECUTION_SRCS) $(BUILTINS_SRCS)
 OBJS 			= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))

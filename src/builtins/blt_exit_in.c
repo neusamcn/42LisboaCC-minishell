@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/25 18:17:36 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/25 20:30:31 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	valid_or_not(t_cmd_line *arg_line)
 		return (NON_VALID);
 	while (arg[i] >= MINIM_DIG && arg[i] <= MAXIM_DIG)
 		i++;
-	while (ft_strchr(TAB, arg[i]))
+	while (ft_strchr(WHITESPACE, arg[i]))
 		i++;
 	if (arg[i] == '\0')
 		return (VALID);

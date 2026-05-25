@@ -1,5 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_export_utils2_in.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/25 20:27:41 by megiazar          #+#    #+#             */
+/*   Updated: 2026/05/25 20:36:01 by megiazar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static char	*smash_key_val(char *k, char *v)
+#include "../../include/execution.h"
+#include "../../include/parsing.h"
+
+char	*smash_key_val(char *k, char *v)
 {
 	char	*smashed;
 
@@ -9,7 +23,7 @@ static char	*smash_key_val(char *k, char *v)
 	return (smashed);
 }
 
-static int	where_is_it(char **envp, char *k)
+int	where_is_it(char **envp, char *k)
 {
 	int		pos;
 	size_t	klen;
@@ -22,14 +36,14 @@ static int	where_is_it(char **envp, char *k)
 	return (-1);
 }
 
-static char	**swap_it(char **envp, int pos, char *smashed)
+char	**swap_it(char **envp, int pos, char *smashed)
 {
 	free(envp[pos]);
 	envp[pos] = smashed;
 	return (envp);
 }
 
-static char	**shove_it_in(char **envp, char *smashed, int sz)
+char	**shove_it_in(char **envp, char *smashed, int sz)
 {
 	char	**newenvp;
 

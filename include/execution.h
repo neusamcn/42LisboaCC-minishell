@@ -34,7 +34,7 @@
 # define VALID 0
 # define NON_VALID 1
 # define PLUS_OR_MINUS "+-" 
-# define TAB " \t"
+# define WHITESPACE " \t"
 # define MINIM_DIG '0' 
 # define MAXIM_DIG '9'
 # define OK 0
@@ -120,10 +120,15 @@ int		myexport(t_cmd_line *exp, t_shelly *shelly);
 int		parse_exp_arg(char *arg);
 bool	exp_argv(char c, int j);
 char	**exp_flag(t_export *exp);
-char	**exp_var(t_export *mini, char *key);
-char	**exp_minienv(t_export *mini, char *key, char *value, int i);
+char	**exp_var(t_export *mini, char *k);
+char	**exp_minienv(t_export *mini, char *k, char *v, int sz);
 void	pexp_var(char *env_entry);
 void	pexp(t_shelly *shelly);
+char	*smash_key_val(char *k, char *v);
+int		where_is_it(char **envp, char *k);
+char	**swap_it(char **envp, int pos, char *smashed);
+char	**shove_it_in(char **envp, char *smashed, int sz);
+
 
 /*									PWD								*/
 int		mypwd(t_cmd_line *cmd, t_shelly *shelly);

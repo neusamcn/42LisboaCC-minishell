@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_utils_in.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/25 19:36:54 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/25 20:35:57 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
+#include "../../include/parsing.h"
 
 bool	exp_argv(char c, int j)
 {

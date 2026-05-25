@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/25 19:32:23 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/25 20:35:54 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
+#include "../../include/parsing.h"
 
 // if no args then PRITN env (instead of returning it)
 // checking if the character is valid
