@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_hd_ecution.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 13:43:35 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:36:56 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	child_hd(t_redirects *r, int pipefd[2], t_shelly *shelly)
 
 	close(pipefd[0]);
 	set_heredoc_signals(shelly);
+	// tty_sv = (tcgetattr(STDIN_FILENO, &s_tty) == 0);
 	rl_catch_signals = 0;
 	while (1)
 	{
@@ -93,15 +94,25 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 		return ;
 	}
 	if (pid == 0)
+	{
 		child_hd(redir, pipefd, shelly);
+		exit(0);	
+	}
 	sig_mode(MNDWAIT, shelly);
 	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+	{
+		//rl_replace_line("", 0);
+		//write(1, "\n", 1);
+		//rl_on_new_line();
+		rl_redisplay();
+	}
 	sig_mode(INTERACTIVE, shelly);
 	if (tty_sv)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &s_tty);
 	close(pipefd[1]);
 	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
+	|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
 	{
 		close(pipefd[0]);
 		redir->xd_fd = -1;
