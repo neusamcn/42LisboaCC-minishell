@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 15:32:11 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 11:46:18 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:42:12 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ int	myexport(t_cmd_line *exp, t_shelly *shelly)
 	t_export	ex;
 
 	if (exp->cmds[1] == NULL)
-	{
-		pexp(shelly);
-		return (OK);
-	}
+		return (pexp(shelly), OK);
 	i = 0;
 	oops_error = 0;
 	while (exp->cmds[++i])

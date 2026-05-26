@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 13:33:14 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:43:35 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,24 @@ void	write_hd_line(char *msg, int fd, t_shelly *shelly, bool quoted)
 	free(msg);
 }
 
-void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
+void	child_hd(t_redirects *r, int pipefd[2], t_shelly *shelly)
 {
-	char	*msg;
+	char	*m;
 
 	close(pipefd[0]);
-	//sig_mode(CHILD, shelly);
 	set_heredoc_signals(shelly);
 	rl_catch_signals = 0;
 	while (1)
 	{
-		msg = readline("> ");
-		if (!msg || g_signal_stat == 130
-			|| ft_strcmp(msg, redir->delimiter) == 0)
+		m = readline("> ");
+		if (!m || g_signal_stat == 130 || ft_strcmp(m, r->delimiter) == 0)
 		{
-			if (!msg && g_signal_stat != 130)
-				mndp_log_err(HD, redir->delimiter);
-			free(msg);
+			if (!m && g_signal_stat != 130)
+				mndp_log_err(HD, r->delimiter);
+			free(m);
 			break ;
 		}
-		write_hd_line(msg, pipefd[1], shelly, redir->heredoc_quoted);
+		write_hd_line(m, pipefd[1], shelly, r->heredoc_quoted);
 	}
 	close(pipefd[1]);
 	free_cmd_line(shelly->cur_cmd);
@@ -108,8 +106,6 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 		close(pipefd[0]);
 		redir->xd_fd = -1;
 		set_signal_stat(130);
-		//redraw_prompt();
-		//write(STDOUT_FILENO, "\n", 1);
 		return ;
 	}
 	redir->xd_fd = dup(pipefd[0]);
