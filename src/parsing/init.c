@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 16:01:43 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:12:59 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static char	*input_strs_join(char *input_str, char *extra_input)
 	if (!tmp)
 		return (NULL);
 	full_input = ft_strjoin(tmp, extra_input);
-	// add_ptr_shelly(full_input); // TODO: review if needed
 	free(tmp);
 	return (full_input);
 }
@@ -101,7 +100,10 @@ t_shelly	*init(char **envp)
 
 	shelly = set_shellyenvp(envp);
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+	{
+		ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
 		read_eval_print_loop(shelly);
+	}
 	else
 		non_interactive_mode(shelly);
 	return (shelly);

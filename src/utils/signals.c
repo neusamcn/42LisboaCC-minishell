@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 16:17:45 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:04:22 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	set_signal_stat(int value)
 	g_signal_stat = value;
 }
 
-static void	set_sigaction(int signo, void (*handler)(int), int flags, t_shelly *shelly)
+static void	set_sigaction(int signo, void (*handler)(int), int flags,
+		t_shelly *shelly)
 {
 	struct sigaction	sa;
 

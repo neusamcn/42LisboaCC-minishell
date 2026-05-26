@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/25 23:34:53 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:01:06 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 	return (*st.xpndd_word);
 }
 
-static t_token	*rm_empty_xpnsn(t_token *tkn)
+t_token	*rm_empty_xpnsn(t_token *tkn)
 {
 	t_token	*next;
 	t_token	*curr;
@@ -126,47 +126,4 @@ static t_token	*rm_empty_xpnsn(t_token *tkn)
 		free(tkn->value);
 	free(tkn);
 	return (next);
-}
-
-t_token	*expand_params(t_token *tokens, t_shelly *shelly)
-{
-	char	*xpndd_word;
-	t_token	*t;
-	t_token	*head;
-
-	if (!tokens)
-		return (NULL);
-	t = tokens;
-	head = tokens;
-	while (t)
-	{
-		if (t->word == CMD || t->word == QMARK2 || t->word == QMARK1)
-		{
-			if (t->previous && t->previous->type == REDIR
-				&& t->previous->redir == HEREDOC)
-			{
-				t = t->next;
-				continue ;
-			}
-			xpndd_word = word_param_expansion(t->value, shelly);
-			if (!xpndd_word)
-				t->word_xpndd = -1;
-			else if (xpndd_word[0] == 0 && t->word == CMD && t->next)
-			{
-				free(xpndd_word);
-				if (head == t)
-					head = t->next;
-				t = rm_empty_xpnsn(t);
-				continue ;
-			}
-			else
-			{
-				free(t->value);
-				t->value = xpndd_word;
-				t->word_xpndd = 1;
-			}
-		}
-		t = t->next;
-	}
-	return (head);
 }

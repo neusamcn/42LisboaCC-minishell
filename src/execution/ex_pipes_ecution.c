@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 15:47:25 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:00:13 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static pid_t	fork_pl(t_cmd_line *pl, t_shelly *shelly)
 	if (pid == -1)
 		return (perror("fork"), -1);
 	if (pid == 0)
-		child_ex(0, pl, shelly);
+		child_ex(pl, shelly);
 	if (pl->next)
 		close(pl->pipefd[1]);
 	sig_mode(MNDWAIT, shelly);
@@ -129,11 +129,9 @@ static void	child_ex_execve(t_cmd_line *kid, t_shelly *shelly)
 	exit(127);
 }
 
-void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
+void	child_ex(t_cmd_line *kid, t_shelly *shelly)
 {
 	sig_mode(CHILD, shelly);
-	path = NULL;
-	(void)path; // Milena, I added this to be able to compile
 	child_ex_fds(kid, shelly);
 	if (!kid->cmds || !kid->cmds[0])
 	{

@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 16:24:04 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:09:42 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,13 @@ void	child_hd(t_redirects *r, int pipefd[2], t_shelly *shelly)
 	exit(0);
 }
 
-static void	mndhd_wait(t_redirects *r, int pipefd[2], pid_t pid,
-	t_shelly *shelly, struct termios *s_tty, int tty_sv)
+static void	mndhd_wait(t_redirects *r, t_shelly *shelly, struct termios *s_tty,
+		int tty_sv)
 {
-	int status;
-	
+	int		status;
+	pid_t	pid;
+	int		pipefd[2];
+
 	sig_mode(MNDWAIT, shelly);
 	waitpid(pid, &status, 0);
 	sig_mode(INTERACTIVE, shelly);
@@ -71,7 +73,7 @@ static void	mndhd_wait(t_redirects *r, int pipefd[2], pid_t pid,
 		tcsetattr(STDIN_FILENO, TCSADRAIN, s_tty);
 	close(pipefd[1]);
 	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
+		|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
 	{
 		close(pipefd[0]);
 		r->xd_fd = -1;
@@ -86,8 +88,8 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 {
 	pid_t			pid;
 	int				pipefd[2];
-	struct termios 	s_tty;
-	int    			tty_sv;
+	struct termios	s_tty;
+	int				tty_sv;
 
 	tty_sv = (tcgetattr(STDIN_FILENO, &s_tty) == 0);
 	if (pipe(pipefd) == -1)
@@ -102,7 +104,7 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 	if (pid == 0)
 	{
 		child_hd(redir, pipefd, shelly);
-		exit(0);	
+		exit(0);
 	}
-	mndhd_wait(redir, pipefd, pid, shelly, &s_tty, tty_sv);
+	mndhd_wait(redir, pipefd, shelly, &s_tty, tty_sv);
 }

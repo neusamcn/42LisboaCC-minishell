@@ -34,8 +34,6 @@
 # define SHELLYPEERS 0
 # define VALID 0
 # define NON_VALID 1
-# define PLUS_OR_MINUS "+-" 
-# define WHITESPACE " \t"
 # define MINIM_DIG '0' 
 # define MAXIM_DIG '9'
 # define OK 0
@@ -73,7 +71,7 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly);
 int		mommy_n_father(t_cmd_line *s, t_shelly *shelly);
 int		lonely_blt(t_cmd_line *s, t_shelly *shelly);
 int		are_you_builtin(t_cmd_line *cmd_line);
-void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly);
+void	child_ex(t_cmd_line *kid, t_shelly *shelly);
 void	child_ex_fds(t_cmd_line *kid, t_shelly *shelly);
 void	single_child_ex(t_cmd_line *kid, t_shelly *shelly);
 int		mndwait(pid_t last_p, int cmd_nmb);
@@ -83,14 +81,12 @@ void	lnly_ch_errmsg(t_cmd_line *kid, t_shelly *shelly);
 void	writehd(char *msg, int fd, t_shelly *shelly, bool quoted);
 char	*readhd(void);
 
-
 /*									EXECUTION UTILS					*/
 bool	if_redir(t_cmd_line *s);
 char	*abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 void	store_fds(int read_save, int write_save);
 int		dups_saved(int *read_s, int *write_s);
 void	child_error(t_cmd_line *kid, t_shelly *shelly);
-
 
 /*									REDIRECTIONs					*/
 bool	which_redir_type(t_cmd_line *cmd);
@@ -135,7 +131,6 @@ char	*smash_key_val(char *k, char *v);
 int		where_is_it(char **envp, char *k);
 char	**swap_it(char **envp, int pos, char *smashed);
 char	**shove_it_in(char **envp, char *smashed, int sz);
-
 
 /*									PWD								*/
 int		mypwd(t_cmd_line *cmd, t_shelly *shelly);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 13:32:50 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:51:19 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	valid_or_not(t_cmd_line *arg_line)
 		i++;
 	if (arg[i] < MINIM_DIG || arg[i] > MAXIM_DIG)
 		return (NON_VALID);
-	while (arg[i] < MINIM_DIG && arg[i] > MAXIM_DIG)
+	while (arg[i] >= MINIM_DIG && arg[i] <= MAXIM_DIG)
 	{
 		i++;
 		d++;
@@ -63,12 +63,12 @@ int	myexit(t_cmd_line *argv, t_shelly *shelly)
 	if (argv->cmds[2] != NULL)
 	{
 		mndp_log_err("too many arguments", argv->cmds[1]);
-		return (KO);
+		return (1);
 	}
 	if (valid_or_not(argv) == VALID)
 	{
 		ft_putstr_fd("exit\n", 1);
-		exit_cleanup(((ft_atoi(argv->cmds[1]) % 256) + 256) % 256, shelly);
+		exit_cleanup(ft_atoi(argv->cmds[1]) % 256, shelly);
 	}
 	else
 	{

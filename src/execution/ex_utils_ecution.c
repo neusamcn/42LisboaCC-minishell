@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 15:46:49 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:09:57 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	store_fds(int read_save, int write_save)
 	close(write_save);
 }
 
-int dups_saved(int *read_s, int *write_s)
+int	dups_saved(int *read_s, int *write_s)
 {
 	*read_s = dup(STDIN_FILENO);
 	*write_s = dup(STDOUT_FILENO);
@@ -62,4 +62,3 @@ int dups_saved(int *read_s, int *write_s)
 	}
 	return (OK);
 }
-

@@ -6,7 +6,7 @@
 #    By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/10 15:37:02 by ncruz-ne          #+#    #+#              #
-#    Updated: 2026/05/26 16:19:42 by megiazar         ###   ########.fr        #
+#    Updated: 2026/05/26 16:45:03 by megiazar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ_DIR 		= obj
 
 PARSING_SRCS	= $(addprefix $(SRC_DIR)/parsing/, expansion.c expansion_utils.c init.c \
 					parser.c prompt.c shellyenvp.c syntax_check.c syntax_utils.c \
-					tokenize.c tokenize_utils.c init_helpers.c)
+					tokenize.c tokenize_utils.c init_helpers.c expand_params.c)
 EXECUTION_SRCS	= $(addprefix $(SRC_DIR)/execution/, ex_frees_ecution.c ex_path_ecution.c \
 					ex_pipes_ecution.c ex_redir_ecution.c ex_signals_ecution.c \
 					ex_utils_ecution.c execution.c free_fds.c ex_child_utils_ecution.c \

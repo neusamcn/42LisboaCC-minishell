@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/25 19:41:24 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:55:02 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	main(int ac, char **av, char **envp)
 			ORCHID"dir /minishell"COLOR_RESET" root.", STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
-	//ft_printf(LIGHT_PINK"%s"COLOR_RESET, BANNER);
 	shelly = init(envp);
 	exit_cleanup(EXIT_SUCCESS, shelly);
 }

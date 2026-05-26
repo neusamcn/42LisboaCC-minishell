@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 00:04:41 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 13:16:22 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:12:53 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static char	*build_pretty_prompt(char *user, char *prompt, char *cwd)
 	while (tmp_prompt[i])
 		len += ft_strlen(tmp_prompt[i++]);
 	full_prompt = ft_calloc_protec(len + 1, sizeof(char));
-	// add_ptr_shelly(full_prompt); // TODO: review if needed
 	i = 0;
 	while (tmp_prompt[i])
 		ft_strlcat(full_prompt, tmp_prompt[i++], len + 1);

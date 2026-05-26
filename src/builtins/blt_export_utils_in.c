@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/25 20:35:57 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:06:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	exp_argv(char c, int j)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
 		return (VALID);
-	if	(j > 0 && c >= MINIM_DIG && c <= MAXIM_DIG) 
+	if (j > 0 && c >= MINIM_DIG && c <= MAXIM_DIG)
 		return (VALID);
 	if (j > 0 && c == '=')
 		return (VALID);

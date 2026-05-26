@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 16:01:26 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:07:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 /* Standard libs */
 # include <linux/limits.h>
 
-/* Structs */ 
-
+/* Structs */
 typedef struct s_exp_state
 {
 	char	**xpndd_word;
@@ -70,12 +69,14 @@ void			handle_in_single(char *tkn_val, int *i, t_exp_state *st);
 void			handle_unquoted(char *tkn_val, int *i, t_exp_state *st,
 					t_shelly *shelly);
 char			*word_param_expansion(char *tkn_val, t_shelly *shelly);
+t_token			*xpnd_word_tkn(t_token *t, t_token **head, t_shelly *shelly);
+t_token			*rm_empty_xpnsn(t_token *tkn);
 
 /* Parser */
 t_cmd_line		*parser(t_token *tokens);
 
 /* Utils */
-void	readevalprint_input(char *input_str, t_shelly *shelly);
-void	noninteractive_readevalprint_input(char *line, t_shelly *shelly);
+void			readevalprint_input(char *input_str, t_shelly *shelly);
+void			noninteractive_readevalprint_input(char *l, t_shelly *shelly);
 
 #endif

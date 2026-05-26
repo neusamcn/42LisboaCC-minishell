@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   shellyenvp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:16:02 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/25 21:41:26 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:10:16 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-char *find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
+char	*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key)
 {
 	size_t	search_key_len;
 	int		i;
