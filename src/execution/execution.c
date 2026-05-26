@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 15:30:41 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:50:49 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,16 @@ void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 	run_xds(cmds, shelly);
 	if (get_signal_stat() == 130)
 		return ;
-	if (!cmds || !cmds->cmds || !cmds->cmds[0] || cmds->cmds[0][0] == '\0')
-		no_cmds_execution(cmds, shelly);
-	else if (cmds->next == NULL && are_you_builtin(cmds) == BUILTINS)
-		g_signal_stat = lonely_blt(cmds, shelly);
-	else if (cmds->next == NULL)
-		g_signal_stat = mommy_n_father(cmds, shelly);
-	else
+	if (!cmds)
+		return ;
+	if (cmds->next)
 		ex_pipeline_ec(cmds, shelly);
+	else if (!cmds->cmds || !cmds->cmds[0] || cmds->cmds[0][0] == '\0')
+		no_cmds_execution(cmds, shelly);
+	else if (are_you_builtin(cmds) == BUILTINS)
+		g_signal_stat = lonely_blt(cmds, shelly);
+	else
+		g_signal_stat = mommy_n_father(cmds, shelly);
 }
 
 int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
