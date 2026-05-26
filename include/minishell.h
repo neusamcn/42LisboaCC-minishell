@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 21:49:13 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 00:55:34 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,18 @@ void	mndp_log_err(char *msg, char *cmd);
 void	syntax_err_msg(char *err_token);
 
 /* Signal handling */
-void	sig_mode(int md);
+void	sig_mode(int md, t_shelly *shelly);
 void	set_signal_stat(int value);
+void	redraw_prompt(void);
+void	set_heredoc_signals(t_shelly *shelly);
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);
+void	add_ptr_shelly(void *ptr, t_shelly *shelly);
+
+/* Wrapper functions - maybe Protected std functions? */
+char	*getcwd_protec(char *buf, size_t size, t_shelly *shelly);
+void	*malloc_protec(size_t size, t_shelly *shelly);
+void	*ft_calloc_protec(size_t nmemb, size_t size);
 
 #endif

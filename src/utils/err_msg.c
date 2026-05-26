@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 13:22:00 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:50:49 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	mndp_exec_error(char *cmd)
 	else if (errno == EISDIR)
 	{
 		mndp_log_err("Is a directory", cmd);
-		return (126);	
+		return (126);
 	}
 	else
 		mndp_log_err(strerror(errno), cmd);

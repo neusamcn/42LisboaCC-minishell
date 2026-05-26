@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wrappers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 23:44:25 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 19:44:52 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:36:51 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parsing.h"
+#include "../../include/minishell.h"
 
 char	*getcwd_protec(char *buf, size_t size, t_shelly *shelly)
 {

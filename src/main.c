@@ -3,37 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:47:13 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 13:00:42 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:41:24 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 #include "../include/execution.h"
-
-void	exit_cleanup(int exit_status, t_shelly *shelly)
-{
-	int	fd;
-
-	rl_clear_history();
-	fd = 3;
-	while (fd < 10)
-	{
-		if (fcntl(fd, F_GETFD) != -1)
-			close(fd);
-		fd++;
-	}
-	if (shelly)
-	{
-		free_tkn(shelly->cur_tok);
-		free_cmd_line(shelly->cur_cmd);
-		free_copyenvp(shelly);
-		free(shelly);
-	}
-	exit(exit_status);
-}
 
 int	main(int ac, char **av, char **envp)
 {

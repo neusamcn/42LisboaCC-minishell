@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 18:09:11 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/24 18:07:58 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/25 23:54:06 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	cpy_dollar_literal(char *tkn_val, int i, char **xpndd_word)
 	buf[1] = '\0';
 	buf[0] = tkn_val[i];
 	*xpndd_word = ft_strjoin_free(*xpndd_word, buf);
+	// add_ptr_shelly(xpndd_word); // TODO: review if needed
 	i++;
 	while (ft_isalnum(tkn_val[i]) || tkn_val[i] == '_'
 		|| tkn_val[i] == '?')
@@ -39,15 +40,15 @@ void	handle_in_double(char *tkn_val, int *i, t_exp_state *st,
 	if (tkn_val[*i] == '"')
 		st->in_double = false;
 	else if (tkn_val[*i] == '$' && tkn_val[*i + 1]
-			&& (ft_isalnum(tkn_val[*i + 1]) || tkn_val[*i + 1] == '_'
+		&& (ft_isalnum(tkn_val[*i + 1]) || tkn_val[*i + 1] == '_'
 			|| tkn_val[*i + 1] == '?'))
-		{
-			if (shelly)
-				*i = xpnd_var(tkn_val, *i, st->xpndd_word, shelly);
-			else
-				*i = cpy_dollar_literal(tkn_val, *i, st->xpndd_word);
-			return ;
-		}
+	{
+		if (shelly)
+			*i = xpnd_var(tkn_val, *i, st->xpndd_word, shelly);
+		else
+			*i = cpy_dollar_literal(tkn_val, *i, st->xpndd_word);
+		return ;
+	}
 	else
 	{
 		buf[0] = tkn_val[*i];
@@ -67,6 +68,7 @@ void	handle_in_single(char *tkn_val, int *i, t_exp_state *st)
 	{
 		buf[0] = tkn_val[*i];
 		*st->xpndd_word = ft_strjoin_free(*st->xpndd_word, buf);
+		// add_ptr_shelly(*st->xpndd_word); // TODO: review if needed
 	}
 	(*i)++;
 }
@@ -79,9 +81,8 @@ void	handle_unquoted(char *tkn_val, int *i, t_exp_state *st,
 	if (tkn_val[*i] == '"')
 		return (st->in_double = true, (void)(*i)++);
 	if (tkn_val[*i] == '$' && tkn_val[*i + 1]
-		&& (ft_isalnum(tkn_val[*i + 1])
-		|| tkn_val[*i + 1] == '_'
-		|| tkn_val[*i + 1] == '?'))
+		&& (ft_isalnum(tkn_val[*i + 1]) || tkn_val[*i + 1] == '_'
+			|| tkn_val[*i + 1] == '?'))
 	{
 		if (shelly)
 			*i = xpnd_var(tkn_val, *i, st->xpndd_word, shelly);

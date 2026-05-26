@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 22:02:27 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 00:57:26 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
 	run_xds(cmds, shelly);
+	if (get_signal_stat() == 130)
+		return ;
 	if (!cmds || !cmds->cmds || !cmds->cmds[0] || cmds->cmds[0][0] == '\0')
 		no_cmds_execution(cmds, shelly);
 	else if (cmds->next == NULL && are_you_builtin(cmds) == BUILTINS)
@@ -100,10 +102,10 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 		store_fds(read_save, write_save);
 		return (true);
 	}
-	sig_mode(BLT_EXECUTING);
+	sig_mode(BLT_EXECUTING, shelly);
 	status = r_bltn(s, shelly);
 	store_fds(read_save, write_save);
-	sig_mode(INTERACTIVE);
+	sig_mode(INTERACTIVE, shelly);
 	set_signal_stat(status);
 	return (status);
 }
@@ -119,9 +121,9 @@ int	mommy_n_father(t_cmd_line *s_cmd, t_shelly *shelly)
 		return (perror("fork"), 1);
 	if (only_child == false)
 		single_child_ex(s_cmd, shelly);
-	sig_mode(MNDWAIT);
+	sig_mode(MNDWAIT, shelly);
 	waitpid(only_child, &status, 0);
-	sig_mode(INTERACTIVE);
+	sig_mode(INTERACTIVE, shelly);
 	return (status_check(status));
 }
 
@@ -131,7 +133,7 @@ void	single_child_ex(t_cmd_line *kid, t_shelly *shelly)
 	char	**envp;
 	char	**argv;
 
-	sig_mode(CHILD);
+	sig_mode(CHILD, shelly);
 	if (which_redir_type(kid) != false)
 		lonely_child_exit(shelly, NULL, 1);
 	path = abs_or_rel_p(kid, shelly);

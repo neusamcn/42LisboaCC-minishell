@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 22:04:20 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/25 23:25:32 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 /* Standard libs */
 // TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
-//# include <linux/limits.h>
+# include <linux/limits.h>
 
 /* Structs *//* 
 typedef struct s_syntax_err
@@ -77,11 +77,6 @@ typedef struct s_cmd
 }	t_cmd;
 
 // TODO: review functions that should be general =>> minishell.h & =/= files
-/* Wrapper functions - maybe Protected std functions? */
-char			*getcwd_protec(char *buf, size_t size, t_shelly *shelly);
-void			*malloc_protec(size_t size, t_shelly *shelly);
-void			*ft_calloc_protec(size_t nmemb, size_t size);
-
 /* Prompt & envp functions */
 t_shelly		*init(char **envp);
 char			*put_prompt(t_shelly *shelly, char *prompt);

@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 22:21:53 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/25 23:12:04 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_tkns(t_token *tkn)
 				printf("WORD, CMD\n");
 			else if (curr_tkn->word == QMARK1)
 				printf("WORD, QMARK1\n");
-			else if (curr_tkn->word == 	QMARK2)
+			else if (curr_tkn->word == QMARK2)
 				printf("WORD, QMARK2\n");
 			else
 				printf("error!\n");
@@ -82,6 +82,7 @@ static char	*input_strs_join(char *input_str, char *extra_input)
 	if (!tmp)
 		return (NULL);
 	full_input = ft_strjoin(tmp, extra_input);
+	// add_ptr_shelly(full_input); // TODO: review if needed
 	free(tmp);
 	return (full_input);
 }
@@ -144,7 +145,7 @@ static void	read_eval_print_loop(t_shelly *shelly)
 {
 	char	*input_str;
 
-	sig_mode(INTERACTIVE);
+	sig_mode(INTERACTIVE, shelly);
 	while (1)
 	{
 		input_str = put_prompt(shelly, "shelly");
@@ -167,7 +168,7 @@ static void	non_interactive_mode(t_shelly *shelly)
 	t_token		*tokens;
 	t_cmd_line	*cmd_line;
 
-	sig_mode(CHILD);
+	sig_mode(CHILD, shelly);
 	while (1)
 	{
 		tokens = NULL;

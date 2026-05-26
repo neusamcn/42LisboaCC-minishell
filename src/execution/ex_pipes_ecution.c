@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 20:39:25 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/25 20:54:02 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static pid_t	fork_pl(t_cmd_line *pl, t_shelly *shelly)
 		child_ex(0, pl, shelly);
 	if (pl->next)
 		close(pl->pipefd[1]);
-	sig_mode(MNDWAIT);
+	sig_mode(MNDWAIT, shelly);
 	return (pid);
 }
 
@@ -121,6 +121,7 @@ static void	child_ex_execve(t_cmd_line *kid, t_shelly *shelly)
 		free(shelly);
 		exit(127);
 	}
+	add_ptr_shelly(path, shelly); // TODO: Milena, pls onfirm if OK to add here
 	argv = kid->cmds;
 	kid->cmds = NULL;
 	envp = shelly->envp;
@@ -129,13 +130,14 @@ static void	child_ex_execve(t_cmd_line *kid, t_shelly *shelly)
 	babies_cleanup(shelly, NULL);
 	free(shelly);
 	execve(path, argv, envp);
+	// TODO: Milena, should there be a free(path); here?
 	mndp_log_err("execution failed!\n", argv[0]);
 	exit(127);
 }
 
 void	child_ex(char *path, t_cmd_line *kid, t_shelly *shelly)
 {
-	sig_mode(CHILD);
+	sig_mode(CHILD, shelly);
 	path = NULL;
 	(void)path; // Milena, I added this to be able to compile
 	child_ex_fds(kid, shelly);

@@ -6,7 +6,7 @@
 /*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 22:41:15 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/24 18:09:20 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/25 20:20:46 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	append_redir(t_cmd_line *cmd_line, t_redirects *new_r)
 	{
 		last = cmd_line->redir;
 		while (last->next)
-		last = last->next;
+			last = last->next;
 		last->next = new_r;
 	}
 }
@@ -61,7 +61,7 @@ static void	get_redir(t_token *tkns, t_cmd_line *cmd_line)
 		new_r->delimiter = word_param_expansion(tkns->next->value, NULL);
 	}
 	else if ((tkns->redir == IN || tkns->redir == OUT
-		|| tkns->redir == APPEND) && tkns->next)
+			|| tkns->redir == APPEND) && tkns->next)
 		new_r->filename = ft_strdup(tkns->next->value);
 	append_redir(cmd_line, new_r);
 }

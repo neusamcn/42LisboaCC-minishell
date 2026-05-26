@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/22 19:47:13 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 00:56:18 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	set_signal_stat(int value)
 }
 
 // TODO: add *minishell to args?
-static void	set_sigaction(int signo, void (*handler)(int), int flags)
+static void	set_sigaction(int signo, void (*handler)(int), int flags, t_shelly *shelly)
 {
 	struct sigaction	sa;
 
@@ -37,18 +37,47 @@ static void	set_sigaction(int signo, void (*handler)(int), int flags)
 	if (sigaction(signo, &sa, NULL) == -1)
 	{
 		print_err_msg("sigaction failed");
-		exit_cleanup(EXIT_FAILURE, NULL);
+		exit_cleanup(EXIT_FAILURE, shelly);
 	}
+}
+
+void	redraw_prompt(void)
+{
+	ft_putendl_fd("", STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 static void	sigint_prompt_handler(int signal)
 {
 	(void)signal;
 	set_signal_stat(130);
-	ft_putendl_fd("", STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	redraw_prompt();
+}
+
+static void	hd_sigint(int sig)
+{
+	(void)sig;
+	set_signal_stat(130);
+	// redraw_prompt();
+	rl_done = 1;
+}
+
+void	set_heredoc_signals(t_shelly *shelly)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = hd_sigint;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		print_err_msg("heredoc sigaction failed");
+		exit_cleanup(EXIT_FAILURE, shelly);
+	}
 }
 
 /* 
@@ -77,26 +106,26 @@ If you see strange crashes, switch to flag-based approach.
 // 	set_sigaction(SIGQUIT, SIG_DFL, 0);
 // }
 
-void	sig_mode(int md)
+void	sig_mode(int md, t_shelly *shelly)
 {
 	if (md == INTERACTIVE)
 	{
-		set_sigaction(SIGINT, sigint_prompt_handler, 0);
-		set_sigaction(SIGQUIT, SIG_IGN, 0);
+		set_sigaction(SIGINT, sigint_prompt_handler, 0, shelly);
+		set_sigaction(SIGQUIT, SIG_IGN, 0, shelly);
 	}
 	else if (md == BLT_EXECUTING)
 	{
-		set_sigaction(SIGINT, sigint_glob, 0);
-		set_sigaction(SIGQUIT, SIG_IGN, 0);
+		set_sigaction(SIGINT, sigint_glob, 0, shelly);
+		set_sigaction(SIGQUIT, SIG_IGN, 0, shelly);
 	}
 	else if (md == CHILD)
 	{
-		set_sigaction(SIGINT, SIG_DFL, 0);
-		set_sigaction(SIGQUIT, SIG_DFL, 0);
+		set_sigaction(SIGINT, SIG_DFL, 0, shelly);
+		set_sigaction(SIGQUIT, SIG_DFL, 0, shelly);
 	}
 	else if (md == MNDWAIT)
 	{
-		set_sigaction(SIGINT, SIG_IGN, 0);
-		set_sigaction(SIGQUIT, SIG_IGN, 0);
+		set_sigaction(SIGINT, SIG_IGN, 0, shelly);
+		set_sigaction(SIGQUIT, SIG_IGN, 0, shelly);
 	}
 }

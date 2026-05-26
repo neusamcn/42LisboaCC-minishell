@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/24 11:44:52 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 20:57:26 by ncruz-ne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	exit_valid_var(t_cmd_line *arg_line)
 
 int	myexit(t_cmd_line *argv, t_shelly *shelly)
 {
-	sig_mode(INTERACTIVE);
+	sig_mode(INTERACTIVE, shelly);
 	if (argv->cmds[1] == NULL)
 	{
 		ft_putstr_fd("exit\n", 1);
