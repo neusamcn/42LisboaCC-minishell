@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 00:55:34 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 10:28:08 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ typedef struct s_shelly
 	char		**envp;
 	t_cmd_line	*cur_cmd;
 	t_token		*cur_tok;
-	int			fds_saved[2]; // put this one as -1
+	//int			fds_saved[2]; // put this one as -1
 	void		**malloc_ptrs; // TODO: delete if not used
 }	t_shelly;
 

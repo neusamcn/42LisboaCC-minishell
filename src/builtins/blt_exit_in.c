@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/25 20:57:26 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 10:38:48 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,24 @@ exit abc      an err "numeric argument required"
 exit 1 2     an err "too many arguments" */
 // the formula for the negatibe number will be ((n % 256) + 256) % 256
 
-static int	exit_valid_var(t_cmd_line *arg_line)
+static int	valid_or_not(t_cmd_line *arg_line)
 {
-	int	i;
+	int		i;
+	char	*arg;
 
 	i = 0;
-	while (arg_line->cmds[1][i] == ' ' || arg_line->cmds[1][i] == '\t' ||
-			arg_line->cmds[1][i] == '+' || arg_line->cmds[1][i] == '-')
+	arg = arg_line->cmds[1];
+	while (arg[i] == ' ' || arg[i] == TAB || ft_strchr(PLUS_OR_MINUS, arg[i]))
 		i++;
-	if ((arg_line->cmds[1][i] < '0' || arg_line->cmds[1][i] > '9'))
-		return (0);
-	while (arg_line->cmds[1][i] >= '0' && arg_line->cmds[1][i] <= '9')
+	if (arg[i] < MINIM_DIG || arg[i] > MAXIM_DIG)
+		return (NON_VALID);
+	while (arg[i] >= MINIM_DIG && arg[i] <= MAXIM_DIG)
 		i++;
-	while (arg_line->cmds[1][i] == ' ' || arg_line->cmds[1][i] == '\t')
+	while (ft_strchr(WHITESPACE, arg[i]))
 		i++;
-	return (arg_line->cmds[1][i] == '\0');
+	if (arg[i] == '\0')
+		return (VALID);
+	return (NON_VALID);
 }
 
 int	myexit(t_cmd_line *argv, t_shelly *shelly)
@@ -52,18 +55,18 @@ int	myexit(t_cmd_line *argv, t_shelly *shelly)
 	}
 	if (argv->cmds[2] != NULL)
 	{
-		mndp_log_err("bash: exit: too many arguments", argv->cmds[1]);
-		return (1);
+		mndp_log_err("too many arguments", argv->cmds[1]);
+		return (KO);
 	}
-	if (exit_valid_var(argv) == 1)
+	if (valid_or_not(argv) == VALID)
 	{
 		ft_putstr_fd("exit\n", 1);
 		exit_cleanup(ft_atoi(argv->cmds[1]) % 256, shelly);
 	}
 	else
 	{
-		mndp_log_err("bash: exit %s: needed a numeric arg", argv->cmds[1]);
+		mndp_log_err("numeric argumedn requiered", argv->cmds[1]);
 		return (2);
 	}
-	return (false);
+	return (OK);
 }
