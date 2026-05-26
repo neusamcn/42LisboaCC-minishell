@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 13:03:12 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:32:50 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	valid_or_not(t_cmd_line *arg_line)
 		i++;
 	if (arg[i] < MINIM_DIG || arg[i] > MAXIM_DIG)
 		return (NON_VALID);
-	while (arg[i] >= MINIM_DIG && arg[i] <= MAXIM_DIG)
+	while (arg[i] < MINIM_DIG && arg[i] > MAXIM_DIG)
 	{
 		i++;
 		d++;

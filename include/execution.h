@@ -28,6 +28,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <string.h>
+# include <termios.h>
 
 # define SHELLYMATES 0
 # define SHELLYPEERS 0
@@ -40,7 +41,7 @@
 # define OK 0
 # define KO 1
 # define CD "cd"
-# define ECHO "echo" 
+# define ECHO_BLT "echo" 
 # define EXIT "exit"
 # define PWD "pwd" 
 # define ENV "env" 

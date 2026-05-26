@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 12:29:29 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:33:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,13 @@ void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
 
 void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 {
-	pid_t	pid;
-	int		status;
-	int		pipefd[2];
+	pid_t			pid;
+	int				status;
+	int				pipefd[2];
+	struct termios 	s_tty;
+	int    			tty_sv;
 
+	tty_sv = (tcgetattr(STDIN_FILENO, &s_tty) == 0);
 	if (pipe(pipefd) == -1)
 		return ;
 	pid = fork();
@@ -96,6 +99,8 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 	sig_mode(MNDWAIT, shelly);
 	waitpid(pid, &status, 0);
 	sig_mode(INTERACTIVE, shelly);
+	if (tty_sv)
+		tcsetattr(STDIN_FILENO, TCSADRAIN, &s_tty);
 	close(pipefd[1]);
 	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
@@ -104,7 +109,7 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 		redir->xd_fd = -1;
 		set_signal_stat(130);
 		//redraw_prompt();
-		write(STDOUT_FILENO, "\n", 1);
+		//write(STDOUT_FILENO, "\n", 1);
 		return ;
 	}
 	redir->xd_fd = dup(pipefd[0]);

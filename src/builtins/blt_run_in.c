@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_run_in.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 21:00:17 by megi              #+#    #+#             */
-/*   Updated: 2026/05/25 19:06:44 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/26 13:27:34 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	are_you_builtin(t_cmd_line *cmd_line)
 	if (!cmd_line || !cmd_line->cmds || !cmd_line->cmds[0])
 		return (EXTRENAL);
 	if ((ft_strcmp(cmd_line->cmds[0], CD) == SHELLYMATES)
-		|| (ft_strcmp(cmd_line->cmds[0], ECHO) == SHELLYMATES)
+		|| (ft_strcmp(cmd_line->cmds[0], ECHO_BLT) == SHELLYMATES)
 		|| (ft_strcmp(cmd_line->cmds[0], EXIT) == SHELLYMATES)
 		|| (ft_strcmp(cmd_line->cmds[0], PWD) == SHELLYMATES)
 		|| (ft_strcmp(cmd_line->cmds[0], ENV) == SHELLYMATES)
@@ -33,7 +33,7 @@ int	r_bltn(t_cmd_line *cmd_line, t_shelly *shelly)
 		return (KO);
 	if (ft_strcmp(cmd_line->cmds[0], CD) == SHELLYMATES)
 		return (mycd(cmd_line, shelly));
-	if (ft_strcmp(cmd_line->cmds[0], ECHO) == SHELLYMATES)
+	if (ft_strcmp(cmd_line->cmds[0], ECHO_BLT) == SHELLYMATES)
 		return (myecho(cmd_line, shelly));
 	if (ft_strcmp(cmd_line->cmds[0], EXIT) == SHELLYMATES)
 		return (myexit(cmd_line, shelly));
