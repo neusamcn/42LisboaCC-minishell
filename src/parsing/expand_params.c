@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 16:39:39 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 17:03:55 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:14:14 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ t_token	*xpnd_word_tkn(t_token *t, t_token **head, t_shelly *shelly)
 
 t_token	*expand_params(t_token *tokens, t_shelly *shelly)
 {
-	char	*xpndd_word;
 	t_token	*t;
 	t_token	*head;
 

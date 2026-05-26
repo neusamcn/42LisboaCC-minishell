@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 17:09:42 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:21:54 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,14 @@ void	child_hd(t_redirects *r, int pipefd[2], t_shelly *shelly)
 	exit(0);
 }
 
-static void	mndhd_wait(t_redirects *r, t_shelly *shelly, struct termios *s_tty,
-		int tty_sv)
+static void	mndhd_wait(t_redirects *r, t_shelly *shelly, int pipefd[2],
+		pid_t pid)
 {
-	int		status;
-	pid_t	pid;
-	int		pipefd[2];
+	int			status;
 
 	sig_mode(MNDWAIT, shelly);
 	waitpid(pid, &status, 0);
 	sig_mode(INTERACTIVE, shelly);
-	if (tty_sv)
-		tcsetattr(STDIN_FILENO, TCSADRAIN, s_tty);
 	close(pipefd[1]);
 	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
@@ -106,5 +102,7 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 		child_hd(redir, pipefd, shelly);
 		exit(0);
 	}
-	mndhd_wait(redir, pipefd, shelly, &s_tty, tty_sv);
+	mndhd_wait(redir, shelly, pipefd, pid);
+	if (tty_sv)
+		tcsetattr(STDIN_FILENO, TCSADRAIN, &s_tty);
 }

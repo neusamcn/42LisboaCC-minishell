@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 20:27:41 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 17:05:39 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:25:24 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,14 @@ char	**exp_minienv(t_export *mini, char *k, char *v, int sz)
 {
 	char	*smashed;
 	int		pos;
-	char	**envp;
 
 	smashed = smash_key_val(k, v);
 	pos = where_is_it(mini->envp, k);
 	if (pos != -1)
 	{
-		free(envp[pos]);
-		envp[pos] = smashed;
-		return (envp);
+		free(mini->envp[pos]);
+		mini->envp[pos] = smashed;
+		return (mini->envp);
 	}
 	if (sz == -1)
 	{
