@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 12:31:16 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:03:12 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,18 @@ static int	valid_or_not(t_cmd_line *arg_line)
 	i = 0;
 	d = 0;
 	arg = arg_line->cmds[1];
-	while (arg[i] == ' ' || arg[i] == TAB || ft_strchr(PLUS_OR_MINUS, arg[i]))
+	while (arg[i] == ' ' || arg[i] == '\t')
+		i++;
+	if (arg[i] == '+' || arg[i] == '-')
 		i++;
 	if (arg[i] < MINIM_DIG || arg[i] > MAXIM_DIG)
 		return (NON_VALID);
 	while (arg[i] >= MINIM_DIG && arg[i] <= MAXIM_DIG)
+	{
 		i++;
-	while (ft_strchr(WHITESPACE, arg[i]))
+		d++;
+	}
+	while (arg[i] == ' ' || arg[i] == '\t')
 		i++;
 	if (arg[i] == '\0' || d > 10)
 		return (VALID);
@@ -63,7 +68,7 @@ int	myexit(t_cmd_line *argv, t_shelly *shelly)
 	if (valid_or_not(argv) == VALID)
 	{
 		ft_putstr_fd("exit\n", 1);
-		exit_cleanup(ft_atoi(argv->cmds[1]) % 256, shelly);
+		exit_cleanup(((ft_atoi(argv->cmds[1]) % 256) + 256) % 256, shelly);
 	}
 	else
 	{

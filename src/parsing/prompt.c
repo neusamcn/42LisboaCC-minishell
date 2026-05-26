@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 00:04:41 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/25 23:05:36 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:16:22 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+#include "../../include/execution.h"
 
 static char	*build_pretty_prompt(char *user, char *prompt, char *cwd)
 {
@@ -69,7 +70,8 @@ char	*put_extra_prompt(t_shelly *shelly, char *prev_input)
 	if (!extra_input)
 	{
 		free(prev_input);
-		exit_cleanup(EXIT_SUCCESS, shelly);
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		exit_cleanup(get_signal_stat(), shelly);
 	}
 	return (extra_input);
 }

@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 12:01:44 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 13:14:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,10 @@ static void	read_eval_print_loop(t_shelly *shelly)
 	{
 		input_str = put_prompt(shelly, "shelly");
 		if (!input_str)
-			exit_cleanup(EXIT_SUCCESS, shelly);
+		{
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			exit_cleanup(get_signal_stat(), shelly);
+		}
 		if (*input_str)
 		{
 			input_str = validate_complete_input(input_str, shelly);
