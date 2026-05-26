@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 00:57:26 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:54:42 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 
 void	exec_loop(t_cmd_line *cmds, t_shelly *shelly)
 {
+	set_signal_stat(0);
 	run_xds(cmds, shelly);
 	if (get_signal_stat() == 130)
 		return ;

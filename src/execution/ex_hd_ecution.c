@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 14:36:56 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:47:51 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,6 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 	}
 	sig_mode(MNDWAIT, shelly);
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		//rl_replace_line("", 0);
-		//write(1, "\n", 1);
-		//rl_on_new_line();
-		rl_redisplay();
-	}
 	sig_mode(INTERACTIVE, shelly);
 	if (tty_sv)
 		tcsetattr(STDIN_FILENO, TCSADRAIN, &s_tty);
