@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_unset_in.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:47:50 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:38:48 by megi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 // unset is a builtins that deletes a variable (any var, even the one, you set 
 // using an export)
+
+//TODO: i need to connect nodes to each other
 
 static void	rm(t_shelly *shelly, char *name)
 {
@@ -51,5 +53,5 @@ int	mysunset(t_cmd_line *un, t_shelly *shelly)
 			rm(shelly, un->cmds[av]);
 		av++;
 	}
-	return (false);
+	return (OK);
 }
