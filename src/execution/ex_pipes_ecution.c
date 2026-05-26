@@ -83,6 +83,7 @@ int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
 	}
 	cleanup_xd_fds(st);
 	status = mndwait(last_stat, cmd_num);
+	sig_mode(INTERACTIVE, shelly);
 	return (set_signal_stat(status), 1);
 }
 

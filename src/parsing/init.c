@@ -125,10 +125,10 @@ static void	readevalprint_input(char *input_str, t_shelly *shelly)
 	tokens = tokenize_input(input_str);
 	// DELETE TESTER
 	// print_tkns(tokens);
-	shelly->cur_tok = tokens;
 	tokens = expand_params(tokens, shelly);
 	// DELETE TESTER
 	// print_tkns(tokens);
+	shelly->cur_tok = tokens;
 	cmd_line = parser(tokens);
 	// DELETE TESTER
 	// print_cmdline(cmd_line);
@@ -177,13 +177,13 @@ static void	non_interactive_mode(t_shelly *shelly)
 		if (!line)
 			break ;
 		tokens = tokenize_input(line);
-		shelly->cur_tok = tokens;
 		if (!tokens)
 		{
 			free(line);
 			continue ;
 		}
 		tokens = expand_params(tokens, shelly);
+		shelly->cur_tok = tokens;
 		cmd_line = parser(tokens);
 		shelly->cur_cmd = cmd_line;
 		exec_loop(cmd_line, shelly);

@@ -60,7 +60,6 @@ static void	hd_sigint(int sig)
 {
 	(void)sig;
 	set_signal_stat(130);
-	// redraw_prompt();
 	rl_done = 1;
 }
 
