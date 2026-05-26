@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:32 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/26 12:09:35 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ static void	hd_sigint(int sig)
 {
 	(void)sig;
 	set_signal_stat(130);
-	redraw_prompt();
-	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "^C", 2);
+	//redraw_prompt();
+	//rl_replace_line("", 0);
 	rl_done = 1;
-	rl_stuff_char('\n');
+	//rl_stuff_char('\n');
 }
 
 void	set_heredoc_signals(t_shelly *shelly)

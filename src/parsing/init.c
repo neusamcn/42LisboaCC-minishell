@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:05 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/26 12:01:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,7 @@ static void	readevalprint_input(char *input_str, t_shelly *shelly)
 	tokens = tokenize_input(input_str);
 	// DELETE TESTER
 	// print_tkns(tokens);
-<<<<<<< HEAD
-=======
 	//shelly->cur_tok = tokens;
->>>>>>> 689f3d72f120a6363f751937d492e963e25c1029
 	tokens = expand_params(tokens, shelly);
 	// DELETE TESTER
 	// print_tkns(tokens);

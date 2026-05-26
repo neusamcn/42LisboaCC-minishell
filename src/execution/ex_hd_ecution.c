@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_hd_ecution.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 12:00:21 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/26 12:08:12 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
 	char	*msg;
 
 	close(pipefd[0]);
-	sig_mode(CHILD, shelly);
-	//set_heredoc_signals(shelly);
+	//sig_mode(CHILD, shelly);
+	set_heredoc_signals(shelly);
 	rl_catch_signals = 0;
 	while (1)
 	{
@@ -98,19 +98,12 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 	sig_mode(INTERACTIVE, shelly);
 	close(pipefd[1]);
 	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-<<<<<<< HEAD
 		|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
-=======
-		|| (WIFEXITED(status) && (WEXITSTATUS(status) == 130)))
->>>>>>> 689f3d72f120a6363f751937d492e963e25c1029
 	{
 		close(pipefd[0]);
 		redir->xd_fd = -1;
 		set_signal_stat(130);
-<<<<<<< HEAD
-=======
 		//redraw_prompt();
->>>>>>> 689f3d72f120a6363f751937d492e963e25c1029
 		write(STDOUT_FILENO, "\n", 1);
 		return ;
 	}
