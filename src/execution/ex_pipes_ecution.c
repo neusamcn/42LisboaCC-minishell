@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/25 20:54:02 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 10:38:11 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	ex_pipeline_ec(t_cmd_line *pl, t_shelly *shelly)
 	}
 	cleanup_xd_fds(st);
 	status = mndwait(last_stat, cmd_num);
+	sig_mode(INTERACTIVE, shelly);
 	return (set_signal_stat(status), 1);
 }
 

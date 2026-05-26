@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_hd_ecution.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 00:58:39 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 11:56:25 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
 	char	*msg;
 
 	close(pipefd[0]);
-	// sig_mode(CHILD, shelly);
-	set_heredoc_signals(shelly);
+	sig_mode(CHILD, shelly);
+	//set_heredoc_signals(shelly);
+	rl_catch_signals = 0;
 	while (1)
 	{
 		msg = readline("> ");
@@ -67,11 +68,11 @@ void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
 		write_hd_line(msg, pipefd[1], shelly, redir->heredoc_quoted);
 	}
 	close(pipefd[1]);
-	if (g_signal_stat == 130)
-		exit(130);
 	free_cmd_line(shelly->cur_cmd);
 	babies_cleanup(shelly, NULL);
 	free(shelly);
+	if (g_signal_stat == 130)
+		exit(130);
 	exit(0);
 }
 
@@ -96,12 +97,14 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 	waitpid(pid, &status, 0);
 	sig_mode(INTERACTIVE, shelly);
 	close(pipefd[1]);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		|| (WIFEXITED(status) && (WEXITSTATUS(status) == 130)))
 	{
 		close(pipefd[0]);
 		redir->xd_fd = -1;
 		set_signal_stat(130);
-		redraw_prompt();
+		//redraw_prompt();
+		write(STDOUT_FILENO, "\n", 1);
 		return ;
 	}
 	redir->xd_fd = dup(pipefd[0]);
