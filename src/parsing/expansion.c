@@ -6,11 +6,12 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 20:06:59 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 17:01:06 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:14:55 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+#include "../../include/execution.h"
 
 static bool	is_varkey(char *str, int i)
 {
@@ -95,11 +96,11 @@ char	*word_param_expansion(char *tkn_val, t_shelly *shelly)
 	while (tkn_val[i])
 	{
 		if (st.in_single)
-			handle_in_single(tkn_val, &i, &st);
+			handle_qmark1(tkn_val, &i, &st);
 		else if (st.in_double)
-			handle_in_double(tkn_val, &i, &st, shelly);
+			handle_qmark2(tkn_val, &i, &st, shelly);
 		else
-			handle_unquoted(tkn_val, &i, &st, shelly);
+			handle_word_cmd(tkn_val, &i, &st, shelly);
 	}
 	return (*st.xpndd_word);
 }

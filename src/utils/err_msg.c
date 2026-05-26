@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 22:25:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/25 19:50:49 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:45:38 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	mndp_exec_error(char *cmd)
 {
 	if (errno == EACCES)
 	{
-		mndp_log_err("Permission denied", cmd);
+		mndp_log_err("Permission denied ", cmd);
 		return (126);
 	}
 	else if (errno == ENOENT)
-		mndp_log_err("No such file or directory", cmd);
+		mndp_log_err("No such file or directory ", cmd);
 	else if (errno == EISDIR)
 	{
-		mndp_log_err("Is a directory", cmd);
+		mndp_log_err("Is a directory ", cmd);
 		return (126);
 	}
 	else

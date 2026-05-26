@@ -6,13 +6,13 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 18:09:11 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 17:11:52 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:07:24 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static int	cpy_dollar_literal(char *tkn_val, int i, char **xpndd_word)
+static int	copy_money(char *tkn_val, int i, char **xpndd_word)
 {
 	char	buf[2];
 
@@ -30,7 +30,7 @@ static int	cpy_dollar_literal(char *tkn_val, int i, char **xpndd_word)
 	return (i);
 }
 
-void	handle_in_double(char *tkn_val, int *i, t_exp_state *st,
+void	handle_qmark2(char *tkn_val, int *i, t_exp_state *st,
 			t_shelly *shelly)
 {
 	char	buf[2];
@@ -45,7 +45,7 @@ void	handle_in_double(char *tkn_val, int *i, t_exp_state *st,
 		if (shelly)
 			*i = xpnd_var(tkn_val, *i, st->xpndd_word, shelly);
 		else
-			*i = cpy_dollar_literal(tkn_val, *i, st->xpndd_word);
+			*i = copy_money(tkn_val, *i, st->xpndd_word);
 		return ;
 	}
 	else
@@ -56,7 +56,7 @@ void	handle_in_double(char *tkn_val, int *i, t_exp_state *st,
 	(*i)++;
 }
 
-void	handle_in_single(char *tkn_val, int *i, t_exp_state *st)
+void	handle_qmark1(char *tkn_val, int *i, t_exp_state *st)
 {
 	char	buf[2];
 
@@ -71,7 +71,7 @@ void	handle_in_single(char *tkn_val, int *i, t_exp_state *st)
 	(*i)++;
 }
 
-void	handle_unquoted(char *tkn_val, int *i, t_exp_state *st,
+void	handle_word_cmd(char *tkn_val, int *i, t_exp_state *st,
 			t_shelly *shelly)
 {
 	if (tkn_val[*i] == '\'')
@@ -85,7 +85,7 @@ void	handle_unquoted(char *tkn_val, int *i, t_exp_state *st,
 		if (shelly)
 			*i = xpnd_var(tkn_val, *i, st->xpndd_word, shelly);
 		else
-			*i = cpy_dollar_literal(tkn_val, *i, st->xpndd_word);
+			*i = copy_money(tkn_val, *i, st->xpndd_word);
 		return ;
 	}
 	*i = cpy_norm_str(tkn_val, *i, st->xpndd_word);

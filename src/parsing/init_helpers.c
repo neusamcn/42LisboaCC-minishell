@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 15:54:32 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 16:41:22 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:02:12 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	readevalprint_input(char *input_str, t_shelly *shelly)
 	free(input_str);
 }
 
-void	noninteractive_readevalprint_input(char *l, t_shelly *shelly)
+void	noninteractive_repl(char *l, t_shelly *shelly)
 {
 	t_token		*tkn;
 	t_cmd_line	*cmd_l;

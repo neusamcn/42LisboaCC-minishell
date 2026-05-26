@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 16:20:55 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:21:30 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 
-extern volatile sig_atomic_t	g_signal_stat; // this var exist someweher
+extern volatile sig_atomic_t	g_signal_stat;
 
 /* Structs & Enums */
 typedef enum e_mode
@@ -69,9 +69,9 @@ typedef struct s_cmd_line
 {
 	char				**cmds; // bltns only come here;
 	t_redirects			*redir; // if not redir, choose NONE
-	int					pipefd[2]; // Neusa doesn't populate
-	int					prevfd; // CHECK (?) // Neusa doesn't populate
-	struct s_export		*bltn_export; // Neusa populates default NULL w/ calloc
+	int					pipefd[2];
+	int					prevfd;
+	struct s_export		*bltn_export;
 	struct s_cmd_line	*next; // only populate if something comes after pipe; 
 }	t_cmd_line;
 

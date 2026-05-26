@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 17:07:14 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:08:16 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ t_token			*expand_params(t_token *tokens, t_shelly *shelly);
 int				cpy_norm_str(char *tkn_val, int i, char **xpndd_word);
 int				xpnd_var(char *tkn_val, int i, char **xpndd_word,
 					t_shelly *shelly);
-void			handle_in_double(char *tkn_val, int *i, t_exp_state *st,
+void			handle_qmark2(char *tkn_val, int *i, t_exp_state *st,
 					t_shelly *shelly);
-void			handle_in_single(char *tkn_val, int *i, t_exp_state *st);
-void			handle_unquoted(char *tkn_val, int *i, t_exp_state *st,
+void			handle_qmark1(char *tkn_val, int *i, t_exp_state *st);
+void			handle_word_cmd(char *tkn_val, int *i, t_exp_state *st,
 					t_shelly *shelly);
 char			*word_param_expansion(char *tkn_val, t_shelly *shelly);
 t_token			*xpnd_word_tkn(t_token *t, t_token **head, t_shelly *shelly);
@@ -77,6 +77,6 @@ t_cmd_line		*parser(t_token *tokens);
 
 /* Utils */
 void			readevalprint_input(char *input_str, t_shelly *shelly);
-void			noninteractive_readevalprint_input(char *l, t_shelly *shelly);
+void			noninteractive_repl(char *l, t_shelly *shelly);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_unset_in.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megi <megi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:24:18 by megi              #+#    #+#             */
-/*   Updated: 2026/05/25 19:38:48 by megi             ###   ########.fr       */
+/*   Updated: 2026/05/26 20:33:18 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 static void	rm(t_shelly *shelly, char *name)
 {
 	int	env;
-	int	pos;
+	int	i;
 
 	env = 0;
 	while (shelly->envp[env])
 	{
-		pos = 0;
-		while (shelly->envp[env][pos] == name[pos] && name[pos])
-			pos++;
-		if (shelly->envp[env][pos] == '=' && !name[pos])
+		i = 0;
+		while (shelly->envp[env][i] == name[i] && name[i])
+			i++;
+		if (shelly->envp[env][ i] == '=' && !name[i])
 		{
 			free(shelly->envp[env]);
 			while (shelly->envp[env])

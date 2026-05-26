@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 18:17:07 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:19:35 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	no_cmds_execution(t_cmd_line *cmds, t_shelly *shelly)
 	(void)shelly->envp;
 	if (!cmds->cmds || !cmds->cmds[0])
 	{
-		save_out = dup(STDIN_FILENO);
+		save_out = dup(STDOUT_FILENO);
 		if (save_out == -1)
 			return ;
 		r = cmds->redir;

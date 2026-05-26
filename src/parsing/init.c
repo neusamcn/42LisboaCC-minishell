@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 20:24:29 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 17:12:59 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:04:44 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	non_interactive_mode(t_shelly *shelly)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		noninteractive_readevalprint_input(line, shelly);
+		noninteractive_repl(line, shelly);
 		free(line);
 	}
 }

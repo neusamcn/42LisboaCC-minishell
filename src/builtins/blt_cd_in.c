@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_in.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:48:06 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 11:47:23 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:49:36 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int	mycd_errors(char *path)
 		return (mndp_log_err("Too many levels of symbolic links", path), 1);
 	else if (errno == ENAMETOOLONG)
 		return (mndp_log_err("File name too long", path), 1);
-	return (mndp_log_err("cd; no such file or directory\n", path), 1);
+	return (mndp_log_err("cd: no such file or directory\n", path), 1);
 }
 
 static int	upd_pwd(t_shelly *shelly, t_cd *vars)

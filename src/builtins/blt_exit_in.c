@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 16:51:19 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:48:24 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	myexit(t_cmd_line *argv, t_shelly *shelly)
 	}
 	else
 	{
-		mndp_log_err("numeric argumedn requiered", argv->cmds[1]);
+		mndp_log_err("numeric argument required", argv->cmds[1]);
 		return (2);
 	}
 	return (OK);
