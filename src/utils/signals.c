@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 21:40:17 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 12:09:35 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 12:28:37 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static void	hd_sigint(int sig)
 	(void)sig;
 	set_signal_stat(130);
 	write(STDOUT_FILENO, "^C", 2);
+	close(STDIN_FILENO);
 	//redraw_prompt();
 	//rl_replace_line("", 0);
 	rl_done = 1;

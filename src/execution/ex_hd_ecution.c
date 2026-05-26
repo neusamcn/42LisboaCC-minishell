@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 12:08:12 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 12:29:29 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly)
 		if (!msg || g_signal_stat == 130
 			|| ft_strcmp(msg, redir->delimiter) == 0)
 		{
-			if (!msg)
+			if (!msg && g_signal_stat != 130)
 				mndp_log_err(HD, redir->delimiter);
 			free(msg);
 			break ;

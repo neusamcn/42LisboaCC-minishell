@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:04:46 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 10:38:48 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 12:31:16 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ exit 1 2     an err "too many arguments" */
 static int	valid_or_not(t_cmd_line *arg_line)
 {
 	int		i;
+	int		d;
 	char	*arg;
 
 	i = 0;
+	d = 0;
 	arg = arg_line->cmds[1];
 	while (arg[i] == ' ' || arg[i] == TAB || ft_strchr(PLUS_OR_MINUS, arg[i]))
 		i++;
@@ -40,7 +42,7 @@ static int	valid_or_not(t_cmd_line *arg_line)
 		i++;
 	while (ft_strchr(WHITESPACE, arg[i]))
 		i++;
-	if (arg[i] == '\0')
+	if (arg[i] == '\0' || d > 10)
 		return (VALID);
 	return (NON_VALID);
 }
