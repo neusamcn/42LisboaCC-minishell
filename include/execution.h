@@ -80,11 +80,17 @@ int		mndwait(pid_t last_p, int cmd_nmb);
 int		ex_pipeline_ec(t_cmd_line *pipeline, t_shelly *shelly);
 void	lonely_child_exit(t_shelly *shelly, char *path, int status);
 void	lnly_ch_errmsg(t_cmd_line *kid, t_shelly *shelly);
+void	writehd(char *msg, int fd, t_shelly *shelly, bool quoted);
+char	*readhd(void);
+
 
 /*									EXECUTION UTILS					*/
 bool	if_redir(t_cmd_line *s);
 char	*abs_or_rel_p(t_cmd_line *c, t_shelly *shelly);
 void	store_fds(int read_save, int write_save);
+int		dups_saved(int *read_s, int *write_s);
+void	child_error(t_cmd_line *kid, t_shelly *shelly);
+
 
 /*									REDIRECTIONs					*/
 bool	which_redir_type(t_cmd_line *cmd);

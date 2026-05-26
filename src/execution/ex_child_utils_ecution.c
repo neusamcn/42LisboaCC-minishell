@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:13:46 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/24 13:17:59 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 15:47:33 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,14 @@ void	lnly_ch_errmsg(t_cmd_line *kid, t_shelly *shelly)
 			mndp_log_err("command not found", kid->cmds[0]);
 	}
 	lonely_child_exit(shelly, NULL, 127);
+}
+
+void	child_error(t_cmd_line *kid, t_shelly *shelly)
+{
+	if (kid->cmds && kid->cmds[0])
+		mndp_exec_error(kid->cmds[0]);
+	free_cmd_line(shelly->cur_cmd);
+	babies_cleanup(shelly, NULL);
+	free(shelly);
+	exit(127);
 }

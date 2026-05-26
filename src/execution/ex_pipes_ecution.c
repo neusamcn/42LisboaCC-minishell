@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_pipes_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:33:48 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 10:38:11 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 15:47:25 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,15 +114,8 @@ static void	child_ex_execve(t_cmd_line *kid, t_shelly *shelly)
 
 	path = relative_path(kid, shelly);
 	if (!path)
-	{
-		if (kid->cmds && kid->cmds[0])
-			mndp_exec_error(kid->cmds[0]);
-		free_cmd_line(shelly->cur_cmd);
-		babies_cleanup(shelly, NULL);
-		free(shelly);
-		exit(127);
-	}
-	add_ptr_shelly(path, shelly); // TODO: Milena, pls onfirm if OK to add here
+		child_error(kid, shelly);
+	add_ptr_shelly(path, shelly);
 	argv = kid->cmds;
 	kid->cmds = NULL;
 	envp = shelly->envp;
@@ -131,7 +124,7 @@ static void	child_ex_execve(t_cmd_line *kid, t_shelly *shelly)
 	babies_cleanup(shelly, NULL);
 	free(shelly);
 	execve(path, argv, envp);
-	// TODO: Milena, should there be a free(path); here?
+	free(path);
 	mndp_log_err("execution failed!\n", argv[0]);
 	exit(127);
 }

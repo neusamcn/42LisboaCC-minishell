@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 04:20:55 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 14:47:51 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:24:04 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,15 @@ void	run_xds(t_cmd_line *cmds, t_shelly *shelly)
 	}
 }
 
-void	write_hd_line(char *msg, int fd, t_shelly *shelly, bool quoted)
-{
-	char	*line;
-
-	line = msg;
-	if (!quoted)
-		line = word_param_expansion(msg, shelly);
-	write(fd, line, ft_strlen(line));
-	write(fd, "\n", 1);
-	if (!quoted)
-		free(line);
-	free(msg);
-}
-
 void	child_hd(t_redirects *r, int pipefd[2], t_shelly *shelly)
 {
 	char	*m;
 
 	close(pipefd[0]);
 	set_heredoc_signals(shelly);
-	// tty_sv = (tcgetattr(STDIN_FILENO, &s_tty) == 0);
-	rl_catch_signals = 0;
 	while (1)
 	{
-		m = readline("> ");
+		m = readhd();
 		if (!m || g_signal_stat == 130 || ft_strcmp(m, r->delimiter) == 0)
 		{
 			if (!m && g_signal_stat != 130)
@@ -64,7 +48,7 @@ void	child_hd(t_redirects *r, int pipefd[2], t_shelly *shelly)
 			free(m);
 			break ;
 		}
-		write_hd_line(m, pipefd[1], shelly, r->heredoc_quoted);
+		writehd(m, pipefd[1], shelly, r->heredoc_quoted);
 	}
 	close(pipefd[1]);
 	free_cmd_line(shelly->cur_cmd);
@@ -75,10 +59,32 @@ void	child_hd(t_redirects *r, int pipefd[2], t_shelly *shelly)
 	exit(0);
 }
 
+static void	mndhd_wait(t_redirects *r, int pipefd[2], pid_t pid,
+	t_shelly *shelly, struct termios *s_tty, int tty_sv)
+{
+	int status;
+	
+	sig_mode(MNDWAIT, shelly);
+	waitpid(pid, &status, 0);
+	sig_mode(INTERACTIVE, shelly);
+	if (tty_sv)
+		tcsetattr(STDIN_FILENO, TCSADRAIN, s_tty);
+	close(pipefd[1]);
+	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
+	{
+		close(pipefd[0]);
+		r->xd_fd = -1;
+		set_signal_stat(130);
+		return ;
+	}
+	r->xd_fd = dup(pipefd[0]);
+	close(pipefd[0]);
+}
+
 void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 {
 	pid_t			pid;
-	int				status;
 	int				pipefd[2];
 	struct termios 	s_tty;
 	int    			tty_sv;
@@ -98,20 +104,5 @@ void	mnd_heredoc(t_redirects *redir, t_shelly *shelly)
 		child_hd(redir, pipefd, shelly);
 		exit(0);	
 	}
-	sig_mode(MNDWAIT, shelly);
-	waitpid(pid, &status, 0);
-	sig_mode(INTERACTIVE, shelly);
-	if (tty_sv)
-		tcsetattr(STDIN_FILENO, TCSADRAIN, &s_tty);
-	close(pipefd[1]);
-	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
-	{
-		close(pipefd[0]);
-		redir->xd_fd = -1;
-		set_signal_stat(130);
-		return ;
-	}
-	redir->xd_fd = dup(pipefd[0]);
-	close(pipefd[0]);
+	mndhd_wait(redir, pipefd, pid, shelly, &s_tty, tty_sv);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 21:38:40 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/26 10:28:08 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:20:55 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void	sig_mode(int md, t_shelly *shelly);
 void	set_signal_stat(int value);
 void	redraw_prompt(void);
 void	set_heredoc_signals(t_shelly *shelly);
+void	sigint_prompt_handler(int sig);
 
 /* Utils */
 void	exit_cleanup(int exit_status, t_shelly *shelly);

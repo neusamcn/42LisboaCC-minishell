@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 22:26:32 by megi              #+#    #+#             */
-/*   Updated: 2026/05/26 14:54:42 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 15:30:41 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,8 @@ int	lonely_blt(t_cmd_line *s, t_shelly *shelly)
 
 	read_save = dup(STDIN_FILENO);
 	write_save = dup(STDOUT_FILENO);
-	if (read_save == -1 || write_save == -1)
-	{
-		if (read_save != -1)
-			close(read_save);
-		if (write_save != -1)
-			close(write_save);
-		return (perror("dup"), STDOUT_FILENO);
-	}
+	if (dups_saved(&read_save, &write_save) == -1)
+		return (true);
 	if (if_redir(s) && which_redir_type(s) != false)
 	{
 		store_fds(read_save, write_save);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncruz-ne <ncruz-ne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 22:00:19 by ncruz-ne          #+#    #+#             */
-/*   Updated: 2026/05/25 23:25:32 by ncruz-ne         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:01:26 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,48 +17,9 @@
 # include "minishell.h"
 
 /* Standard libs */
-// TODO: Review why I (might) need this & if PATH_MAX must be replaced (Norme?):
 # include <linux/limits.h>
 
-/* Structs *//* 
-typedef struct s_syntax_err
-{
-	char	*err_str;
-	int		i;
-}	t_syntax_err;
-
-typedef enum e_token_type
-{
-	WORD,
-	REDIR,
-	CTRL_OP
-}	t_token_type;
-
-typedef enum e_ctrlop_type
-{
-	PIPE
-}	t_ctrlop_type;
-
-typedef enum e_word_type
-{
-	CMD,
-	QMARK1,
-	QMARK2
-}	t_word_type;
-
-typedef struct s_token
-{
-	t_token_type	type;
-	t_ctrlop_type	ctrlop; // Valid only if type == CTRL_OP
-	t_redir_type	redir; // Valid only if type == REDIR
-	t_word_type		word; // valid only if type == WORD
-	bool			space_b4_word; // true if at least 1 space b4 word
-	int				word_xpndd; // 1 if expansion is done, -1 if failed/invalid
-	int				index;
-	char			*value; // For WORD, filename, delimiter, etc.
-	struct s_token	*previous; // TODO: review if necessary?
-	struct s_token	*next;
-}	t_token; */
+/* Structs */ 
 
 typedef struct s_exp_state
 {
@@ -76,7 +37,6 @@ typedef struct s_cmd
 	struct s_cmd	*next; // Next cmd in pl (|). 
 }	t_cmd;
 
-// TODO: review functions that should be general =>> minishell.h & =/= files
 /* Prompt & envp functions */
 t_shelly		*init(char **envp);
 char			*put_prompt(t_shelly *shelly, char *prompt);
@@ -87,8 +47,6 @@ char			*find_var_shellyenvp(t_shelly *shelly, char *envp_var_key);
 
 /* Main tokenizing functions */
 t_token			*tokenize_input(char *input_str);
-// char			*validate_complete_input(char *input_str, t_shelly *shelly);
-// char			quote_check(char *input_str); // currently static
 char			*syntax_check(char *input_str);
 
 /* Tokenizing utils */
@@ -115,5 +73,9 @@ char			*word_param_expansion(char *tkn_val, t_shelly *shelly);
 
 /* Parser */
 t_cmd_line		*parser(t_token *tokens);
+
+/* Utils */
+void	readevalprint_input(char *input_str, t_shelly *shelly);
+void	noninteractive_readevalprint_input(char *line, t_shelly *shelly);
 
 #endif

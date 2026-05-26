@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_utils_ecution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megiazar <megiazar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 20:57:40 by megi              #+#    #+#             */
-/*   Updated: 2026/05/22 19:19:53 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 15:46:49 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,3 +47,19 @@ void	store_fds(int read_save, int write_save)
 	close(read_save);
 	close(write_save);
 }
+
+int dups_saved(int *read_s, int *write_s)
+{
+	*read_s = dup(STDIN_FILENO);
+	*write_s = dup(STDOUT_FILENO);
+	if (*read_s == -1 || *write_s == -1)
+	{
+		if (*read_s != -1)
+			close(*read_s);
+		if (*write_s != -1)
+			close(*write_s);
+		return (perror("dup"), -1);
+	}
+	return (OK);
+}
+
