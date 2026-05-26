@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:48:38 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 17:06:43 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 18:20:37 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,36 +24,29 @@ bool	exp_argv(char c, int j)
 	return (NON_VALID);
 }
 
-void	pexp_var(char *env_entry)
-{
-	char	*eq;
-
-	eq = ft_strchr(env_entry, '=');
-	if (eq)
-	{
-		write(1, "declare -x ", 11);
-		write(1, env_entry, eq - env_entry);
-		write(1, "=\"", 2);
-		write(1, eq + 1, ft_strlen(eq + 1));
-		write(1, "\"\n", 2);
-	}
-	else
-	{
-		write(1, "declare -x ", 11);
-		write(1, env_entry, ft_strlen(env_entry));
-		write(1, "\n", 1);
-	}
-}
-
 void	pexp(t_shelly *shelly)
 {
-	int	i;
+	int		i;
+	char	*eq_symb;
 
-	i = 0;
-	while (shelly->envp[i])
+	i = -1;
+	while (shelly->envp[++i])
 	{
-		pexp_var(shelly->envp[i]);
-		i++;
+		eq_symb = ft_strchr(shelly->envp[i], '=');
+		if (eq_symb)
+		{
+			write(1, "declare -x ", 11);
+			write(1, shelly->envp[i], eq_symb - shelly->envp[i]);
+			write(1, "=\"", 2);
+			write(1, eq_symb + 1, ft_strlen(eq_symb + 1));
+			write(1, "\"\n", 2);
+		}
+		else
+		{
+			write(1, "declare -x ", 11);
+			write(1, shelly->envp[i], ft_strlen(shelly->envp[i]));
+			write(1, "\n", 1);
+		}
 	}
 }
 

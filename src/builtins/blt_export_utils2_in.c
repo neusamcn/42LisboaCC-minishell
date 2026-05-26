@@ -6,44 +6,43 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 20:27:41 by megiazar          #+#    #+#             */
-/*   Updated: 2026/05/26 17:25:24 by megiazar         ###   ########.fr       */
+/*   Updated: 2026/05/26 18:23:56 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 #include "../../include/parsing.h"
 
-char	*smash_key_val(char *k, char *v)
+char	*val_creates(char *k, char *v)
 {
-	char	*smashed;
+	char	*s;
 
-	smashed = ft_strjoin(k, "=");
+	s = ft_strjoin(k, "=");
 	if (v)
-		smashed = ft_strjoin_free(smashed, v);
-	return (smashed);
+		s = ft_strjoin_free(s, v);
+	return (s);
 }
 
-int	where_is_it(char **envp, char *k)
+int	find_var_inside_env(char **envp, char *k)
 {
-	int		pos;
-	size_t	klen;
+	int		i;
 
-	pos = -1;
-	klen = ft_strlen(k);
-	while (envp[++pos])
-		if (!ft_strncmp(envp[pos], k, klen) && envp[pos][klen] == '=')
-			return (pos);
+	i = -1;
+	while (envp[++i])
+		if (ft_strncmp(envp[i], k, ft_strlen(k)) == SHELLYPEERS
+			&& envp[i][ft_strlen(k)] == '=')
+			return (i);
 	return (-1);
 }
 
-char	**shove_it_in(char **envp, char *smashed, int sz)
+char	**add_newvar(char **envp, char *s, int sz)
 {
 	char	**newenvp;
 
 	newenvp = malloc(sizeof(char *) * (sz + 2));
 	if (!newenvp)
-		return (free(smashed), envp);
-	newenvp[sz] = smashed;
+		return (free(s), envp);
+	newenvp[sz] = s;
 	newenvp[sz + 1] = NULL;
 	while (sz--)
 		newenvp[sz] = envp[sz];
@@ -52,15 +51,15 @@ char	**shove_it_in(char **envp, char *smashed, int sz)
 
 char	**exp_minienv(t_export *mini, char *k, char *v, int sz)
 {
-	char	*smashed;
+	char	*s;
 	int		pos;
 
-	smashed = smash_key_val(k, v);
-	pos = where_is_it(mini->envp, k);
+	s = val_creates(k, v);
+	pos = find_var_inside_env(mini->envp, k);
 	if (pos != -1)
 	{
 		free(mini->envp[pos]);
-		mini->envp[pos] = smashed;
+		mini->envp[pos] = s;
 		return (mini->envp);
 	}
 	if (sz == -1)
@@ -69,12 +68,12 @@ char	**exp_minienv(t_export *mini, char *k, char *v, int sz)
 		while (mini->envp[sz])
 			sz++;
 	}
-	return (shove_it_in(mini->envp, smashed, sz));
+	return (add_newvar(mini->envp, s, sz));
 }
 
 char	**exp_var(t_export *mini, char *k)
 {
-	if (where_is_it(mini->envp, k) != -1)
+	if (find_var_inside_env(mini->envp, k) != -1)
 		return (mini->envp);
 	return (exp_minienv(mini, k, NULL, -1));
 }

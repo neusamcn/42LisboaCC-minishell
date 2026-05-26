@@ -94,7 +94,6 @@ bool	in_redir(t_redirects *redir);
 bool	append(t_redirects *redir);
 
 void	run_xds(t_cmd_line *cmds, t_shelly *shelly);
-void	write_hd_line(char *msg, int fd, t_shelly *shelly, bool quoted);
 void	child_hd(t_redirects *redir, int pipefd[2], t_shelly *shelly);
 void	mnd_heredoc(t_redirects *redir, t_shelly *shelly);
 
@@ -125,12 +124,10 @@ bool	exp_argv(char c, int j);
 char	**exp_flag(t_export *exp);
 char	**exp_var(t_export *mini, char *k);
 char	**exp_minienv(t_export *mini, char *k, char *v, int sz);
-void	pexp_var(char *env_entry);
 void	pexp(t_shelly *shelly);
-char	*smash_key_val(char *k, char *v);
-int		where_is_it(char **envp, char *k);
-char	**swap_it(char **envp, int pos, char *smashed);
-char	**shove_it_in(char **envp, char *smashed, int sz);
+char	*val_creates(char *k, char *v);
+int		find_var_inside_env(char **envp, char *k);
+char	**add_newvar(char **envp, char *smashed, int sz);
 
 /*									PWD								*/
 int		mypwd(t_cmd_line *cmd, t_shelly *shelly);
